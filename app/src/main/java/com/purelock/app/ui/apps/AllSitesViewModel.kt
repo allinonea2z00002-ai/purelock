@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.purelock.app.Graph
 import com.purelock.app.data.blocklist.DomainMatcher
 import com.purelock.app.data.db.BlockedDomain
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -41,15 +42,26 @@ class AllSitesViewModel(app: Application) : AndroidViewModel(app) {
 
     val sortOrder: StateFlow<SiteSort> = sort
 
-    val items: StateFlow<List<SiteItem>> = combine(
+    /**
+     * Domain -> blocked flag, from the two DAOs.
+     * Kept as a 2-flow combine: the 5-flow combine failed overload resolution
+     * (same SuspendFunctionN-vs-SuspendFunction1 error as AppListViewModel's
+     * 7-flow combine, fixed by splitting into 4+4).
+     */
+    private val byDomain: Flow<Map<String, Boolean>> = combine(
         Graph.db.blockedDomainDao().observeAll(),
-        Graph.db.allowedDomainDao().observeAll(),
-        query, sort, pins
-    ) { blocked, allowed, q, sortOrder, pinned ->
-        val byDomain = LinkedHashMap<String, Boolean>()
-        blocked.forEach { byDomain[it.domain] = true }
-        allowed.forEach { if (it.domain !in byDomain) byDomain[it.domain] = false }
-        val filtered = byDomain.asSequence()
+        Graph.db.allowedDomainDao().observeAll()
+    ) { blocked, allowed ->
+        val map = LinkedHashMap<String, Boolean>()
+        blocked.forEach { map[it.domain] = true }
+        allowed.forEach { if (it.domain !in map) map[it.domain] = false }
+        map
+    }
+
+    val items: StateFlow<List<SiteItem>> = combine(
+        byDomain, query, sort, pins
+    ) { byDomainMap, q, sortOrder, pinned ->
+        val filtered = byDomainMap.asSequence()
             .filter { q.isBlank() || it.key.contains(q, ignoreCase = true) }
             .map { (domain, isBlocked) ->
                 SiteItem(domain = domain, blocked = isBlocked, pinned = domain in pinned)

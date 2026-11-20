@@ -111,7 +111,8 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
         get() = prefs.getString(KEY_SORT, SORT_TIME) ?: SORT_TIME
     private val systemCache = HashMap<String, Boolean>()
 
-    private enum class Tab { SCREEN_TIME, LAUNCHES, BROWSING, UNLOCKS, TIMELINE }
+    /** Tabs of the Analytics screen (S14–S19). Public: newInstance() below takes one. */
+    enum class Tab { SCREEN_TIME, LAUNCHES, BROWSING, UNLOCKS, TIMELINE }
 
     companion object {
         const val ARG_TAB = "tab"

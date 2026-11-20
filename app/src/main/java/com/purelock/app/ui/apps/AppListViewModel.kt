@@ -9,6 +9,7 @@ import com.purelock.app.data.db.AllowedApplication
 import com.purelock.app.data.db.BlockedApplication
 import com.purelock.app.service.AppBlockPolicy
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -53,23 +54,36 @@ class AppListViewModel(app: Application) : AndroidViewModel(app) {
         Graph.db.allowedAppDao().observeAll()
     ) { blocked, allowed -> blocked.associateBy { it.packageName } to allowed.map { it.packageName }.toSet() }
 
+    /**
+     * Base app rows (label, rule, usage, launches) — no filtering or sorting.
+     * Kept as a 4-flow combine: the 7-flow combine failed overload resolution
+     * (same SuspendFunction7-vs-SuspendFunction1 error as the 6-flow combine
+     * in PureLockAccessibilityService, fixed in 0d2f250 by splitting).
+     */
+    private val baseItems: Flow<List<AppItem>> = combine(
+        installed, lists, usage, launches
+    ) { apps, pair, usageMap, launchesMap ->
+        val (blocked, allowed) = pair
+        apps.map {
+            AppItem(
+                packageName = it.packageName,
+                label = it.label,
+                rule = blocked[it.packageName],
+                allowed = it.packageName in allowed,
+                usageTodayMs = usageMap[it.packageName] ?: 0L,
+                launchesToday = launchesMap[it.packageName] ?: 0,
+                pinned = false,
+                alwaysAvailable = policy.isNeverBlocked(it.packageName)
+            )
+        }
+    }
+
     val items: StateFlow<List<AppItem>> = combine(
-        installed, query, lists, usage, launches, sort, pins
-    ) { apps, q, (blocked, allowed), usageMap, launchesMap, sortOrder, pinned ->
+        baseItems, query, sort, pins
+    ) { apps, q, sortOrder, pinned ->
         val filtered = apps.asSequence()
             .filter { q.isBlank() || it.label.contains(q, ignoreCase = true) || it.packageName.contains(q, ignoreCase = true) }
-            .map {
-                AppItem(
-                    packageName = it.packageName,
-                    label = it.label,
-                    rule = blocked[it.packageName],
-                    allowed = it.packageName in allowed,
-                    usageTodayMs = usageMap[it.packageName] ?: 0L,
-                    launchesToday = launchesMap[it.packageName] ?: 0,
-                    pinned = it.packageName in pinned,
-                    alwaysAvailable = policy.isNeverBlocked(it.packageName)
-                )
-            }
+            .map { if (it.packageName in pinned) it.copy(pinned = true) else it }
         when (sortOrder) {
             AppSort.NAME -> filtered.sortedBy { it.label.lowercase() }
             AppSort.BLOCKED -> filtered.sortedWith(
