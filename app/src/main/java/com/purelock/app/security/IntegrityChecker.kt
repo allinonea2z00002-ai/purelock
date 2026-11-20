@@ -100,12 +100,9 @@ class IntegrityChecker(
      */
     suspend fun evaluateAndNotify() {
         var report = check()
-        // A test lock is a real lock for integrity purposes, but its interruptions are trial
-        // interruptions: they must not pollute real statistics.
-        val isTest = db.lockDao().get()?.let { it.active && it.isTest } ?: false
 
         if (Issue.VPN_NOT_RUNNING in report.issues && VpnService.prepare(context) == null) {
-            PureLockVpnService.start(context, isTest)
+            PureLockVpnService.start(context)
         }
 
         val previous = db.prefDao().get(KEY_LAST_ISSUES).orEmpty()
@@ -115,7 +112,7 @@ class IntegrityChecker(
 
         if (newlyBroken.isNotEmpty() && report.lockActive) {
             eventLog.log(SecurityEventType.INTEGRITY_ISSUE, newlyBroken.joinToString(","))
-            if (!isTest) stats.recordInterruption()
+            stats.recordInterruption()
             if (settings.get().interruptionAlerts) {
                 notifier.alert(
                     Notifier.ID_INTEGRITY,

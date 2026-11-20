@@ -132,7 +132,8 @@ class LockEvaluatorTest {
 
     @Test
     fun `custom duration limits`() {
-        assertFalse(LockEvaluator.isValidCustomMinutes(4))
+        assertFalse(LockEvaluator.isValidCustomMinutes(2))
+        assertTrue(LockEvaluator.isValidCustomMinutes(3))
         assertTrue(LockEvaluator.isValidCustomMinutes(5))
         assertTrue(LockEvaluator.isValidCustomMinutes(90L * 24 * 60))
         assertFalse(LockEvaluator.isValidCustomMinutes(90L * 24 * 60 + 1))

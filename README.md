@@ -38,7 +38,7 @@ map is shown, so the Maps SDK is deliberately not included.
 ### Smart Lock (Protection tab)
 | Mode | Behaviour |
 |---|---|
-| **Time** | 30 min, 1/3/6/12/24 h, 3/7/15/30 days or custom (5 min to 90 days). |
+| **Time** | 30 min, 1/3/6/12/24 h, 3/7/15/30 days or custom (3 min to 90 days). |
 | **Distance** | Saves the starting point; unlocks after you travel 1/3/5/10/20 km or a custom distance. |
 | **Combined** | Both, with a clearly labelled rule: **ANY** condition or **ALL** conditions. |
 

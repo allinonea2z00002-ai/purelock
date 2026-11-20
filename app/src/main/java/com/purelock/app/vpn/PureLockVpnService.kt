@@ -67,7 +67,7 @@ class PureLockVpnService : VpnService() {
     }
 
     private fun startForegroundCompat() {
-        val notification = Graph.notifier.vpnServiceNotification(notifyAsTest)
+        val notification = Graph.notifier.vpnServiceNotification()
         if (Build.VERSION.SDK_INT >= 34) {
             startForeground(Notifier.ID_VPN, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED)
         } else {
@@ -224,10 +224,7 @@ class PureLockVpnService : VpnService() {
         lastBlockLogged[name] = now
         if (lastBlockLogged.size > 500) lastBlockLogged.clear()
 
-        Graph.appScope.launch {
-            // Blocks during a test lock are trial blocks: they do not count in real statistics.
-            if (!Graph.lockManager.isTestLock()) Graph.stats.recordWebsiteBlock(now)
-        }
+        Graph.appScope.launch { Graph.stats.recordWebsiteBlock(now) }
 
         if (now - lastNotification > 30_000) {
             lastNotification = now
@@ -245,7 +242,7 @@ class PureLockVpnService : VpnService() {
     override fun onRevoke() {
         Graph.appScope.launch {
             Graph.eventLog.log(SecurityEventType.VPN_REVOKED, "")
-            if (Graph.lockManager.isActive() && !Graph.lockManager.isTestLock()) Graph.stats.recordInterruption()
+            if (Graph.lockManager.isActive()) Graph.stats.recordInterruption()
             if (Graph.settings.get().interruptionAlerts) {
                 Graph.notifier.alert(
                     Notifier.ID_INTEGRITY,
@@ -280,9 +277,6 @@ class PureLockVpnService : VpnService() {
         private const val CLIENT_IP = "10.111.222.1"
         private const val DNS_VIP = "10.111.222.2"
 
-        /** Whether the ongoing VPN notification should say TEST. Set by [start], cleared by [stop]. */
-        @Volatile private var notifyAsTest = false
-
         private fun ipBytes(ip: String): ByteArray = ip.split('.').map { it.toInt().toByte() }.toByteArray()
 
         fun isRunning(): Boolean = VpnState.running.value
@@ -291,10 +285,8 @@ class PureLockVpnService : VpnService() {
          * Starts the filter. Returns false if Android refused (for example a background start
          * restriction), so the caller can tell the user instead of pretending it works.
          * Requires that the user already granted VPN consent ([VpnService.prepare] returned null).
-         * [isTest] marks the ongoing notification as a test-mode trial lock.
          */
-        fun start(context: Context, isTest: Boolean = false): Boolean = try {
-            notifyAsTest = isTest
+        fun start(context: Context): Boolean = try {
             ContextCompat.startForegroundService(context, Intent(context, PureLockVpnService::class.java))
             true
         } catch (e: Exception) {
@@ -303,7 +295,6 @@ class PureLockVpnService : VpnService() {
         }
 
         fun stop(context: Context) {
-            notifyAsTest = false
             context.stopService(Intent(context, PureLockVpnService::class.java))
         }
     }

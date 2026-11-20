@@ -40,11 +40,6 @@ class LockManager(
     private val mutex = Mutex()
     private val dao get() = db.lockDao()
 
-    companion object {
-        /** Length of a test-mode trial lock: 60 seconds, always. */
-        const val TEST_DURATION_MS = 60_000L
-    }
-
     data class StartRequest(
         val mode: LockMode,
         val durationMs: Long,
@@ -53,9 +48,7 @@ class LockManager(
         val startLat: Double?,
         val startLng: Double?,
         val blockAdult: Boolean,
-        val blockApps: Boolean,
-        /** True for a test-mode trial lock. Bypasses the 5-minute minimum; never counts in statistics. */
-        val isTest: Boolean = false
+        val blockApps: Boolean
     )
 
     sealed interface StartResult {
@@ -72,46 +65,6 @@ class LockManager(
 
     suspend fun isActive(): Boolean = dao.get()?.active == true
 
-    /** True while a test-mode trial lock is running. The engine treats it as a real lock for
-     * blocking; only statistics and notifications tell it apart. */
-    suspend fun isTestLock(): Boolean = dao.get()?.let { it.active && it.isTest } ?: false
-
-    /**
-     * Starts a 60-second test-mode trial lock through the real lock engine: same checkpoint timer,
-     * same boot recovery, same WorkManager end-job, same blocking. The 5-minute minimum does not
-     * apply to a test. Returns [StartResult.AlreadyActive] when any lock (real or test) is running.
-     * The adult filter runs only when VPN consent was already granted (same rule as zone locks).
-     */
-    suspend fun startTest(): StartResult {
-        val canFilter = VpnService.prepare(context) == null
-        return start(
-            StartRequest(
-                mode = LockMode.TIME,
-                durationMs = TEST_DURATION_MS,
-                distanceM = 0,
-                rule = CombineRule.ANY,
-                startLat = null,
-                startLng = null,
-                blockAdult = canFilter,
-                blockApps = true,
-                isTest = true
-            )
-        )
-    }
-
-    /**
-     * Ends a test-mode trial lock at once. This is the ONLY way to end a lock early without the
-     * emergency override, and it works only for test locks: a real lock is never touched here.
-     * Nothing is credited to statistics.
-     */
-    suspend fun endTest(): Boolean = mutex.withLock {
-        val cfg = dao.get() ?: return@withLock false
-        if (!cfg.active || !cfg.isTest) return@withLock false
-        log.log(SecurityEventType.TEST_ENDED, "")
-        finishLocked(cfg, "TEST_ENDED")
-        true
-    }
-
     fun bootCount(): Int =
         Settings.Global.getInt(context.contentResolver, Settings.Global.BOOT_COUNT, -1)
 
@@ -121,7 +74,7 @@ class LockManager(
         val existing = dao.get()
         if (existing?.active == true) return@withLock StartResult.AlreadyActive
 
-        if (req.mode.usesTime && !req.isTest) {
+        if (req.mode.usesTime) {
             val minutes = req.durationMs / 60_000
             val isPreset = LockEvaluator.TIME_PRESETS_MS.contains(req.durationMs)
             if (!isPreset && !LockEvaluator.isValidCustomMinutes(minutes)) return@withLock StartResult.InvalidDuration
@@ -141,14 +94,12 @@ class LockManager(
                 startEpoch = now,
                 plannedDurationMs = if (req.mode.usesTime) req.durationMs else 0,
                 distanceLimitM = if (req.mode.usesDistance) req.distanceM else 0,
-                combineRule = req.rule.name,
-                isTest = req.isTest
+                combineRule = req.rule.name
             )
         )
 
         val config = LockConfiguration(
             active = true,
-            isTest = req.isTest,
             mode = req.mode.name,
             combineRule = req.rule.name,
             durationMs = if (req.mode.usesTime) req.durationMs else 0,
@@ -174,12 +125,12 @@ class LockManager(
         }
 
         if (req.blockAdult) settings.set(SettingsKeys.FILTER_ENABLED, true)
-        log.log(SecurityEventType.LOCK_STARTED, if (req.isTest) "TEST" else "${req.mode.name}/${req.rule.name}")
+        log.log(SecurityEventType.LOCK_STARTED, "${req.mode.name}/${req.rule.name}")
 
         geofences.sync(config, db.safeZoneDao().getAll())
         if (req.mode.usesTime) WorkScheduler.scheduleUnlock(context, req.durationMs)
         WorkScheduler.schedulePeriodic(context)
-        if (req.blockAdult) PureLockVpnService.start(context, req.isTest)
+        if (req.blockAdult) PureLockVpnService.start(context)
         DevicePolicyHelper.applyLockRestrictions(context)
         StartResult.Started
     }
@@ -205,9 +156,8 @@ class LockManager(
         val remaining =
             if (mode.usesTime) (cfg.remainingAtCheckpointMs - passed).coerceAtLeast(0) else 0L
         // Never credit more protected time than the lock actually had left.
-        // A test lock credits nothing: trial minutes must not pollute real statistics.
         val credited = if (mode.usesTime) minOf(passed, cfg.remainingAtCheckpointMs) else passed
-        if (!cfg.isTest) stats.addProtected(nowEpoch - credited, credited)
+        stats.addProtected(nowEpoch - credited, credited)
 
         val updated = cfg.copy(
             remainingAtCheckpointMs = remaining,
@@ -325,12 +275,9 @@ class LockManager(
         val sameBoot = LockEvaluator.isSameBoot(cfg.bootCount, bootCount(), cfg.checkpointElapsed, nowElapsed)
         val passed = LockEvaluator.passedMs(cfg.checkpointElapsed, cfg.checkpointEpoch, nowElapsed, nowEpoch, sameBoot)
         val credited = if (LockMode.fromName(cfg.mode).usesTime) minOf(passed, cfg.remainingAtCheckpointMs) else passed
-        // A test lock credits no protected time and counts no emergency override.
-        if (!cfg.isTest) {
-            stats.addProtected(nowEpoch - credited, credited)
-            stats.recordEmergencyOverride(nowEpoch)
-        }
-        log.log(SecurityEventType.EMERGENCY_OVERRIDE, if (cfg.isTest) "TEST" else "")
+        stats.addProtected(nowEpoch - credited, credited)
+        stats.recordEmergencyOverride(nowEpoch)
+        log.log(SecurityEventType.EMERGENCY_OVERRIDE, "")
         finishLocked(cfg, "EMERGENCY_OVERRIDE")
     }
 
@@ -350,17 +297,14 @@ class LockManager(
         if (!keep) {
             settings.set(SettingsKeys.FILTER_ENABLED, false)
             PureLockVpnService.stop(context)
-        } else if (cfg.isTest) {
-            // The filter stays on after the trial: drop the TEST label from its notification.
-            PureLockVpnService.start(context, false)
         }
 
         if (reason == "COMPLETED") {
-            log.log(SecurityEventType.LOCK_COMPLETED, if (cfg.isTest) "TEST" else cfg.mode)
+            log.log(SecurityEventType.LOCK_COMPLETED, cfg.mode)
             notifier.event(
                 Notifier.ID_UNLOCKED,
-                context.getString(if (cfg.isTest) R.string.notif_test_completed_title else R.string.notif_completed_title),
-                context.getString(if (cfg.isTest) R.string.notif_test_completed_text else R.string.notif_completed_text)
+                context.getString(R.string.notif_completed_title),
+                context.getString(R.string.notif_completed_text)
             )
         }
         return finished
@@ -400,7 +344,7 @@ class LockManager(
         val s = settings.get()
         if (s.filterEnabled || cfg?.blockAdult == true && cfg.active) {
             if (VpnService.prepare(context) == null) {
-                if (!PureLockVpnService.start(context, cfg?.isTest == true)) notifyFilterStopped()
+                if (!PureLockVpnService.start(context)) notifyFilterStopped()
             } else {
                 notifyFilterStopped()
             }

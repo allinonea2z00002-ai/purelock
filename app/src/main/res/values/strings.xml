@@ -38,10 +38,6 @@
     <string name="notif_blocked_site_title">Site blocked</string>
     <string name="notif_completed_title">Lock completed</string>
     <string name="notif_completed_text">Well done. Your lock has finished and your progress was saved.</string>
-    <string name="notif_test_completed_title">Test finished</string>
-    <string name="notif_test_completed_text">The 60-second test lock ended. Nothing was counted in your statistics.</string>
-    <string name="notif_filter_test_title">TEST: Website protection is on</string>
-    <string name="notif_filter_test_text">This is a test lock — it ends after 60 seconds.</string>
     <string name="notif_geofence_title">Distance tracking may be limited</string>
     <string name="notif_geofence_text">Location alerts could not be restored. Check location permission in PureLock.</string>
     <string name="notif_zone_lock_title">Safe zone lock started</string>
@@ -73,19 +69,6 @@
     <string name="ring_distance_of">of %s</string>
     <string name="ring_combined_any">any condition</string>
     <string name="ring_combined_all">all conditions</string>
-
-    <!-- Test mode: 60-second trial lock through the real engine -->
-    <string name="test_mode_title">Test Mode</string>
-    <string name="test_mode_desc">Try the real lock for 60 seconds. The power menu, app blocking and the filter work exactly like a real lock, then it ends by itself.</string>
-    <string name="test_mode_start">Start 60-second test</string>
-    <string name="test_banner_title">TEST MODE — this is not a real lock</string>
-    <string name="test_banner_countdown">%1$s left</string>
-    <string name="test_end">End test</string>
-    <string name="test_started">Test lock started — it ends by itself after 60 seconds.</string>
-    <string name="test_ended">Test ended.</string>
-    <string name="test_locked_active">A lock is already active. End it first, then start a test.</string>
-    <string name="status_test">TEST</string>
-    <string name="test_ring_sub">test lock</string>
 
     <!-- Protection screen -->
     <string name="prot_active_title">Lock active</string>
@@ -356,7 +339,7 @@
     <string name="err_gps_disabled">Location (GPS) is turned off. Turn it on and try again.</string>
     <string name="err_no_fix">Could not get your location. Move to an open area and try again.</string>
     <string name="err_vpn_denied">VPN permission was denied, so the website filter cannot run.</string>
-    <string name="err_custom_duration">Enter a duration between 5 minutes and 90 days.</string>
+    <string name="err_custom_duration">Enter a duration between 3 minutes and 90 days.</string>
     <string name="err_custom_distance">Enter a distance between 0.5 km and 200 km.</string>
 
     <plurals name="apps_summary">

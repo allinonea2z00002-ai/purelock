@@ -5,7 +5,7 @@ import com.purelock.app.data.db.LockConfiguration
 /** Pure lock rules. No Android dependencies, so they are covered by plain unit tests. */
 object LockEvaluator {
 
-    const val MIN_CUSTOM_MINUTES = 5L
+    const val MIN_CUSTOM_MINUTES = 3L
     const val MAX_CUSTOM_MINUTES = 90L * 24 * 60
     const val MIN_DISTANCE_M = 500
     const val MAX_DISTANCE_M = 200_000
@@ -95,8 +95,7 @@ object LockEvaluator {
             distanceM = cfg.lastDistanceM,
             lastLocationEpoch = cfg.lastLocationEpoch,
             blockAdult = cfg.blockAdult,
-            blockApps = cfg.blockApps,
-            isTest = cfg.isTest
+            blockApps = cfg.blockApps
         )
     }
 

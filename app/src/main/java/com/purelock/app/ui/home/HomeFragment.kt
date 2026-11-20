@@ -5,10 +5,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import androidx.core.graphics.ColorUtils
 import androidx.core.view.ViewCompat
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -55,23 +52,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 vm.state.collect { state -> if (state != null) render(state) }
             }
         }
-
-        // Test mode: 60-second trial lock through the real engine.
-        b.btnStartTest.setOnClickListener { UiAnim.haptic(it); vm.startTest() }
-        b.btnEndTest.setOnClickListener { UiAnim.haptic(it); vm.endTest() }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                vm.testEvents.collect { event ->
-                    val msg = when (event) {
-                        HomeViewModel.TestEvent.TestStarted -> R.string.test_started
-                        HomeViewModel.TestEvent.TestRefused -> R.string.test_locked_active
-                        HomeViewModel.TestEvent.TestEnded -> R.string.test_ended
-                    }
-                    Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
-                }
-            }
-        }
     }
 
     private fun color(attr: Int): Int = MaterialColors.getColor(b.root, attr, Color.GRAY)
@@ -93,36 +73,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun render(s: HomeState) {
         val snap = s.snapshot
         val broken = snap.active && !s.integrity.protectionIntact
-        val isTest = snap.active && snap.isTest
-
-        // --- test mode banner / entry card -------------------------------------------
-        // The banner is the only thing shown while a test runs; the start card is only
-        // shown when no lock at all is active, so a test can never start over a real lock.
-        b.cardTestBanner.isVisible = isTest
-        b.cardTestMode.isVisible = !snap.active
-        if (isTest) {
-            val warn = color(R.attr.plWarning)
-            b.cardTestBanner.setCardBackgroundColor(ColorUtils.setAlphaComponent(warn, 0x2E))
-            b.tvTestBanner.setTextColor(warn)
-            b.tvTestCountdown.setTextColor(warn)
-            b.tvTestCountdown.text =
-                getString(R.string.test_banner_countdown, DurationFormat.clock(snap.remainingMs))
-        }
 
         // --- status pill -------------------------------------------------------------------
         val pillColor = when {
-            isTest -> color(R.attr.plWarning)
             snap.active && broken -> color(R.attr.plWarning)
             snap.active -> color(R.attr.plSuccess)
             else -> color(R.attr.plTextSecondary)
         }
-        b.tvStatusPill.text = getString(
-            when {
-                isTest -> R.string.status_test
-                snap.active -> R.string.status_active
-                else -> R.string.status_inactive
-            }
-        )
+        b.tvStatusPill.text = getString(if (snap.active) R.string.status_active else R.string.status_inactive)
         b.tvStatusPill.setTextColor(pillColor)
         ViewCompat.setBackgroundTintList(
             b.tvStatusPill,
@@ -145,13 +103,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
             else -> {
                 timeText = DurationFormat.clock(snap.remainingMs)
-                subText = when {
-                    isTest -> getString(R.string.test_ring_sub)
-                    snap.mode == LockMode.COMBINED -> {
-                        getString(if (snap.rule == CombineRule.ANY) R.string.ring_combined_any else R.string.ring_combined_all)
-                    }
-                    else -> getString(R.string.ring_remaining)
-                }
+                subText = if (snap.mode == LockMode.COMBINED) {
+                    getString(if (snap.rule == CombineRule.ANY) R.string.ring_combined_any else R.string.ring_combined_all)
+                } else getString(R.string.ring_remaining)
             }
         }
         b.ring.setState(snap.active, broken, snap.progress, timeText, subText)

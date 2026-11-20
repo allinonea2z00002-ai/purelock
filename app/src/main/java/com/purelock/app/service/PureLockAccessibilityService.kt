@@ -118,8 +118,7 @@ class PureLockAccessibilityService : AccessibilityService() {
                 .putExtra(BlockActivity.EXTRA_REASON, reason.name)
         )
         if (reason != BlockReason.SELF_PROTECT) {
-            // Blocks during a test lock are trial blocks: they do not count in real statistics.
-            scope.launch { if (!Graph.lockManager.isTestLock()) Graph.stats.recordAppBlock() }
+            scope.launch { Graph.stats.recordAppBlock() }
         }
     }
 

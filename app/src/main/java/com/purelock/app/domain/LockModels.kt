@@ -36,9 +36,7 @@ data class LockSnapshot(
     /** Epoch of the last real location fix used for [distanceM]; 0 if none yet. */
     val lastLocationEpoch: Long,
     val blockAdult: Boolean,
-    val blockApps: Boolean,
-    /** True while a 60-second test-mode trial lock is running (never a real lock). */
-    val isTest: Boolean = false
+    val blockApps: Boolean
 ) {
     /** 0f..1f progress toward unlocking, for the countdown ring. */
     val progress: Float
@@ -61,7 +59,7 @@ data class LockSnapshot(
             active = false, mode = LockMode.TIME, rule = CombineRule.ANY,
             durationMs = 0, remainingMs = 0, timeSatisfied = false, distanceSatisfied = false,
             distanceLimitM = 0, distanceM = 0f, lastLocationEpoch = 0,
-            blockAdult = false, blockApps = false, isTest = false
+            blockAdult = false, blockApps = false
         )
     }
 }

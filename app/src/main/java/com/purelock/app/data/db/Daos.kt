@@ -33,7 +33,7 @@ interface SessionDao {
     @Query("SELECT * FROM protection_session ORDER BY startEpoch DESC")
     fun observeAll(): Flow<List<ProtectionSession>>
 
-    @Query("SELECT COUNT(*) FROM protection_session WHERE endReason = 'COMPLETED' AND isTest = 0")
+    @Query("SELECT COUNT(*) FROM protection_session WHERE endReason = 'COMPLETED'")
     fun observeCompletedCount(): Flow<Int>
 }
 

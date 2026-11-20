@@ -33,16 +33,12 @@ class Notifier(private val context: Context) {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-    /** Ongoing notification required for the VPN foreground service. Says TEST while a test lock runs. */
-    fun vpnServiceNotification(isTest: Boolean = false): Notification =
+    /** Ongoing notification required for the VPN foreground service. */
+    fun vpnServiceNotification(): Notification =
         NotificationCompat.Builder(context, CH_PROTECTION)
             .setSmallIcon(R.drawable.ic_nav_shield)
-            .setContentTitle(
-                context.getString(if (isTest) R.string.notif_filter_test_title else R.string.notif_filter_title)
-            )
-            .setContentText(
-                context.getString(if (isTest) R.string.notif_filter_test_text else R.string.notif_filter_text)
-            )
+            .setContentTitle(context.getString(R.string.notif_filter_title))
+            .setContentText(context.getString(R.string.notif_filter_text))
             .setOngoing(true)
             .setOnlyAlertOnce(true)
             .setContentIntent(openAppIntent())
