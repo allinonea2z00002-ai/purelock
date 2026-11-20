@@ -149,8 +149,8 @@ class LockEvaluatorTest {
 
     @Test
     fun `presets match the specification`() {
-        assertEquals(10, LockEvaluator.TIME_PRESETS_MS.size)
-        assertEquals(30L * 60_000, LockEvaluator.TIME_PRESETS_MS.first())
+        assertEquals(11, LockEvaluator.TIME_PRESETS_MS.size)
+        assertEquals(3L * 60_000, LockEvaluator.TIME_PRESETS_MS.first())
         assertEquals(30L * 86_400_000, LockEvaluator.TIME_PRESETS_MS.last())
         assertEquals(listOf(1_000, 3_000, 5_000, 10_000, 20_000), LockEvaluator.DISTANCE_PRESETS_M)
     }

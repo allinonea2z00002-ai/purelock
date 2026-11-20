@@ -12,24 +12,14 @@ import kotlinx.coroutines.flow.map
 
 private val Context.settingsDataStore by preferencesDataStore(name = "purelock_settings")
 
-/** Upstream DNS used by the local filter for queries that are allowed. */
-enum class DnsProvider(val servers: List<String>) {
-    /** The network's own resolver (no third party sees your DNS queries). */
-    SYSTEM(emptyList()),
-    /** CleanBrowsing "Adult Filter": a maintained family DNS that also blocks adult domains. */
-    CLEANBROWSING_ADULT(listOf("185.228.168.10", "185.228.169.11")),
-    /** Cloudflare for Families (malware + adult content). */
-    CLOUDFLARE_FAMILY(listOf("1.1.1.3", "1.0.0.3"));
-
-    companion object {
-        fun fromName(name: String?): DnsProvider =
-            values().firstOrNull { it.name == name } ?: SYSTEM
-    }
-}
-
 data class AppSettings(
+    /**
+     * Website content blocking master toggle. Enforcement is the accessibility
+     * URL-watch (see PureLockAccessibilityService) plus the phone's Private DNS;
+     * there is no VPN any more. The DataStore key is unchanged ("filter_enabled")
+     * so no migration is needed.
+     */
     val filterEnabled: Boolean = false,
-    val dnsProvider: DnsProvider = DnsProvider.SYSTEM,
     val safeSearch: Boolean = true,
     val uninstallProtection: Boolean = true,
     val keepFilterAfterLock: Boolean = false,
@@ -40,7 +30,6 @@ data class AppSettings(
 
 object SettingsKeys {
     val FILTER_ENABLED = booleanPreferencesKey("filter_enabled")
-    val DNS_PROVIDER = stringPreferencesKey("dns_provider")
     val SAFE_SEARCH = booleanPreferencesKey("safe_search")
     val UNINSTALL_PROTECTION = booleanPreferencesKey("uninstall_protection")
     val KEEP_FILTER_AFTER_LOCK = booleanPreferencesKey("keep_filter_after_lock")
@@ -55,7 +44,6 @@ class SettingsStore(private val context: Context) {
     val flow: Flow<AppSettings> = context.settingsDataStore.data.map { p ->
         AppSettings(
             filterEnabled = p[SettingsKeys.FILTER_ENABLED] ?: false,
-            dnsProvider = DnsProvider.fromName(p[SettingsKeys.DNS_PROVIDER]),
             safeSearch = p[SettingsKeys.SAFE_SEARCH] ?: true,
             uninstallProtection = p[SettingsKeys.UNINSTALL_PROTECTION] ?: true,
             keepFilterAfterLock = p[SettingsKeys.KEEP_FILTER_AFTER_LOCK] ?: false,

@@ -40,6 +40,18 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.PureLock.Body"
                 android:textSize="12sp" />
+
+            <!-- Usage bar (Analytics "Usage Overview"); hidden unless the caller sets it. -->
+            <ProgressBar
+                android:id="@+id/pbUsage"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:layout_marginTop="6dp"
+                android:max="100"
+                android:progress="0"
+                android:progressTint="?attr/colorPrimary"
+                android:visibility="gone" />
         </LinearLayout>
 
         <TextView

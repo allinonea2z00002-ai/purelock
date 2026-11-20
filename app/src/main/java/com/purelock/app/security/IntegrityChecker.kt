@@ -2,7 +2,6 @@ package com.purelock.app.security
 
 import android.content.ComponentName
 import android.content.Context
-import android.net.VpnService
 import android.os.PowerManager
 import android.provider.Settings
 import android.text.TextUtils
@@ -19,10 +18,8 @@ import com.purelock.app.location.LocationHelper
 import com.purelock.app.service.PureLockAccessibilityService
 import com.purelock.app.service.UsageRepository
 import com.purelock.app.util.Notifier
-import com.purelock.app.vpn.PureLockVpnService
 
 enum class Issue(val critical: Boolean) {
-    VPN_NOT_RUNNING(true),
     ACCESSIBILITY_OFF(true),
     LOCATION_PERMISSION(true),
     BACKGROUND_LOCATION(true),
@@ -65,13 +62,12 @@ class IntegrityChecker(
         val blockedApps = db.blockedAppDao().getAll()
         val hasLimits = blockedApps.any { it.dailyLimitMinutes > 0 }
 
-        val needsVpn = (lockActive && cfg?.blockAdult == true) || s.filterEnabled
+        val needsFilter = (lockActive && cfg?.blockAdult == true) || s.filterEnabled
         val needsApps = blockedApps.isNotEmpty() && ((lockActive && cfg?.blockApps == true) || hasLimits)
         val needsLocation = lockActive && mode.usesDistance
 
         val issues = LinkedHashSet<Issue>()
-        if (needsVpn && !PureLockVpnService.isRunning()) issues += Issue.VPN_NOT_RUNNING
-        if (needsVpn && isStrictPrivateDns()) issues += Issue.PRIVATE_DNS
+        if (needsFilter && isStrictPrivateDns()) issues += Issue.PRIVATE_DNS
         if (needsApps && !isAccessibilityEnabled()) issues += Issue.ACCESSIBILITY_OFF
         if (needsApps && hasLimits && !usage.hasAccess()) issues += Issue.USAGE_ACCESS_OFF
 
@@ -95,15 +91,12 @@ class IntegrityChecker(
     }
 
     /**
-     * Periodic check: records new interruptions, tries to restore the filter if Android still lets us,
-     * and notifies the user when protection breaks or recovers.
+     * Periodic check: records new interruptions and notifies the user when protection breaks or recovers.
+     * There is no VPN to restart any more: website blocking is the accessibility URL-watch plus
+     * the phone's Private DNS, neither of which this app can (or should) restart.
      */
     suspend fun evaluateAndNotify() {
-        var report = check()
-
-        if (Issue.VPN_NOT_RUNNING in report.issues && VpnService.prepare(context) == null) {
-            PureLockVpnService.start(context)
-        }
+        val report = check()
 
         val previous = db.prefDao().get(KEY_LAST_ISSUES).orEmpty()
             .split(',').filter { it.isNotBlank() }.toSet()
@@ -140,7 +133,8 @@ class IntegrityChecker(
         return false
     }
 
-    /** "Private DNS" in strict hostname mode sends DNS over TLS to a fixed server, around the local filter. */
+    /** "Private DNS" in strict hostname mode sends DNS to a fixed server. If that server is not a
+     * family filter (Kahf Guard / Cloudflare Family), the Private DNS layer blocks nothing. */
     private fun isStrictPrivateDns(): Boolean =
         Settings.Global.getString(context.contentResolver, "private_dns_mode") == "hostname"
 

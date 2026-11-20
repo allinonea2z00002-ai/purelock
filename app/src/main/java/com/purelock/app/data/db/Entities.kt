@@ -61,7 +61,56 @@ data class BlockedApplication(
     /** Block this app while a lock is active. */
     val blockDuringLock: Boolean = true,
     /** 0 = no usage limit. Otherwise the app is blocked once today's usage reaches this many minutes. */
-    val dailyLimitMinutes: Int = 0
+    val dailyLimitMinutes: Int = 0,
+    // ---- Blocking conditions (all optional; defaults mean "not configured") ----
+    /**
+     * The condition picked in the chooser: NONE, USAGE_LIMIT, TIME_INTERVAL, QUICK_BLOCK,
+     * LAUNCH_LIMIT, WAIT_TIMER, GOAL or LOCATION. Display state only: enforcement keys off the
+     * configured values below, so an old rule (NONE with a daily limit) keeps working.
+     */
+    val conditionType: String = "NONE",
+    /** 0 = no hourly limit. Otherwise blocked once this hour's usage reaches this many minutes. */
+    val hourlyLimitMinutes: Int = 0,
+    /**
+     * Days the time-interval condition applies to, as a bitmask: Mon=1, Tue=2, Wed=4, Thu=8,
+     * Fri=16, Sat=32, Sun=64. 0 = every day.
+     */
+    val intervalDays: Int = 0,
+    /** Start of the blocked interval, minutes since midnight. Ignored when [fullDay] is true. */
+    val intervalStartMin: Int = 0,
+    /** End of the blocked interval, minutes since midnight. Start == end (and not [fullDay]) = no interval. */
+    val intervalEndMin: Int = 0,
+    /** True = blocked the whole day (on the selected days) instead of a time range. */
+    val fullDay: Boolean = false,
+    /** Quick Block: blocked until this wall-clock epoch. 0 = no quick block. */
+    val quickBlockUntilEpochMs: Long = 0,
+    /** 0 = no limit. Otherwise blocked after this many launches today. */
+    val maxLaunchesPerDay: Int = 0,
+    /** 0 = no limit. Otherwise blocked after this many launches this hour. */
+    val maxLaunchesPerHour: Int = 0,
+    /** Wait Timer: use the app this many minutes, then wait. 0 = no wait timer. */
+    val waitAfterMinutes: Int = 0,
+    /** Wait Timer: wait this many minutes after each [waitAfterMinutes] chunk of use. */
+    val waitForMinutes: Int = 0,
+    /** Wait Timer state: the current wait ends at this wall-clock epoch. 0 = no wait running. */
+    val waitUntilEpochMs: Long = 0,
+    /** Goal Based: block until this many minutes were spent on [goalAppPackage] today. Null = no goal. */
+    val goalAppPackage: String? = null,
+    /** Goal Based: minutes to spend on the goal app before this app unblocks. 0 = no goal. */
+    val goalMinutes: Int = 0,
+    /** Location: the SafeZone this rule is tied to. 0 = no location condition. */
+    val locationZoneId: Long = 0,
+    /** Location: "AT" = block while inside the zone, "AWAY" = block while outside it. */
+    val locationMode: String = "AT",
+    /** Location: when true and no fix is available, the app stays blocked instead of opening. */
+    val blockIfLocationUnavailable: Boolean = false,
+    /** "I Want to Block": block the app launch itself. */
+    val blockLaunch: Boolean = true,
+    /**
+     * "I Want to Block": block the app's notifications. Stored only — PureLock has no notification
+     * listener, so this is not enforced yet and the UI says so.
+     */
+    val blockNotifications: Boolean = false
 )
 
 @Entity(tableName = "allowed_application")
@@ -137,7 +186,6 @@ object SecurityEventType {
     const val EMERGENCY_OVERRIDE = "EMERGENCY_OVERRIDE"
     const val TIME_CHANGED = "TIME_CHANGED"
     const val REBOOT_RECOVERY = "REBOOT_RECOVERY"
-    const val VPN_REVOKED = "VPN_REVOKED"
     const val INTEGRITY_ISSUE = "INTEGRITY_ISSUE"
     const val INTEGRITY_RESTORED = "INTEGRITY_RESTORED"
     const val GEOFENCE_ERROR = "GEOFENCE_ERROR"

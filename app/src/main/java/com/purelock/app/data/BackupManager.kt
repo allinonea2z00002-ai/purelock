@@ -8,7 +8,6 @@ import com.purelock.app.data.db.BlockedApplication
 import com.purelock.app.data.db.BlockedDomain
 import com.purelock.app.data.db.FocusStatistics
 import com.purelock.app.data.db.SafeZone
-import com.purelock.app.data.prefs.DnsProvider
 import com.purelock.app.data.prefs.SettingsKeys
 import org.json.JSONArray
 import org.json.JSONObject
@@ -22,6 +21,10 @@ object BackupManager {
 
     private const val VERSION = 1
 
+    private val CONDITION_TYPES = setOf(
+        "NONE", "USAGE_LIMIT", "TIME_INTERVAL", "QUICK_BLOCK", "LAUNCH_LIMIT", "WAIT_TIMER", "GOAL", "LOCATION"
+    )
+
     suspend fun export(): String {
         val db = Graph.db
         val s = Graph.settings.get()
@@ -32,7 +35,26 @@ object BackupManager {
         root.put("blockedApps", JSONArray().apply {
             db.blockedAppDao().getAll().forEach {
                 put(JSONObject().put("package", it.packageName).put("label", it.label)
-                    .put("blockDuringLock", it.blockDuringLock).put("dailyLimitMinutes", it.dailyLimitMinutes))
+                    .put("blockDuringLock", it.blockDuringLock).put("dailyLimitMinutes", it.dailyLimitMinutes)
+                    .put("conditionType", it.conditionType)
+                    .put("hourlyLimitMinutes", it.hourlyLimitMinutes)
+                    .put("intervalDays", it.intervalDays)
+                    .put("intervalStartMin", it.intervalStartMin)
+                    .put("intervalEndMin", it.intervalEndMin)
+                    .put("fullDay", it.fullDay)
+                    .put("quickBlockUntilEpochMs", it.quickBlockUntilEpochMs)
+                    .put("maxLaunchesPerDay", it.maxLaunchesPerDay)
+                    .put("maxLaunchesPerHour", it.maxLaunchesPerHour)
+                    .put("waitAfterMinutes", it.waitAfterMinutes)
+                    .put("waitForMinutes", it.waitForMinutes)
+                    .put("waitUntilEpochMs", it.waitUntilEpochMs)
+                    .put("goalAppPackage", it.goalAppPackage)
+                    .put("goalMinutes", it.goalMinutes)
+                    .put("locationZoneId", it.locationZoneId)
+                    .put("locationMode", it.locationMode)
+                    .put("blockIfLocationUnavailable", it.blockIfLocationUnavailable)
+                    .put("blockLaunch", it.blockLaunch)
+                    .put("blockNotifications", it.blockNotifications))
             }
         })
         root.put("allowedApps", JSONArray().apply {
@@ -56,7 +78,6 @@ object BackupManager {
             }
         })
         root.put("settings", JSONObject()
-            .put("dnsProvider", s.dnsProvider.name)
             .put("safeSearch", s.safeSearch)
             .put("uninstallProtection", s.uninstallProtection)
             .put("keepFilterAfterLock", s.keepFilterAfterLock)
@@ -76,12 +97,34 @@ object BackupManager {
         root.optJSONArray("blockedApps")?.forEachObject { o ->
             val pkg = o.optString("package")
             if (pkg.isValidPackage()) {
+                val conditionType = o.optString("conditionType", "NONE")
+                    .takeIf { it in CONDITION_TYPES } ?: "NONE"
+                val goalPkg = o.optString("goalAppPackage", "").takeIf { it.isValidPackage() }
                 db.blockedAppDao().upsert(
                     BlockedApplication(
                         packageName = pkg,
                         label = o.optString("label", pkg).take(120),
                         blockDuringLock = o.optBoolean("blockDuringLock", true),
-                        dailyLimitMinutes = o.optInt("dailyLimitMinutes", 0).coerceIn(0, 1_440)
+                        dailyLimitMinutes = o.optInt("dailyLimitMinutes", 0).coerceIn(0, 1_440),
+                        conditionType = conditionType,
+                        hourlyLimitMinutes = o.optInt("hourlyLimitMinutes", 0).coerceIn(0, 1_440),
+                        intervalDays = o.optInt("intervalDays", 0).coerceIn(0, 127),
+                        intervalStartMin = o.optInt("intervalStartMin", 0).coerceIn(0, 1_439),
+                        intervalEndMin = o.optInt("intervalEndMin", 0).coerceIn(0, 1_439),
+                        fullDay = o.optBoolean("fullDay", false),
+                        quickBlockUntilEpochMs = o.optLong("quickBlockUntilEpochMs", 0).coerceAtLeast(0),
+                        maxLaunchesPerDay = o.optInt("maxLaunchesPerDay", 0).coerceIn(0, 10_000),
+                        maxLaunchesPerHour = o.optInt("maxLaunchesPerHour", 0).coerceIn(0, 10_000),
+                        waitAfterMinutes = o.optInt("waitAfterMinutes", 0).coerceIn(0, 1_440),
+                        waitForMinutes = o.optInt("waitForMinutes", 0).coerceIn(0, 1_440),
+                        waitUntilEpochMs = o.optLong("waitUntilEpochMs", 0).coerceAtLeast(0),
+                        goalAppPackage = goalPkg,
+                        goalMinutes = o.optInt("goalMinutes", 0).coerceIn(0, 1_440),
+                        locationZoneId = o.optLong("locationZoneId", 0).coerceAtLeast(0),
+                        locationMode = o.optString("locationMode", "AT").takeIf { it == "AT" || it == "AWAY" } ?: "AT",
+                        blockIfLocationUnavailable = o.optBoolean("blockIfLocationUnavailable", false),
+                        blockLaunch = o.optBoolean("blockLaunch", true),
+                        blockNotifications = o.optBoolean("blockNotifications", false)
                     )
                 )
             }
@@ -127,7 +170,6 @@ object BackupManager {
         }
         root.optJSONObject("settings")?.let { s ->
             val store = Graph.settings
-            store.set(SettingsKeys.DNS_PROVIDER, DnsProvider.fromName(s.optString("dnsProvider")).name)
             store.set(SettingsKeys.SAFE_SEARCH, s.optBoolean("safeSearch", true))
             store.set(SettingsKeys.UNINSTALL_PROTECTION, s.optBoolean("uninstallProtection", true))
             store.set(SettingsKeys.KEEP_FILTER_AFTER_LOCK, s.optBoolean("keepFilterAfterLock", false))

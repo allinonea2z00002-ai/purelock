@@ -10,7 +10,6 @@ import com.purelock.app.R
 import com.purelock.app.data.BackupManager
 import com.purelock.app.data.prefs.AppSettings
 import com.purelock.app.data.prefs.SettingsKeys
-import com.purelock.app.vpn.PureLockVpnService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -102,7 +101,6 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app) {
     fun clearAllData(onDone: () -> Unit) = viewModelScope.launch {
         if (Graph.lockManager.isActive()) { say(R.string.msg_locked_cannot_change); return@launch }
         withContext(Dispatchers.IO) {
-            PureLockVpnService.stop(getApplication())
             Graph.db.clearAllTables()
             Graph.settings.clear()
             Graph.secure.clear()

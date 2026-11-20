@@ -203,7 +203,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             "EMERGENCY_OVERRIDE" -> R.string.ev_emergency
             "TIME_CHANGED" -> R.string.ev_time_changed
             "REBOOT_RECOVERY" -> R.string.ev_reboot
-            "VPN_REVOKED" -> R.string.ev_vpn_revoked
             "INTEGRITY_ISSUE" -> R.string.ev_integrity_issue
             "INTEGRITY_RESTORED" -> R.string.ev_integrity_restored
             "GEOFENCE_ERROR" -> R.string.ev_geofence_error

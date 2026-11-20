@@ -92,21 +92,27 @@ class AppListViewModel(app: Application) : AndroidViewModel(app) {
         limitMinutes: Int,
         allowed: Boolean
     ): Boolean {
+        val base = item.rule?.copy(blockDuringLock = blockDuringLock, dailyLimitMinutes = limitMinutes.coerceIn(0, 1_440))
+            ?: BlockedApplication(item.packageName, item.label, blockDuringLock, limitMinutes.coerceIn(0, 1_440))
+        return saveRule(item, base, block, allowed)
+    }
+
+    /**
+     * Saves a complete rule (blocking conditions included). The [block] flag decides whether a
+     * blocked_application row exists at all; [allowed] decides the allowlist row. While a lock is
+     * active the new rule must not be weaker than the old one (see [weakensWhileLocked]).
+     */
+    suspend fun saveRule(
+        item: AppItem,
+        rule: BlockedApplication,
+        block: Boolean,
+        allowed: Boolean
+    ): Boolean {
         val lockActive = Graph.lockManager.isActive()
-        if (lockActive) {
-            val old = item.rule
-            val removesBlock = old != null && !block
-            val weakensLock = old != null && old.blockDuringLock && !blockDuringLock
-            val raisesLimit = old != null && old.dailyLimitMinutes > 0 &&
-                (limitMinutes == 0 || limitMinutes > old.dailyLimitMinutes)
-            val addsAllow = allowed && !item.allowed
-            if (removesBlock || weakensLock || raisesLimit || addsAllow) return false
-        }
+        if (lockActive && weakensWhileLocked(item.rule, rule, block, allowed, item.allowed)) return false
 
         if (block && !item.alwaysAvailable) {
-            Graph.db.blockedAppDao().upsert(
-                BlockedApplication(item.packageName, item.label, blockDuringLock, limitMinutes.coerceIn(0, 1_440))
-            )
+            Graph.db.blockedAppDao().upsert(rule.copy(packageName = item.packageName, label = item.label))
         } else {
             Graph.db.blockedAppDao().delete(item.packageName)
         }
@@ -117,4 +123,41 @@ class AppListViewModel(app: Application) : AndroidViewModel(app) {
         }
         return true
     }
+
+    /**
+     * True when the new rule would loosen protection while a lock is active: removing the block,
+     * switching off block-during-lock, raising a limit or launch cap, dropping a condition,
+     * clearing the location/interval gate, shortening a quick block or wait, easing the goal,
+     * or adding the app to the allowlist.
+     */
+    private fun weakensWhileLocked(
+        old: BlockedApplication?,
+        new: BlockedApplication,
+        block: Boolean,
+        allowed: Boolean,
+        wasAllowed: Boolean
+    ): Boolean {
+        if (old == null) return allowed && !wasAllowed
+        if (!block) return true
+        if (old.blockDuringLock && !new.blockDuringLock) return true
+        if (raises(old.dailyLimitMinutes, new.dailyLimitMinutes)) return true
+        if (raises(old.hourlyLimitMinutes, new.hourlyLimitMinutes)) return true
+        if (raises(old.maxLaunchesPerDay, new.maxLaunchesPerDay)) return true
+        if (raises(old.maxLaunchesPerHour, new.maxLaunchesPerHour)) return true
+        if (old.conditionType != "NONE" && new.conditionType == "NONE") return true
+        if (old.locationZoneId > 0 && new.locationZoneId <= 0) return true
+        if (old.fullDay && !new.fullDay && new.intervalStartMin == new.intervalEndMin) return true
+        if (old.intervalStartMin != old.intervalEndMin && new.intervalStartMin == new.intervalEndMin && !new.fullDay) return true
+        if (old.quickBlockUntilEpochMs > 0 && new.quickBlockUntilEpochMs < old.quickBlockUntilEpochMs) return true
+        if (old.waitForMinutes > 0 && new.waitForMinutes < old.waitForMinutes) return true
+        if (old.waitAfterMinutes > 0 && new.waitAfterMinutes > old.waitAfterMinutes) return true
+        if (old.goalMinutes > 0 && (new.goalMinutes <= 0 || new.goalMinutes < old.goalMinutes)) return true
+        if (old.blockLaunch && !new.blockLaunch) return true
+        if (allowed && !wasAllowed) return true
+        return false
+    }
+
+    /** A limit of 0 means "no limit" (the weakest), so raising means old > 0 and (new == 0 or new > old). */
+    private fun raises(oldLimit: Int, newLimit: Int): Boolean =
+        oldLimit > 0 && (newLimit == 0 || newLimit > oldLimit)
 }

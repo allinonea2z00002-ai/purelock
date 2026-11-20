@@ -1,7 +1,6 @@
 package com.purelock.app.domain
 
 import android.content.Context
-import android.net.VpnService
 import android.os.SystemClock
 import android.provider.Settings
 import com.purelock.app.R
@@ -19,7 +18,6 @@ import com.purelock.app.location.GeofenceManager
 import com.purelock.app.location.LocationHelper
 import com.purelock.app.service.WorkScheduler
 import com.purelock.app.util.Notifier
-import com.purelock.app.vpn.PureLockVpnService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -130,7 +128,6 @@ class LockManager(
         geofences.sync(config, db.safeZoneDao().getAll())
         if (req.mode.usesTime) WorkScheduler.scheduleUnlock(context, req.durationMs)
         WorkScheduler.schedulePeriodic(context)
-        if (req.blockAdult) PureLockVpnService.start(context)
         DevicePolicyHelper.applyLockRestrictions(context)
         StartResult.Started
     }
@@ -236,8 +233,8 @@ class LockManager(
     suspend fun startZoneLock(zoneId: Long) {
         val zone = db.safeZoneDao().get(zoneId) ?: return
         if (zone.autoLockMinutes <= 0 || isActive()) return
-        // From the background we cannot ask for VPN consent; only use the filter if consent already exists.
-        val canFilter = VpnService.prepare(context) == null
+        // No VPN consent is needed any more: website blocking is the accessibility
+        // URL-watch plus the phone's Private DNS, so a zone lock always blocks adult sites.
         val result = start(
             StartRequest(
                 mode = LockMode.TIME,
@@ -246,7 +243,7 @@ class LockManager(
                 rule = CombineRule.ANY,
                 startLat = null,
                 startLng = null,
-                blockAdult = canFilter,
+                blockAdult = true,
                 blockApps = true
             )
         )
@@ -296,7 +293,6 @@ class LockManager(
         val keep = settings.get().keepFilterAfterLock || cfg.filterWasEnabled
         if (!keep) {
             settings.set(SettingsKeys.FILTER_ENABLED, false)
-            PureLockVpnService.stop(context)
         }
 
         if (reason == "COMPLETED") {
@@ -319,7 +315,7 @@ class LockManager(
         checkpoint()
     }
 
-    /** After reboot or app update: re-anchor time, re-register geofences, restore the filter if possible. */
+    /** After reboot or app update: re-anchor time and re-register geofences. */
     suspend fun recoverAfterRestart() {
         val before = dao.get()
         val rebooted = before?.active == true && before.bootCount != bootCount()
@@ -340,22 +336,5 @@ class LockManager(
             }
         }
         WorkScheduler.schedulePeriodic(context)
-
-        val s = settings.get()
-        if (s.filterEnabled || cfg?.blockAdult == true && cfg.active) {
-            if (VpnService.prepare(context) == null) {
-                if (!PureLockVpnService.start(context)) notifyFilterStopped()
-            } else {
-                notifyFilterStopped()
-            }
-        }
-    }
-
-    private fun notifyFilterStopped() {
-        notifier.alert(
-            Notifier.ID_BOOT,
-            context.getString(R.string.notif_filter_stopped_title),
-            context.getString(R.string.notif_filter_stopped_text)
-        )
     }
 }

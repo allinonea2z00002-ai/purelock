@@ -10,7 +10,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 /**
- * Holds the adult-domain filter in memory for fast lookups from the VPN thread.
+ * Holds the adult-domain filter in memory for fast lookups from the accessibility URL-watch.
  *
  * Sources, all local: a small bundled seed list (assets), an optional downloaded list (see
  * [updateFromRemote]) and the user's own blacklist/allowlist. The user's allowlist always wins.

@@ -21,7 +21,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         UserPreferences::class,
         SafeZone::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -67,6 +67,34 @@ object Migrations {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("ALTER TABLE lock_configuration ADD COLUMN isTest INTEGER NOT NULL DEFAULT 0")
                 db.execSQL("ALTER TABLE protection_session ADD COLUMN isTest INTEGER NOT NULL DEFAULT 0")
+            }
+        },
+        /**
+         * Version 3 adds the per-app blocking-condition columns to blocked_application.
+         * The column list below must match [BlockedApplication] exactly (names, types, defaults);
+         * every new column defaults to "condition not configured" so old rules keep working.
+         */
+        object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE blocked_application ADD COLUMN conditionType TEXT NOT NULL DEFAULT 'NONE'")
+                db.execSQL("ALTER TABLE blocked_application ADD COLUMN hourlyLimitMinutes INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE blocked_application ADD COLUMN intervalDays INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE blocked_application ADD COLUMN intervalStartMin INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE blocked_application ADD COLUMN intervalEndMin INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE blocked_application ADD COLUMN fullDay INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE blocked_application ADD COLUMN quickBlockUntilEpochMs INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE blocked_application ADD COLUMN maxLaunchesPerDay INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE blocked_application ADD COLUMN maxLaunchesPerHour INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE blocked_application ADD COLUMN waitAfterMinutes INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE blocked_application ADD COLUMN waitForMinutes INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE blocked_application ADD COLUMN waitUntilEpochMs INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE blocked_application ADD COLUMN goalAppPackage TEXT")
+                db.execSQL("ALTER TABLE blocked_application ADD COLUMN goalMinutes INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE blocked_application ADD COLUMN locationZoneId INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE blocked_application ADD COLUMN locationMode TEXT NOT NULL DEFAULT 'AT'")
+                db.execSQL("ALTER TABLE blocked_application ADD COLUMN blockIfLocationUnavailable INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE blocked_application ADD COLUMN blockLaunch INTEGER NOT NULL DEFAULT 1")
+                db.execSQL("ALTER TABLE blocked_application ADD COLUMN blockNotifications INTEGER NOT NULL DEFAULT 0")
             }
         }
     )

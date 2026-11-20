@@ -11,7 +11,6 @@ import androidx.work.WorkerParameters
 import com.purelock.app.Graph
 import com.purelock.app.domain.LockMode
 import com.purelock.app.location.LocationHelper
-import com.purelock.app.vpn.PureLockVpnService
 import java.util.concurrent.TimeUnit
 
 /** WorkManager scheduling. Work survives process death and reboot (WorkManager re-registers it). */
@@ -52,15 +51,9 @@ class GuardWorker(context: Context, params: WorkerParameters) : CoroutineWorker(
                 }
             }
             Graph.integrity.evaluateAndNotify()
-        } else {
-            // No lock: still keep a user-enabled adult filter alive when Android allows it.
-            val settings = Graph.settings.get()
-            if (settings.filterEnabled && !PureLockVpnService.isRunning()) {
-                if (android.net.VpnService.prepare(applicationContext) == null) {
-                    PureLockVpnService.start(applicationContext)
-                }
-            }
         }
+        // No lock: nothing to keep alive. Website blocking needs no background service any more:
+        // it is the accessibility URL-watch plus the phone's Private DNS.
         return Result.success()
     }
 }

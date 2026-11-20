@@ -85,6 +85,7 @@ class MainActivity : AppCompatActivity() {
     private fun tabFromIntent(intent: Intent?): Int = when (intent?.getStringExtra(EXTRA_TAB)) {
         // Old extras still work: they now map to the renamed tabs.
         "protection", "analysis" -> R.id.nav_analysis
+        "website" -> R.id.nav_analysis
         "location", "map" -> R.id.nav_map
         "stats", "statistics" -> R.id.nav_stats
         "settings" -> R.id.nav_settings
@@ -94,7 +95,13 @@ class MainActivity : AppCompatActivity() {
     private fun show(itemId: Int) {
         val tag = "tab_$itemId"
         val fragment: Fragment = supportFragmentManager.findFragmentByTag(tag) ?: when (itemId) {
-            R.id.nav_analysis -> ProtectionFragment()
+            R.id.nav_analysis -> ProtectionFragment().apply {
+                // Deep link from the Home "Block Adult Content" card: the Protection screen reads
+                // the "tab" argument and selects its Website tab.
+                if (intent?.getStringExtra(EXTRA_TAB) == "website") {
+                    arguments = Bundle().apply { putString("tab", "website") }
+                }
+            }
             R.id.nav_stats -> StatsFragment()
             R.id.nav_map -> LocationFragment()
             R.id.nav_settings -> SettingsFragment()

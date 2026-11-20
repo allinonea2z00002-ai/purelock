@@ -1,6 +1,5 @@
 package com.purelock.app.util
 
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -33,17 +32,6 @@ class Notifier(private val context: Context) {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-    /** Ongoing notification required for the VPN foreground service. */
-    fun vpnServiceNotification(): Notification =
-        NotificationCompat.Builder(context, CH_PROTECTION)
-            .setSmallIcon(R.drawable.ic_nav_shield)
-            .setContentTitle(context.getString(R.string.notif_filter_title))
-            .setContentText(context.getString(R.string.notif_filter_text))
-            .setOngoing(true)
-            .setOnlyAlertOnce(true)
-            .setContentIntent(openAppIntent())
-            .build()
-
     /** High-priority alert, e.g. protection was interrupted. */
     fun alert(id: Int, title: String, text: String) = notify(id, CH_ALERTS, title, text)
 
@@ -72,7 +60,6 @@ class Notifier(private val context: Context) {
         const val CH_ALERTS = "alerts"
         const val CH_EVENTS = "events"
 
-        const val ID_VPN = 1001
         const val ID_INTEGRITY = 1002
         const val ID_UNLOCKED = 1003
         const val ID_WEB_BLOCK = 1004

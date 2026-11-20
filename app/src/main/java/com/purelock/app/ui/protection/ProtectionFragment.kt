@@ -1,18 +1,15 @@
 package com.purelock.app.ui.protection
 
 import android.Manifest
-import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.net.VpnService
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
@@ -27,7 +24,6 @@ import com.purelock.app.Graph
 import com.purelock.app.R
 import com.purelock.app.admin.DevicePolicyHelper
 import com.purelock.app.data.db.LockConfiguration
-import com.purelock.app.data.prefs.DnsProvider
 import com.purelock.app.databinding.DialogTextInputBinding
 import com.purelock.app.databinding.FragmentProtectionBinding
 import com.purelock.app.domain.CombineRule
@@ -38,7 +34,6 @@ import com.purelock.app.location.LocationHelper
 import com.purelock.app.ui.MainActivity
 import com.purelock.app.ui.UiAnim
 import com.purelock.app.ui.apps.AppListActivity
-import com.purelock.app.vpn.VpnState
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.util.Date
@@ -89,24 +84,6 @@ class ProtectionFragment : Fragment(R.layout.fragment_protection) {
             if (granted) continueStart() else confirmWithoutBackground()
         }
 
-    private val vpnForLock =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) continueStart()
-            else {
-                pending = null
-                toast(R.string.err_vpn_denied)
-            }
-        }
-
-    private val vpnForFilter =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) vm.setFilterEnabled(true) { }
-            else {
-                b.switchFilter.isChecked = false
-                toast(R.string.err_vpn_denied)
-            }
-        }
-
     // =============================================================================================
     // setup
     // =============================================================================================
@@ -125,6 +102,8 @@ class ProtectionFragment : Fragment(R.layout.fragment_protection) {
         setupTabs()
 
         // Deep link from Home (quick actions / lock-type cards): tab and/or mode.
+        // A fragment argument Bundle key "tab" == "website" (sent by the caller that opens
+        // this screen) also selects the Website tab; it wins over the MainActivity handoff.
         val main = requireActivity() as? MainActivity
         val pendingTab = main?.pendingProtectionTab
         val pendingMode = main?.pendingLockMode
@@ -139,7 +118,7 @@ class ProtectionFragment : Fragment(R.layout.fragment_protection) {
                 }
             )
         }
-        showTab(pendingTab ?: "smart")
+        showTab(arguments?.getString("tab") ?: pendingTab ?: "smart")
 
         b.btnBackProt.setOnClickListener { (requireActivity() as MainActivity).openTab(R.id.nav_home) }
         b.btnStart.setOnClickListener { UiAnim.haptic(it); onStartClicked() }
@@ -155,7 +134,6 @@ class ProtectionFragment : Fragment(R.layout.fragment_protection) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch { vm.lock.collect { renderLock(it) } }
                 launch { vm.settings.collect { renderSettings() } }
-                launch { vm.vpnRunning.collect { renderFilterStatus() } }
                 launch { vm.blockedDomainCount.collect { renderFilterStatus() } }
                 launch { vm.allowedDomainCount.collect { renderFilterStatus() } }
                 launch { vm.lastUpdate.collect { renderFilterStatus() } }
@@ -283,33 +261,12 @@ class ProtectionFragment : Fragment(R.layout.fragment_protection) {
         if (b.toggleRule.checkedButtonId == R.id.btnRuleAll) CombineRule.ALL else CombineRule.ANY
 
     private fun setupFilterCard() {
-        val labels = listOf(
-            getString(R.string.provider_system),
-            getString(R.string.provider_cleanbrowsing),
-            getString(R.string.provider_cloudflare)
-        )
-        b.actProvider.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, labels))
-        b.actProvider.setOnItemClickListener { _, _, position, _ ->
-            vm.setDnsProvider(DnsProvider.values()[position]) {
-                toast(R.string.msg_locked_cannot_change)
-                renderSettings()
-            }
-        }
-
+        // The website-blocking toggle only saves FILTER_ENABLED. Enforcement is the
+        // accessibility URL-watch plus the phone's Private DNS — no VPN consent any more.
         b.switchFilter.setOnClickListener {
-            val enable = b.switchFilter.isChecked
-            if (enable) {
-                val consent = VpnService.prepare(requireContext())
-                if (consent == null) {
-                    vm.setFilterEnabled(true) { }
-                } else {
-                    showVpnExplanation { vpnForFilter.launch(consent) }
-                }
-            } else {
-                vm.setFilterEnabled(false) {
-                    b.switchFilter.isChecked = true
-                    toast(R.string.msg_locked_cannot_change)
-                }
+            vm.setFilterEnabled(b.switchFilter.isChecked) {
+                b.switchFilter.isChecked = true
+                toast(R.string.msg_locked_cannot_change)
             }
         }
         b.switchSafeSearch.setOnClickListener {
@@ -321,17 +278,14 @@ class ProtectionFragment : Fragment(R.layout.fragment_protection) {
         b.btnUpdateFilter.setOnClickListener { vm.updateFilterList() }
         b.btnBlacklist.setOnClickListener { DomainListSheet.newInstance(true).show(childFragmentManager, "blacklist") }
         b.btnAllowlist.setOnClickListener { DomainListSheet.newInstance(false).show(childFragmentManager, "allowlist") }
-    }
-
-    /** Shows why the VPN permission is needed, then runs [proceed]. */
-    private fun showVpnExplanation(proceed: () -> Unit) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.vpn_explain_title)
-            .setMessage(R.string.vpn_explain_message)
-            .setPositiveButton(R.string.action_continue) { _, _ -> proceed() }
-            .setNegativeButton(R.string.action_cancel) { _, _ -> b.switchFilter.isChecked = false }
-            .setOnCancelListener { b.switchFilter.isChecked = false }
-            .show()
+        b.btnPdnsCheck.setOnClickListener {
+            runCatching {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://check.kahfguard.com")))
+            }
+        }
+        b.btnPdnsSettings.setOnClickListener {
+            startActivity(Intent(Settings.ACTION_SETTINGS))
+        }
     }
 
     private fun setupAppsCard() {
@@ -375,29 +329,18 @@ class ProtectionFragment : Fragment(R.layout.fragment_protection) {
         b.switchFilter.isChecked = s.filterEnabled
         b.switchSafeSearch.isChecked = s.safeSearch
         b.switchUninstall.isChecked = s.uninstallProtection
-        val index = DnsProvider.values().indexOf(s.dnsProvider)
-        val labels = listOf(
-            getString(R.string.provider_system),
-            getString(R.string.provider_cleanbrowsing),
-            getString(R.string.provider_cloudflare)
-        )
-        b.actProvider.setText(labels[index], false)
         renderFilterStatus()
     }
 
     private fun renderFilterStatus() {
         if (_binding == null) return
         val s = vm.settings.value
-        val running = VpnState.running.value
         val sizes = getString(
             R.string.filter_counts,
             Graph.blocklist.listSize(), vm.blockedDomainCount.value, vm.allowedDomainCount.value
         )
-        val status = when {
-            running -> getString(R.string.filter_status_running)
-            s.filterEnabled -> getString(R.string.filter_status_stopped)
-            else -> getString(R.string.filter_status_off)
-        }
+        val status = if (s.filterEnabled) getString(R.string.web_filter_status_on)
+            else getString(R.string.filter_status_off)
         val last = vm.lastUpdate.value?.let { (at, count) ->
             getString(
                 R.string.filter_last_update,
@@ -406,12 +349,8 @@ class ProtectionFragment : Fragment(R.layout.fragment_protection) {
             )
         } ?: getString(R.string.filter_never_updated)
         b.tvFilterStatus.text = "$status\n$sizes\n$last"
-        b.cardSafe.isVisible = running
+        b.cardSafe.isVisible = s.filterEnabled
         b.tvBlocklistCount.text = getString(R.string.web_domains_count, Graph.blocklist.listSize())
-
-        val privateDns = Settings.Global.getString(requireContext().contentResolver, "private_dns_mode") == "hostname"
-        b.tvFilterWarning.isVisible = privateDns && (running || s.filterEnabled)
-        if (b.tvFilterWarning.isVisible) b.tvFilterWarning.setText(R.string.filter_warning_private_dns)
     }
 
     private fun renderUpdate(state: FilterUpdateState) {
@@ -518,20 +457,6 @@ class ProtectionFragment : Fragment(R.layout.fragment_protection) {
                 .setOnCancelListener { pending = null }
                 .show()
             return
-        }
-
-        if (p.blockAdult) {
-            val consent = VpnService.prepare(ctx)
-            if (consent != null) {
-                MaterialAlertDialogBuilder(ctx)
-                    .setTitle(R.string.vpn_explain_title)
-                    .setMessage(R.string.vpn_explain_message)
-                    .setPositiveButton(R.string.action_continue) { _, _ -> vpnForLock.launch(consent) }
-                    .setNegativeButton(R.string.action_cancel) { _, _ -> pending = null }
-                    .setOnCancelListener { pending = null }
-                    .show()
-                return
-            }
         }
 
         if (p.blockApps && !p.appsDecided && !Graph.integrity.isAccessibilityEnabled()) {

@@ -11,7 +11,7 @@ process death and reboot.
 > verified on a real phone.
 
 - Android 8.0+ (API 26), compile/target SDK 36, Kotlin, Material Design 3 (XML views), MVVM
-- Room, DataStore, WorkManager, Fused Location + Geofencing, `VpnService`, `AccessibilityService`
+- Room, DataStore, WorkManager, Fused Location + Geofencing, `AccessibilityService`
 - English and বাংলা, Premium Dark and Premium White themes
 - No analytics, no ads, no accounts, no PureLock server
 
@@ -56,15 +56,19 @@ While a lock is active, anything that would **weaken** it is refused (removing a
 site or app, lowering protection settings, restoring a backup, clearing data). Making it stricter is
 always allowed.
 
-### Adult content blocker
-- Local DNS filtering with `VpnService`. Only the virtual DNS address is routed into the tunnel, so
-  your other traffic never passes through the app. Blocked names get an `NXDOMAIN` answer; allowed
-  names are forwarded to the network's own DNS, CleanBrowsing Adult Filter or Cloudflare for Families.
+### Adult content blocker (no VPN)
+- Website blocking has two layers and uses no VPN. (1) An accessibility URL-watch: when the
+  Website Filter is on, PureLock watches the address shown in your browser and blocks adult
+  sites from its blocklist. (2) The phone's Private DNS set to a family filter — Kahf Guard
+  Moderate (`medium.kahfguard.com`) or Cloudflare Family (`1.1.1.3`) — which blocks adult
+  sites in every app. The Protection tab has a setup card for this, including a check link
+  (`check.kahfguard.com`).
 - Bundled starter list, optional full list download (public hosts-format file, plain HTTPS GET, no
   data sent), your own blacklist and allowlist (allowlist cannot be extended during a lock).
-- SafeSearch for Google, Bing, DuckDuckGo and YouTube Restricted Mode via DNS rewriting.
+- SafeSearch for Google, Bing, DuckDuckGo and YouTube Restricted Mode.
 - HTTPS is never inspected and no certificate is installed.
-- A plain explanation dialog is shown before Android's VPN consent screen.
+- Honest limit: in-app browsers and webviews may not expose the address, so the URL-watch is
+  best-effort; Private DNS is the stronger layer.
 
 ### App blocker
 - Lists launchable apps with icons, search, per-app rules: block, block only during locks, daily
@@ -83,8 +87,8 @@ history. Location data stays on the device and only the last 30 days are kept.
 
 ### Anti-bypass (honest by design)
 `IntegrityChecker` verifies, every 15 minutes and live on the Home screen, whether what the lock needs
-is really working: VPN running, accessibility service enabled, location permission / background
-permission / GPS / recent fixes, usage access, Private DNS in strict mode, notifications, battery
+is really working: website blocking enabled, accessibility service enabled, location permission / background
+permission / GPS / recent fixes, usage access, Private DNS set to a family filter, notifications, battery
 optimization. Problems are shown on Home, logged, counted as interruptions and notified.
 
 ### Statistics
@@ -101,7 +105,7 @@ An empty database shows zeros.
 
 | Feature | What to do |
 |---|---|
-| Website filter | Allow the VPN dialog. Set Android *Private DNS* to Automatic/Off and disable "Secure DNS" in browsers. |
+| Website filter | Turn on Website Filter in the Protection tab, then set Android *Private DNS* to a family filter: Kahf Guard Moderate (`medium.kahfguard.com`) or Cloudflare Family (`1.1.1.3`). Check it at `check.kahfguard.com`. |
 | App blocking | Settings → Accessibility → PureLock → On. |
 | Daily app limits | Settings → Special access → Usage access → PureLock. |
 | Distance lock | Allow location, then "Allow all the time" for background updates. |
@@ -121,11 +125,12 @@ Emergency calls always keep working.
 ## Honest limitations
 
 - An ordinary Android app **cannot** stop you from force-stopping it, revoking permissions,
-  uninstalling it or turning off the VPN. PureLock detects this and tells you; it does not pretend
+  uninstalling it or turning off website blocking or Private DNS. PureLock detects this and tells you; it does not pretend
   otherwise. "Uninstall protection" is a deterrent that sends you Home from the relevant Settings
   screens, not a guarantee.
-- DNS filtering can be bypassed by browsers' own encrypted DNS, other VPNs and proxies, and it cannot
-  know about every adult site. No claim of complete protection is made.
+- The URL-watch only sees addresses the browser shows, so in-app browsers and webviews can slip
+  past it; Private DNS filtering can be bypassed by browsers' own encrypted DNS, other VPNs and
+  proxies, and it cannot know about every adult site. No claim of complete protection is made.
 - A blocked website shows the browser's own "site can't be reached" page. A custom block *page*
   would require intercepting HTTPS, which PureLock deliberately never does; a motivational
   notification is shown instead.
@@ -144,7 +149,6 @@ JSON files you save yourself and never contain location history, the contact or 
 app/src/main/java/com/purelock/app/
   data/        Room entities/DAOs, DataStore, secure store, blocklist, backup, stats
   domain/      LockManager (engine), LockEvaluator (pure rules), models
-  vpn/         VpnService, DNS + IP/UDP packet code, DNS filter, SafeSearch
   service/     AccessibilityService, app-block policy, WorkManager workers, boot receiver
   location/    Fused location helper, geofences
   security/    IntegrityChecker
@@ -157,7 +161,7 @@ app/src/test/  JVM unit tests (lock rules, time handling, DNS/IP packets, domain
 1. All five tabs open without crashing, in Dark and White, in English and বাংলা.
 2. Time lock: start 30 min lock, close app, swipe away, reboot, change the phone clock: remaining time is right.
 3. Combined lock ANY / ALL behaves as labelled; the countdown ring shows the correct progress.
-4. VPN: adult domain from the list fails to load, ordinary sites load, SafeSearch is applied, stopping the VPN shows the warning and a notification.
+4. Website filter: with Private DNS set to Kahf Guard Moderate, an adult domain from the list fails to load and ordinary sites load; with the Website Filter toggle on, an adult address typed in the browser is blocked; `check.kahfguard.com` confirms the filtering.
 5. App blocking: a selected app is replaced by the block screen; Phone and dialer stay available.
 6. Daily limit: app is blocked once usage reaches the limit (needs usage access).
 7. Distance lock: walk or simulate location; background update, GPS off, permission revoked all show honest warnings.

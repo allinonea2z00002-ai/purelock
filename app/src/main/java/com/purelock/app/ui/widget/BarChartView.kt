@@ -18,6 +18,10 @@ class BarChartView @JvmOverloads constructor(
     data class Bar(val label: String, val valueMs: Long)
 
     private var bars: List<Bar> = emptyList()
+    /** Draw every nth x-axis label (24 hourly bars use 4: 12 AM, 04 AM, 08 AM, 12 PM, 04 PM, 08 PM). */
+    var labelStep: Int = 1
+    /** False for crowded charts (hourly bars): the bar heights speak for themselves. */
+    var showValues: Boolean = true
     private val density = resources.displayMetrics.density
     private val barPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val trackPaint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -58,15 +62,21 @@ class BarChartView @JvmOverloads constructor(
             rect.set(cx - barW / 2, chartTop, cx + barW / 2, chartBottom)
             canvas.drawRoundRect(rect, 6 * density, 6 * density, trackPaint)
 
-            if (bar.valueMs > 0) {
+            if (bar.valueMs > 0 && showValues) {
                 val h = (chartH * bar.valueMs / max).coerceAtLeast(6 * density)
                 rect.set(cx - barW / 2, chartBottom - h, cx + barW / 2, chartBottom)
                 canvas.drawRoundRect(rect, 6 * density, 6 * density, barPaint)
                 textPaint.color = secondary
                 canvas.drawText(DurationFormat.compact(bar.valueMs), cx, chartBottom - h - 4 * density, textPaint)
+            } else if (bar.valueMs > 0) {
+                val h = (chartH * bar.valueMs / max).coerceAtLeast(6 * density)
+                rect.set(cx - barW / 2, chartBottom - h, cx + barW / 2, chartBottom)
+                canvas.drawRoundRect(rect, 6 * density, 6 * density, barPaint)
             }
-            textPaint.color = secondary
-            canvas.drawText(bar.label, cx, height - 5 * density, textPaint)
+            if (i % labelStep == 0) {
+                textPaint.color = secondary
+                canvas.drawText(bar.label, cx, height - 5 * density, textPaint)
+            }
         }
     }
 }

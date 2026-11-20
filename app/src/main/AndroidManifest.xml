@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Network: only used for the local VPN DNS forwarder and the optional filter-list update. -->
+    <!-- Network: only used for the optional filter-list update. -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -15,7 +15,6 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED" />
 
     <!-- Special access (granted by the user in system settings): app usage monitoring. -->
     <uses-permission
@@ -71,6 +70,21 @@
             android:parentActivityName=".ui.MainActivity" />
 
         <activity
+            android:name=".ui.apps.ConditionActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.apps.AppRuleActivity" />
+
+        <activity
+            android:name=".ui.content.KeywordActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <activity
+            android:name=".ui.content.ReelsActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <activity
             android:name=".ui.apps.AppListActivity"
             android:exported="false"
             android:parentActivityName=".ui.MainActivity" />
@@ -87,17 +101,6 @@
             android:launchMode="singleTask"
             android:taskAffinity=""
             android:theme="@style/Theme.PureLock.Dark" />
-
-        <!-- DNS-filtering VPN. The foreground type is "systemExempted", the type Android reserves for VPN apps. -->
-        <service
-            android:name=".vpn.PureLockVpnService"
-            android:exported="false"
-            android:foregroundServiceType="systemExempted"
-            android:permission="android.permission.BIND_VPN_SERVICE">
-            <intent-filter>
-                <action android:name="android.net.VpnService" />
-            </intent-filter>
-        </service>
 
         <!-- App blocker. Only active after the user enables it in system Accessibility settings. -->
         <service

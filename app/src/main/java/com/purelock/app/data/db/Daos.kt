@@ -45,6 +45,9 @@ interface BlockedAppDao {
     @Query("SELECT * FROM blocked_application")
     suspend fun getAll(): List<BlockedApplication>
 
+    @Query("SELECT * FROM blocked_application WHERE packageName = :pkg")
+    suspend fun get(pkg: String): BlockedApplication?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(app: BlockedApplication)
 

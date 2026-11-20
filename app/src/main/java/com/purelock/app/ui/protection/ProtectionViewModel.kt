@@ -6,11 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.purelock.app.Graph
 import com.purelock.app.data.db.LockConfiguration
 import com.purelock.app.data.prefs.AppSettings
-import com.purelock.app.data.prefs.DnsProvider
 import com.purelock.app.data.prefs.SettingsKeys
 import com.purelock.app.domain.LockManager
-import com.purelock.app.vpn.PureLockVpnService
-import com.purelock.app.vpn.VpnState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -41,8 +38,6 @@ class ProtectionViewModel(app: Application) : AndroidViewModel(app) {
 
     val settings: StateFlow<AppSettings> =
         Graph.settings.flow.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), AppSettings())
-
-    val vpnRunning: StateFlow<Boolean> = VpnState.running
 
     val blockedDomainCount: StateFlow<Int> = Graph.db.blockedDomainDao().observeAll()
         .map { it.size }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), 0)
@@ -85,7 +80,12 @@ class ProtectionViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    /** Starts or stops the standalone adult filter. Stopping is refused while a lock is active (the UI also says so). */
+    /**
+     * Turns the website content blocking master toggle on or off. This only saves
+     * FILTER_ENABLED; enforcement lives in the accessibility service (URL-watch) and the
+     * phone's Private DNS — there is no VPN to start or stop any more.
+     * Turning it off is refused while a lock is active (the UI also says so).
+     */
     fun setFilterEnabled(enabled: Boolean, onRefused: () -> Unit) {
         viewModelScope.launch {
             if (!enabled && Graph.lockManager.isActive()) {
@@ -93,14 +93,6 @@ class ProtectionViewModel(app: Application) : AndroidViewModel(app) {
                 return@launch
             }
             Graph.settings.set(SettingsKeys.FILTER_ENABLED, enabled)
-            if (enabled) PureLockVpnService.start(getApplication()) else PureLockVpnService.stop(getApplication())
-        }
-    }
-
-    fun setDnsProvider(provider: DnsProvider, onRefused: () -> Unit) {
-        viewModelScope.launch {
-            if (Graph.lockManager.isActive()) { onRefused(); return@launch }
-            Graph.settings.set(SettingsKeys.DNS_PROVIDER, provider.name)
         }
     }
 

@@ -14,7 +14,7 @@ object LockEvaluator {
     const val MAX_ACCEPTED_ACCURACY_M = 200f
 
     val TIME_PRESETS_MS: List<Long> = listOf(
-        30L * MIN, 1L * HOUR, 3L * HOUR, 6L * HOUR, 12L * HOUR, 24L * HOUR,
+        3L * MIN, 30L * MIN, 1L * HOUR, 3L * HOUR, 6L * HOUR, 12L * HOUR, 24L * HOUR,
         3L * DAY, 7L * DAY, 15L * DAY, 30L * DAY
     )
     val DISTANCE_PRESETS_M: List<Int> = listOf(1_000, 3_000, 5_000, 10_000, 20_000)
