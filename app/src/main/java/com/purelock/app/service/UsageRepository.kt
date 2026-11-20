@@ -22,7 +22,7 @@ data class AppLaunches(val packageName: String, val launches: Int)
 /** Everything the Analytics screen needs for today, read once per refresh. */
 data class UsageDay(
     val totalMs: Long,
-    val hourlyMs: LongArray(24),
+    val hourlyMs: LongArray,
     val perApp: List<AppUsage>,
     val launches: List<AppLaunches>,
     val browsingMs: Long,

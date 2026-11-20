@@ -28,7 +28,7 @@ data class TimelineRow(val packageName: String, val label: String, val timestamp
 data class UsageAnalytics(
     val hasAccess: Boolean,
     val totalMs: Long,
-    val hourlyMs: LongArray(24),
+    val hourlyMs: LongArray,
     val perApp: List<UsageAppRow>,
     val launches: List<UsageAppRow>,
     val browsingMs: Long,
