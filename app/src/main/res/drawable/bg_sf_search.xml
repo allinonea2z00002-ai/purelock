@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Grey rounded field (search / sort / keyword input, SPEC S07/S09/S10). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/sf_divider" />
+    <corners android:radius="16dp" />
+</shape>

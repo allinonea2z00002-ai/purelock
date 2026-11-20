@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dotted vertical connector under a Reels brand icon (SPEC S11). A horizontal
+     dashed line rotated 90 degrees. -->
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fromDegrees="90"
+    android:toDegrees="90">
+    <shape android:shape="line">
+        <stroke
+            android:width="2dp"
+            android:color="@color/sf_muted2"
+            android:dashWidth="4dp"
+            android:dashGap="6dp" />
+    </shape>
+</rotate>

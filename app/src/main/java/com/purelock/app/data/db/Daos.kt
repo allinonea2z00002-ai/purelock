@@ -145,6 +145,10 @@ interface StatsDao {
     @Query("UPDATE focus_statistics SET interruptions = interruptions + :n WHERE dateKey = :dateKey")
     suspend fun addInterruptions(dateKey: String, n: Int)
 
+    /** Deletes only the given day's row (Analytics trash action, FOUNDATION §15). */
+    @Query("DELETE FROM focus_statistics WHERE dateKey = :dateKey")
+    suspend fun deleteByDateKey(dateKey: String)
+
     @Query("UPDATE focus_statistics SET emergencyOverrides = emergencyOverrides + :n WHERE dateKey = :dateKey")
     suspend fun addEmergencyOverrides(dateKey: String, n: Int)
 
@@ -192,4 +196,31 @@ interface SafeZoneDao {
 
     @Query("DELETE FROM safe_zone WHERE id = :id")
     suspend fun delete(id: Long)
+}
+
+@Dao
+interface FocusProfileDao {
+    @Query("SELECT * FROM focus_profile ORDER BY createdEpoch ASC")
+    fun observeAll(): Flow<List<FocusProfile>>
+
+    @Query("SELECT * FROM focus_profile ORDER BY createdEpoch ASC")
+    suspend fun getAll(): List<FocusProfile>
+
+    @Query("SELECT * FROM focus_profile WHERE id = :id")
+    suspend fun get(id: Long): FocusProfile?
+
+    @Query("SELECT * FROM focus_profile WHERE active = 1")
+    fun observeActive(): Flow<List<FocusProfile>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsert(profile: FocusProfile): Long
+
+    @Query("DELETE FROM focus_profile WHERE id = :id")
+    suspend fun delete(id: Long)
+
+    @Query("UPDATE focus_profile SET active = :active WHERE id = :id")
+    suspend fun setActive(id: Long, active: Boolean)
+
+    @Query("UPDATE focus_profile SET paused = :paused WHERE id = :id")
+    suspend fun setPaused(id: Long, paused: Boolean)
 }

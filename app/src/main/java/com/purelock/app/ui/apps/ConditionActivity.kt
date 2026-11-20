@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -27,12 +28,14 @@ import com.purelock.app.databinding.ItemConditionBinding
 import com.purelock.app.service.ConditionEvaluator
 import com.purelock.app.ui.ThemeManager
 import com.purelock.app.ui.location.MapActivity
+import com.purelock.app.ui.profiles.ProfileFlow
+import com.purelock.app.ui.profiles.ScheduleActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * The values the chooser returns to [AppRuleActivity]. One field set per condition; fields of
+ * The values the chooser returns to [AppListActivity]. One field set per condition; fields of
  * other conditions keep their previous values unless the condition is cleared (NONE).
  */
 data class ConditionResult(
@@ -58,9 +61,15 @@ data class ConditionResult(
 )
 
 /**
- * "Choose Blocking Condition" (Stay Focused screenshot 5). Tapping a condition shows its config
- * below the list — Usage Limit opens the Daily Limit / Hourly Limit form (screenshot 6) — and
- * Save returns the values to the rule screen. Nothing is written to the database here.
+ * "Choose Blocking Condition" (Stay Focused screenshot 5 — SPEC S08 pastel cards).
+ * Two modes:
+ * - AppRule mode (default): tapping a condition shows its config below the list
+ *   and Save returns the values to the rule screen (AppListActivity flow).
+ * - Profile-flow mode ([ProfileFlow.EXTRA_FORWARD]): the config card and Save are
+ *   hidden and tapping a card goes straight to [ScheduleActivity] (the profile
+ *   draft travels with the intent); there is no NONE row — a profile must pick
+ *   a real condition.
+ * Nothing is written to the database here.
  */
 class ConditionActivity : AppCompatActivity() {
 
@@ -76,6 +85,8 @@ class ConditionActivity : AppCompatActivity() {
     private var zoneName: String? = null
     private var zones: List<SafeZone> = emptyList()
     private var launcherApps: List<Pair<String, String>> = emptyList()
+    /** True when opened from inside the profile create flow (see the class doc). */
+    private var forwardMode = false
 
     private val mapLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         loadZones() // the user may have added a zone on the map
@@ -92,7 +103,10 @@ class ConditionActivity : AppCompatActivity() {
             view.updatePadding(left = bars.left, top = bars.top, right = bars.right, bottom = bars.bottom)
             insets
         }
-        b.toolbarCondition.setNavigationOnClickListener { finish() }
+        b.btnBack.setOnClickListener { finish() }
+
+        forwardMode = intent.getBooleanExtra(ProfileFlow.EXTRA_FORWARD, false)
+        if (forwardMode) b.btnSaveCondition.isVisible = false
 
         readInitial(intent)
         buildDayChips()
@@ -149,22 +163,27 @@ class ConditionActivity : AppCompatActivity() {
     // ------------------------------------------------------------------ condition list
 
     private data class ConditionItem(
-        val type: String, val titleRes: Int, val subRes: Int, val iconRes: Int, val tintAttr: Int
+        val type: String, val titleRes: Int, val subRes: Int, val iconRes: Int,
+        /** Pastel card colour (SPEC S08); null = plain card (the NONE row). */
+        val bgColorRes: Int?,
+        /** Icon tint colour. */
+        val iconTintRes: Int
     )
 
     private fun conditions() = listOf(
-        ConditionItem("NONE", R.string.cond_none, R.string.cond_none_sub, R.drawable.ic_check_circle, R.attr.plTextSecondary),
-        ConditionItem("USAGE_LIMIT", R.string.cond_usage_limit, R.string.cond_usage_limit_sub, R.drawable.ic_clock, R.attr.plDanger),
-        ConditionItem("TIME_INTERVAL", R.string.cond_time_interval, R.string.cond_time_interval_sub, R.drawable.ic_menu, com.google.android.material.R.attr.colorPrimary),
-        ConditionItem("QUICK_BLOCK", R.string.cond_quick_block, R.string.cond_quick_block_sub, R.drawable.ic_shield_lock, R.attr.plWarning),
-        ConditionItem("LAUNCH_LIMIT", R.string.cond_launch_limit, R.string.cond_launch_limit_sub, R.drawable.ic_grid, R.attr.plSuccess),
-        ConditionItem("WAIT_TIMER", R.string.cond_wait_timer, R.string.cond_wait_timer_sub, R.drawable.ic_clock, R.attr.plDanger),
-        ConditionItem("GOAL", R.string.cond_goal, R.string.cond_goal_sub, R.drawable.ic_trophy, com.google.android.material.R.attr.colorPrimary),
-        ConditionItem("LOCATION", R.string.cond_location, R.string.cond_location_sub, R.drawable.ic_pin, R.attr.plSuccess)
+        ConditionItem("NONE", R.string.cond_none, R.string.cond_none_sub, R.drawable.ic_check_circle, null, R.color.sf_muted2),
+        ConditionItem("USAGE_LIMIT", R.string.cond_usage_limit, R.string.cond_usage_limit_sub, R.drawable.ic_clock, R.color.sf_pink, R.color.sf_red),
+        ConditionItem("TIME_INTERVAL", R.string.cond_time_interval, R.string.cond_time_interval_sub, R.drawable.ic_sf_calendar, R.color.sf_blue_tint, R.color.sf_primary),
+        ConditionItem("QUICK_BLOCK", R.string.cond_quick_block, R.string.cond_quick_block_sub, R.drawable.ic_sf_timer, R.color.sf_peach, R.color.sf_warning),
+        ConditionItem("LAUNCH_LIMIT", R.string.cond_launch_limit, R.string.cond_launch_limit_sub, R.drawable.ic_sf_rocket, R.color.sf_green_tint, R.color.sf_green),
+        ConditionItem("WAIT_TIMER", R.string.cond_wait_timer, R.string.cond_wait_timer_sub, R.drawable.ic_sf_hourglass, R.color.sf_pink, R.color.sf_red),
+        ConditionItem("GOAL", R.string.cond_goal, R.string.cond_goal_sub, R.drawable.ic_sf_target, R.color.sf_blue_tint, R.color.sf_primary),
+        ConditionItem("LOCATION", R.string.cond_location, R.string.cond_location_sub, R.drawable.ic_pin, R.color.sf_green_tint, R.color.sf_green)
     )
 
     private fun setupList() {
-        val items = conditions()
+        // The profile flow must pick a real condition: no NONE row there.
+        val items = if (forwardMode) conditions().filter { it.type != "NONE" } else conditions()
         b.listConditions.layoutManager = LinearLayoutManager(this)
         b.listConditions.adapter = object : RecyclerView.Adapter<ConditionVH>() {
             override fun onCreateViewHolder(parent: android.view.ViewGroup, viewType: Int): ConditionVH {
@@ -177,9 +196,13 @@ class ConditionActivity : AppCompatActivity() {
             override fun onBindViewHolder(holder: ConditionVH, position: Int) {
                 val item = items[position]
                 holder.bind(item, item.type == selectedType) {
-                    selectedType = item.type
-                    select(item.type, scroll = true)
-                    notifyDataSetChanged()
+                    if (forwardMode) {
+                        forwardToSchedule(item.type)
+                    } else {
+                        selectedType = item.type
+                        select(item.type, scroll = true)
+                        notifyDataSetChanged()
+                    }
                 }
             }
         }
@@ -191,16 +214,34 @@ class ConditionActivity : AppCompatActivity() {
             vb.tvCondSub.setText(item.subRes)
             vb.ivCondIcon.setImageResource(item.iconRes)
             vb.ivCondIcon.imageTintList = android.content.res.ColorStateList.valueOf(
-                MaterialColors.getColor(vb.root, item.tintAttr, 0)
+                ContextCompat.getColor(vb.root.context, item.iconTintRes)
+            )
+            vb.cardCondition.setCardBackgroundColor(
+                if (item.bgColorRes != null) {
+                    ContextCompat.getColor(vb.root.context, item.bgColorRes)
+                } else {
+                    MaterialColors.getColor(vb.root, R.attr.plCard, 0)
+                }
             )
             vb.ivCondCheck.isVisible = selected
             vb.cardCondition.setOnClickListener { onClick() }
         }
     }
 
+    /** Profile flow: the tapped condition goes straight to the schedule screen. */
+    private fun forwardToSchedule(type: String) {
+        val (draft, combined) = ProfileFlow.draftFrom(intent)
+        val next = Intent(this, ScheduleActivity::class.java).apply {
+            ProfileFlow.putDraft(this, draft.copy(conditionType = type), combined)
+            putExtra(ProfileFlow.EXTRA_FORWARD, true)
+            putExtra(ScheduleActivity.EXTRA_MODE, ScheduleActivity.MODE_PROFILE)
+        }
+        startActivity(next)
+    }
+
     private fun select(type: String, scroll: Boolean) {
         selectedType = type
-        val showConfig = type != "NONE"
+        val showConfig = type != "NONE" && !forwardMode
         b.cardConfig.isVisible = showConfig
         if (!showConfig) return
         b.tvConfigTitle.setText(conditions().first { it.type == type }.titleRes)
@@ -469,8 +510,8 @@ class ConditionActivity : AppCompatActivity() {
     }
 }
 
-/** Packs this result into an intent for setResult. */
-private fun ConditionResult.toIntent(): Intent = Intent().apply {
+/** Packs this result into an intent for setResult (also reused by ScheduleActivity). */
+fun ConditionResult.toIntent(): Intent = Intent().apply {
     putExtra(ConditionActivity.EXTRA_CONDITION_TYPE, conditionType)
     putExtra(ConditionActivity.EXTRA_DAILY_LIMIT, dailyLimitMinutes)
     putExtra(ConditionActivity.EXTRA_HOURLY_LIMIT, hourlyLimitMinutes)

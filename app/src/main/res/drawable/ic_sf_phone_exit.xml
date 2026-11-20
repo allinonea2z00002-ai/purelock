@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Normal Mode icon: phone with an arrow leaving it (SPEC S04). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#14142E"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M7,2h10a2,2 0 0,1 2,2v16a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V4a2,2 0 0,1 2,-2z" />
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#14142E"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M12,6.5l4.5,-4.5 M13.5,2H17v3.5" />
+    <path
+        android:fillColor="#14142E"
+        android:pathData="M12,18.6m-0.9,0a0.9,0.9 0 1,0 1.8,0a0.9,0.9 0 1,0 -1.8,0" />
+</vector>

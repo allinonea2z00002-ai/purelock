@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One Usage Overview row (S14/S16/S17): app icon in a grey circle, name + blue
+     progress bar, time/launch count at the right, ⋮ menu. Lives inside the white
+     Usage Overview card, so the row itself is not a card. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="12dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="4dp"
+        android:paddingBottom="10dp">
+
+        <FrameLayout
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_sf_circle_grey">
+
+            <ImageView
+                android:id="@+id/ivSfIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:importantForAccessibility="no"
+                android:scaleType="fitCenter" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvSfName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <ProgressBar
+                android:id="@+id/pbSfUsage"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:layout_marginTop="6dp"
+                android:max="100"
+                android:progress="0"
+                android:progressBackgroundTint="@color/sf_divider"
+                android:progressTint="@color/sf_primary" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvSfValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/sf_muted"
+            android:textSize="13sp" />
+
+        <ImageButton
+            android:id="@+id/btnSfMenu"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/sf_stats_menu_details"
+            android:padding="6dp"
+            android:src="@drawable/ic_sf_more_vert"
+            android:tint="@color/sf_muted" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/vSfDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="72dp"
+        android:background="@color/sf_divider" />
+</LinearLayout>

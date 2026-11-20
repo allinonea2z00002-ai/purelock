@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Monitor with padlock icon (white, Screen Unlocks summary). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M3,4.5h18a1,1 0 0,1 1,1v8a1,1 0 0,1 -1,1H3a1,1 0 0,1 -1,-1v-8a1,1 0 0,1 1,-1zM9,20.5h6M12,14.5v3"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M13.5,13.5v-1.2a1.8,1.8 0 0,1 3.6,0v1.2M13,13.5h4.6v4.4H13z"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>

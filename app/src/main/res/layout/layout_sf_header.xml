@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Shared short gradient header for Area F activities: translucent back circle
+     (left) + centred white title. The title text is set in code. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:background="@drawable/bg_sf_header">
+
+    <ImageButton
+        android:id="@+id/btnSfBack"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="start|center_vertical"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/bg_sf_circle_white20"
+        android:contentDescription="@string/action_close"
+        android:src="@drawable/ic_sf_back"
+        android:tint="@android:color/white" />
+
+    <TextView
+        android:id="@+id/tvSfTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+</FrameLayout>

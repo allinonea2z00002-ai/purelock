@@ -19,9 +19,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         FocusStatistics::class,
         SecurityEvent::class,
         UserPreferences::class,
-        SafeZone::class
+        SafeZone::class,
+        FocusProfile::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -36,6 +37,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun securityEventDao(): SecurityEventDao
     abstract fun prefDao(): PrefDao
     abstract fun safeZoneDao(): SafeZoneDao
+    abstract fun profileDao(): FocusProfileDao
 
     companion object {
         @Volatile private var instance: AppDatabase? = null
@@ -95,6 +97,47 @@ object Migrations {
                 db.execSQL("ALTER TABLE blocked_application ADD COLUMN blockIfLocationUnavailable INTEGER NOT NULL DEFAULT 0")
                 db.execSQL("ALTER TABLE blocked_application ADD COLUMN blockLaunch INTEGER NOT NULL DEFAULT 1")
                 db.execSQL("ALTER TABLE blocked_application ADD COLUMN blockNotifications INTEGER NOT NULL DEFAULT 0")
+            }
+        },
+        /**
+         * Version 4 adds the focus_profile table (SPEC §2 profiles). New table, so the CREATE
+         * TABLE must match [FocusProfile] exactly (names, types, defaults).
+         */
+        object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `focus_profile` (" +
+                        "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                        "`name` TEXT NOT NULL, " +
+                        "`type` TEXT NOT NULL DEFAULT 'BLOCKLIST', " +
+                        "`conditionType` TEXT NOT NULL DEFAULT 'NONE', " +
+                        "`dailyLimitMinutes` INTEGER NOT NULL DEFAULT 0, " +
+                        "`hourlyLimitMinutes` INTEGER NOT NULL DEFAULT 0, " +
+                        "`intervalDays` INTEGER NOT NULL DEFAULT 0, " +
+                        "`intervalStartMin` INTEGER NOT NULL DEFAULT 0, " +
+                        "`intervalEndMin` INTEGER NOT NULL DEFAULT 0, " +
+                        "`fullDay` INTEGER NOT NULL DEFAULT 0, " +
+                        "`quickBlockMinutes` INTEGER NOT NULL DEFAULT 0, " +
+                        "`maxLaunchesPerDay` INTEGER NOT NULL DEFAULT 0, " +
+                        "`maxLaunchesPerHour` INTEGER NOT NULL DEFAULT 0, " +
+                        "`waitAfterMinutes` INTEGER NOT NULL DEFAULT 0, " +
+                        "`waitForMinutes` INTEGER NOT NULL DEFAULT 0, " +
+                        "`goalAppPackage` TEXT, " +
+                        "`goalMinutes` INTEGER NOT NULL DEFAULT 0, " +
+                        "`locationZoneId` INTEGER NOT NULL DEFAULT 0, " +
+                        "`locationMode` TEXT NOT NULL DEFAULT 'AT', " +
+                        "`blockIfLocationUnavailable` INTEGER NOT NULL DEFAULT 0, " +
+                        "`blockLaunch` INTEGER NOT NULL DEFAULT 1, " +
+                        "`blockNotifications` INTEGER NOT NULL DEFAULT 0, " +
+                        "`motivationalText` TEXT NOT NULL DEFAULT '', " +
+                        "`appPackages` TEXT NOT NULL DEFAULT '', " +
+                        "`siteDomains` TEXT NOT NULL DEFAULT '', " +
+                        "`keywords` TEXT NOT NULL DEFAULT '', " +
+                        "`active` INTEGER NOT NULL DEFAULT 0, " +
+                        "`paused` INTEGER NOT NULL DEFAULT 0, " +
+                        "`template` TEXT, " +
+                        "`createdEpoch` INTEGER NOT NULL DEFAULT 0)"
+                )
             }
         }
     )

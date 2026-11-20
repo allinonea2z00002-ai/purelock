@@ -73,7 +73,8 @@ class BlockActivity : AppCompatActivity() {
                 BlockReason.SELF_PROTECT -> R.string.block_reason_protect
             }
         )
-        b.tvMotivation.text = Motivation.random(this)
+        b.tvMotivation.text = intent.getStringExtra(EXTRA_MOTIVATION)?.takeIf { it.isNotBlank() }
+            ?: Motivation.random(this)
     }
 
     private fun goHome() {
@@ -86,5 +87,7 @@ class BlockActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_LABEL = "label"
         const val EXTRA_REASON = "reason"
+        /** Custom motivational text (a profile's text); blank/absent = a random quote. */
+        const val EXTRA_MOTIVATION = "motivation"
     }
 }

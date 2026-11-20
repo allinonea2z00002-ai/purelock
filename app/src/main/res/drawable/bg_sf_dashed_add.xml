@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dashed-border ADD A NEW PROFILE button (SPEC S01). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/sf_pale_blue" />
+    <stroke
+        android:width="1.5dp"
+        android:color="#7AA5F8"
+        android:dashWidth="8dp"
+        android:dashGap="6dp" />
+    <corners android:radius="24dp" />
+</shape>

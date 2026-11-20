@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Analytics (Stay Focused S14–S19) strings. Prefix sf_stats_; en/bn parity with values-bn/strings_stats.xml. -->
+<resources>
+    <string name="sf_stats_filter_title">Filters</string>
+    <string name="sf_stats_show_system">Show system apps</string>
+    <string name="sf_stats_sort_title">Sort order</string>
+    <string name="sf_stats_sort_time">Sort by time</string>
+    <string name="sf_stats_sort_launches">Sort by launches</string>
+    <string name="sf_stats_show_hidden">Show hidden apps again</string>
+    <string name="sf_stats_clear_title">Clear today\'s data?</string>
+    <string name="sf_stats_clear_message">This deletes today\'s PureLock statistics. Your usage stats themselves cannot be cleared.</string>
+    <string name="sf_stats_clear">Clear</string>
+    <string name="sf_stats_cancel">Cancel</string>
+    <string name="sf_stats_cleared">Today\'s data cleared</string>
+    <string name="sf_stats_menu_details">View details</string>
+    <string name="sf_stats_menu_block">Block this app</string>
+    <string name="sf_stats_menu_hide">Hide app</string>
+    <string name="sf_stats_hidden">App hidden from Analytics</string>
+    <string name="sf_stats_no_data_day">No usage data for %1$s</string>
+    <string name="sf_stats_app_launches">App Launch Count</string>
+    <string name="sf_stats_phone_unlocks">Phone Unlock Count</string>
+    <string name="sf_stats_session_breakdown">Session length breakdown</string>
+    <string name="sf_stats_browse_perm_title">ACCESSIBILITY PERMISSION</string>
+    <string name="sf_stats_browse_perm_text">Please grant accessibility permission to start tracking your web browsing stats.</string>
+    <string name="sf_stats_tap_to_grant">Tap To Grant</string>
+    <string name="sf_stats_yesterday">Yesterday</string>
+    <string name="sf_stats_bucket_over">&gt;%1$d min</string>
+    <string name="sf_stats_bucket_range">%1$d-%2$d min</string>
+</resources>

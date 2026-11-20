@@ -180,6 +180,101 @@ data class SafeZone(
     val autoLockMinutes: Int = 0
 )
 
+/** Default motivational text shown on the block screen (SPEC S21 — kept verbatim). */
+const val PROFILE_MOTIVATIONAL_DEFAULT =
+    "Stay Focused on your GOALS, your PEACE & your HAPPINESS. Don't waste your TIME on anything that doesn't contribute to your GROWTH"
+
+/**
+ * A Stay Focused-style focus profile (SPEC §2 S01/S12/S13): a named set of apps/sites/keywords
+ * with one blocking condition + schedule. Only one profile's rules are enforced at a time
+ * through the active flag; templates (FOCUS_HOURS / SOCIAL_LIMIT) are prefilled profiles.
+ * App/site/keyword sets are stored as comma-separated values to keep the schema flat.
+ */
+@Entity(tableName = "focus_profile")
+data class FocusProfile(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val name: String,
+    /** "BLOCKLIST" = limits apply to the selected apps/sites; "WHITELIST" = limits apply to the
+     * whole phone except the selected (allowed) apps. */
+    val type: String = "BLOCKLIST",
+    // ---- Blocking condition (same value set as BlockedApplication.conditionType) ----
+    val conditionType: String = "NONE",
+    val dailyLimitMinutes: Int = 0,
+    val hourlyLimitMinutes: Int = 0,
+    val intervalDays: Int = 0,
+    val intervalStartMin: Int = 0,
+    val intervalEndMin: Int = 0,
+    val fullDay: Boolean = false,
+    /** Quick Block: block for this many minutes from activation. 0 = no quick block. */
+    val quickBlockMinutes: Int = 0,
+    val maxLaunchesPerDay: Int = 0,
+    val maxLaunchesPerHour: Int = 0,
+    val waitAfterMinutes: Int = 0,
+    val waitForMinutes: Int = 0,
+    val goalAppPackage: String? = null,
+    val goalMinutes: Int = 0,
+    val locationZoneId: Long = 0,
+    val locationMode: String = "AT",
+    val blockIfLocationUnavailable: Boolean = false,
+    val blockLaunch: Boolean = true,
+    val blockNotifications: Boolean = false,
+    /** Text shown on the block screen when this profile blocks. Blank = the S21 default. */
+    val motivationalText: String = "",
+    /** Comma-separated package names / domains / keywords in this profile. */
+    val appPackages: String = "",
+    val siteDomains: String = "",
+    val keywords: String = "",
+    /** True while the profile is currently enforcing its rules. */
+    val active: Boolean = false,
+    /** True while the user paused this profile (rules suspended until resumed). */
+    val paused: Boolean = false,
+    /** Template this profile was created from: "FOCUS_HOURS", "SOCIAL_LIMIT", or null. */
+    val template: String? = null,
+    val createdEpoch: Long = 0
+) {
+    fun appPackageList(): List<String> =
+        appPackages.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+
+    fun siteDomainList(): List<String> =
+        siteDomains.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+
+    fun keywordList(): List<String> =
+        keywords.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+
+    fun effectiveMotivationalText(): String =
+        motivationalText.ifBlank { PROFILE_MOTIVATIONAL_DEFAULT }
+
+    /**
+     * The profile's condition as a [BlockedApplication] rule, so [ConditionEvaluator] can
+     * enforce it unchanged. [quickBlockUntilEpochMs] is supplied by the enforcer (activation
+     * time + [quickBlockMinutes]); the profile itself only stores the duration.
+     */
+    fun toBlockedApplication(quickBlockUntilEpochMs: Long = 0): BlockedApplication =
+        BlockedApplication(
+            packageName = "",
+            label = name,
+            dailyLimitMinutes = dailyLimitMinutes,
+            conditionType = conditionType,
+            hourlyLimitMinutes = hourlyLimitMinutes,
+            intervalDays = intervalDays,
+            intervalStartMin = intervalStartMin,
+            intervalEndMin = intervalEndMin,
+            fullDay = fullDay,
+            quickBlockUntilEpochMs = quickBlockUntilEpochMs,
+            maxLaunchesPerDay = maxLaunchesPerDay,
+            maxLaunchesPerHour = maxLaunchesPerHour,
+            waitAfterMinutes = waitAfterMinutes,
+            waitForMinutes = waitForMinutes,
+            goalAppPackage = goalAppPackage,
+            goalMinutes = goalMinutes,
+            locationZoneId = locationZoneId,
+            locationMode = locationMode,
+            blockIfLocationUnavailable = blockIfLocationUnavailable,
+            blockLaunch = blockLaunch,
+            blockNotifications = blockNotifications
+        )
+}
+
 object SecurityEventType {
     const val LOCK_STARTED = "LOCK_STARTED"
     const val LOCK_COMPLETED = "LOCK_COMPLETED"

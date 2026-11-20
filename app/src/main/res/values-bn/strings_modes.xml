@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Modes area (SPEC S04–S06), Bengali. -->
+<resources>
+    <string name="sf_modes_title">মোডসমূহ</string>
+    <string name="sf_modes_select_mode">মোড নির্বাচন করুন</string>
+    <string name="sf_modes_active">সক্রিয়</string>
+    <string name="sf_modes_activate">সক্রিয় করুন</string>
+    <string name="sf_modes_next">পরবর্তী</string>
+    <string name="sf_modes_close">বন্ধ করুন</string>
+    <string name="sf_modes_open_menu">মেনু খুলুন</string>
+    <string name="sf_modes_open_notifications">নোটিফিকেশন খুলুন</string>
+
+    <string name="sf_modes_normal">নরমাল মোড</string>
+    <string name="sf_modes_normal_desc">যেকোনো পরিবর্তন করুন এবং অ্যাপটি স্বাধীনভাবে আনইনস্টল করুন।</string>
+    <string name="sf_modes_lock">লক মোড</string>
+    <string name="sf_modes_lock_desc">ফোন সেটিংস ব্লক করতে পাসওয়ার্ড সেট করুন, এবং PureLock অ্যাক্সেস বা প্রোফাইল পরিবর্তন নিয়ন্ত্রণ করুন।</string>
+    <string name="sf_modes_strict">স্ট্রিক্ট মোড</string>
+    <string name="sf_modes_strict_desc">ফোন সেটিংস, PureLock সহ অ্যাপ আনইনস্টল এবং প্রোফাইল পরিবর্তন ব্লক করতে নিষ্ক্রিয় করার পদ্ধতি সেট করুন।</string>
+    <string name="sf_modes_admin_active">ডিভাইস অ্যাডমিন সক্রিয়</string>
+    <string name="sf_modes_admin_inactive">ডিভাইস অ্যাডমিন সক্রিয় নয়</string>
+
+    <!-- Lock wizard (S05) -->
+    <string name="sf_modes_lock_title">লক মোড সক্রিয় করুন</string>
+    <string name="sf_modes_step1_lock_title">ব্লকিং লেভেল</string>
+    <string name="sf_modes_step1_lock_sub">কী ব্লক করা হবে তা নির্বাচন করুন।</string>
+    <string name="sf_modes_lock_app">PureLock</string>
+    <string name="sf_modes_lock_app_desc">PureLock অ্যাক্সেস করতে পাসওয়ার্ড লাগবে।</string>
+    <string name="sf_modes_lock_restrict">নিয়ম সম্পাদনা</string>
+    <string name="sf_modes_lock_restrict_desc">নিয়ম সম্পাদনা, মুছে ফেলা বা শিথিল করতে পাসওয়ার্ড লাগবে।</string>
+    <string name="sf_modes_lock_phone">ফোন সেটিংস</string>
+    <string name="sf_modes_lock_phone_desc">ফোন সেটিংস অ্যাক্সেস করতে পাসওয়ার্ড লাগবে, যাতে PureLock এড়িয়ে যাওয়া না যায়।</string>
+    <string name="sf_modes_step2_lock_title">পাসওয়ার্ড সেট করুন</string>
+    <string name="sf_modes_step2_lock_sub">নরমাল মোডে ফিরতে প্রয়োজন</string>
+    <string name="sf_modes_pin_hint">৪ সংখ্যার পিন লিখুন</string>
+    <string name="sf_modes_pin_confirm_hint">৪ সংখ্যার পিন নিশ্চিত করুন</string>
+    <string name="sf_modes_pin_mismatch">পিন মিলছে না। আবার চেষ্টা করুন।</string>
+    <string name="sf_modes_pin_short">৪ সংখ্যার পিন লিখুন।</string>
+    <string name="sf_modes_pin_saved">পিন সংরক্ষিত হয়েছে</string>
+    <string name="sf_modes_pin_save">পিন সংরক্ষণ করুন</string>
+    <string name="sf_modes_step3_title">ডিভাইস অ্যাডমিন সক্রিয় করুন</string>
+    <string name="sf_modes_step3_sub">নিয়ম কার্যকর করতে PureLock-কে প্রয়োজনীয় অনুমতি দিন।</string>
+    <string name="sf_modes_step3_desc">ডিভাইস অ্যাডমিন PureLock-কে নিয়ম কার্যকর করতে দেয় এবং মোড সক্রিয় থাকাকালীন অ্যাপ আনইনস্টল হতে বাধা দেয়।</string>
+    <string name="sf_modes_step3_button">ডিভাইস অ্যাডমিন সক্রিয় করুন</string>
+    <string name="sf_modes_step3_done">ডিভাইস অ্যাডমিন সক্রিয় আছে।</string>
+    <string name="sf_modes_step4_title">অন্য অ্যাপের উপরে দেখানোর অনুমতি</string>
+    <string name="sf_modes_step4_sub">লক স্ক্রিন দেখাতে প্রয়োজন।</string>
+    <string name="sf_modes_step4_desc">লক স্ক্রিন দেখাতে PureLock-এর অন্য অ্যাপের উপরে দেখানোর অনুমতি প্রয়োজন।</string>
+    <string name="sf_modes_step4_button">সেটিংস খুলুন</string>
+    <string name="sf_modes_step4_done">অন্য অ্যাপের উপরে দেখানোর অনুমতি দেওয়া হয়েছে।</string>
+
+    <!-- Strict wizard (S06) -->
+    <string name="sf_modes_strict_title">স্ট্রিক্ট মোড সক্রিয় করুন</string>
+    <string name="sf_modes_step1_strict_title">নিয়ম সম্পাদনা</string>
+    <string name="sf_modes_step1_strict_sub">আপনার নিয়মে পরিবর্তন আটকান।</string>
+    <string name="sf_modes_restrict_all">সবকিছু সীমাবদ্ধ করুন</string>
+    <string name="sf_modes_restrict_all_desc">কোনো নিয়ম সম্পাদনা, মুছে ফেলা বা শিথিল করা যাবে না।</string>
+    <string name="sf_modes_restrict_specific">নির্দিষ্ট কিছু সীমাবদ্ধ করুন</string>
+    <string name="sf_modes_restrict_specific_desc">কোন নিয়মগুলো সম্পাদনা, মুছে ফেলা বা শিথিল করা যাবে না তা বেছে নিন।</string>
+    <string name="sf_modes_step2_strict_title">অতিরিক্ত নিয়ম</string>
+    <string name="sf_modes_step2_strict_sub">নিয়ন্ত্রণে থাকতে অতিরিক্ত সুরক্ষা যোগ করুন।</string>
+    <string name="sf_modes_extra_power">পাওয়ার অফ ব্লক করুন</string>
+    <string name="sf_modes_extra_power_desc">নিরবচ্ছিন্ন মনোযোগের জন্য ডিভাইস বন্ধ হওয়া আটকান।</string>
+    <string name="sf_modes_extra_recent">রিসেন্ট অ্যাপ ব্লক করুন</string>
+    <string name="sf_modes_extra_recent_desc">রিসেন্ট অ্যাপ স্ক্রিনে যাওয়া আটকান।</string>
+    <string name="sf_modes_extra_split">স্প্লিট স্ক্রিন ব্লক করুন</string>
+    <string name="sf_modes_extra_split_desc">মাল্টিটাস্কিংয়ের বিভ্রান্তি এড়াতে স্প্লিট স্ক্রিন বন্ধ করুন।</string>
+    <string name="sf_modes_extra_browsers">অসমর্থিত ব্রাউজার ব্লক করুন</string>
+    <string name="sf_modes_extra_browsers_desc">PureLock সমর্থন করে না এমন ব্রাউজার ব্যবহার আটকান।</string>
+    <string name="sf_modes_step3_strict_title">নিষ্ক্রিয় করার পদ্ধতি</string>
+    <string name="sf_modes_step3_strict_sub">স্ট্রিক্ট মোড কীভাবে নিষ্ক্রিয় করা যাবে তা বেছে নিন।</string>
+    <string name="sf_modes_deact_pin">পিন</string>
+    <string name="sf_modes_deact_pin_desc">স্ট্রিক্ট মোড নিষ্ক্রিয় করতে আপনার পিন লিখুন।</string>
+    <string name="sf_modes_deact_partner">পার্টনারের পিন</string>
+    <string name="sf_modes_deact_partner_desc">শুধুমাত্র আপনার পার্টনারের পিন দিয়ে স্ট্রিক্ট মোড নিষ্ক্রিয় করা যাবে।</string>
+    <string name="sf_modes_deact_timer">শুধু টাইমার</string>
+    <string name="sf_modes_deact_timer_desc">স্ট্রিক্ট মোড আগেভাগে নিষ্ক্রিয় করা যাবে না। টাইমার শেষ হলে এটি শেষ হবে।</string>
+</resources>

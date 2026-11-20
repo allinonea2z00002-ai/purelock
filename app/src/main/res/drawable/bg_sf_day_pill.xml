@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Darker-blue rounded pill for the Analytics "< Today >" day stepper (S14). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/sf_primary_dark" />
+    <corners android:radius="20dp" />
+</shape>

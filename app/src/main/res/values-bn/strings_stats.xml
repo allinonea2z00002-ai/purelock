@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Analytics (Stay Focused S14–S19) strings, Bengali. Parity with values/strings_stats.xml. -->
+<resources>
+    <string name="sf_stats_filter_title">ফিল্টার</string>
+    <string name="sf_stats_show_system">সিস্টেম অ্যাপ দেখান</string>
+    <string name="sf_stats_sort_title">সাজানোর ধরন</string>
+    <string name="sf_stats_sort_time">সময় অনুযায়ী সাজান</string>
+    <string name="sf_stats_sort_launches">খোলার সংখ্যা অনুযায়ী সাজান</string>
+    <string name="sf_stats_show_hidden">লুকানো অ্যাপ আবার দেখান</string>
+    <string name="sf_stats_clear_title">আজকের ডেটা মুছবেন?</string>
+    <string name="sf_stats_clear_message">এতে আজকের PureLock পরিসংখ্যান মুছে যাবে। আপনার ব্যবহারের পরিসংখ্যান নিজে মোছা যাবে না।</string>
+    <string name="sf_stats_clear">মুছুন</string>
+    <string name="sf_stats_cancel">বাতিল</string>
+    <string name="sf_stats_cleared">আজকের ডেটা মোছা হয়েছে</string>
+    <string name="sf_stats_menu_details">বিস্তারিত দেখুন</string>
+    <string name="sf_stats_menu_block">এই অ্যাপ ব্লক করুন</string>
+    <string name="sf_stats_menu_hide">অ্যাপ লুকান</string>
+    <string name="sf_stats_hidden">অ্যাপটি অ্যানালিটিক্স থেকে লুকানো হয়েছে</string>
+    <string name="sf_stats_no_data_day">%1$s-এর কোনো ব্যবহারের তথ্য নেই</string>
+    <string name="sf_stats_app_launches">অ্যাপ খোলার সংখ্যা</string>
+    <string name="sf_stats_phone_unlocks">ফোন আনলকের সংখ্যা</string>
+    <string name="sf_stats_session_breakdown">সেশনের দৈর্ঘ্যের বিবরণ</string>
+    <string name="sf_stats_browse_perm_title">অ্যাক্সেসিবিলিটি অনুমতি</string>
+    <string name="sf_stats_browse_perm_text">আপনার ওয়েব ব্রাউজিং পরিসংখ্যান ট্র্যাক করা শুরু করতে অ্যাক্সেসিবিলিটি অনুমতি দিন।</string>
+    <string name="sf_stats_tap_to_grant">অনুমতি দিতে ট্যাপ করুন</string>
+    <string name="sf_stats_yesterday">গতকাল</string>
+    <string name="sf_stats_bucket_over">%1$d মিনিটের বেশি</string>
+    <string name="sf_stats_bucket_range">%1$d-%2$d মিনিট</string>
+</resources>

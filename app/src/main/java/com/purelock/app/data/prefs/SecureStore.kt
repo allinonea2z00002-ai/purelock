@@ -31,6 +31,26 @@ class SecureStore(context: Context) {
         get() = prefs.getString(KEY_PHONE, "") ?: ""
         set(value) { prefs.edit().putString(KEY_PHONE, value.trim()).apply() }
 
+    /**
+     * SHA-256 hash of the 4-digit Lock-mode PIN (SPEC S05 step 2, foundation
+     * decision 5). The plain PIN is never stored. Empty = no PIN set yet.
+     */
+    var lockPinHash: String
+        get() = prefs.getString(KEY_LOCK_PIN_HASH, "") ?: ""
+        set(value) { prefs.edit().putString(KEY_LOCK_PIN_HASH, value).apply() }
+
+    /** Stores [pin] as its SHA-256 hash. */
+    fun setLockPin(pin: String) {
+        lockPinHash = sha256Hex(pin)
+    }
+
+    /** True when a Lock-mode PIN has been set. */
+    fun hasLockPin(): Boolean = lockPinHash.isNotBlank()
+
+    /** True when [pin] hashes to the stored Lock-mode PIN. */
+    fun lockPinMatches(pin: String): Boolean =
+        lockPinHash.isNotBlank() && lockPinHash == sha256Hex(pin)
+
     fun hasTrustedContact(): Boolean = trustedPhone.isNotBlank()
 
     fun clear() {
@@ -40,5 +60,13 @@ class SecureStore(context: Context) {
     private companion object {
         const val KEY_NAME = "trusted_name"
         const val KEY_PHONE = "trusted_phone"
+        const val KEY_LOCK_PIN_HASH = "lock_pin_hash"
+
+        /** Lowercase hex SHA-256 of [input]. */
+        fun sha256Hex(input: String): String {
+            val bytes = java.security.MessageDigest.getInstance("SHA-256")
+                .digest(input.toByteArray(Charsets.UTF_8))
+            return bytes.joinToString("") { "%02x".format(it) }
+        }
     }
 }

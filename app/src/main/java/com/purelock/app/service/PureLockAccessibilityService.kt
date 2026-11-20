@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.accessibility.AccessibilityEvent
 import com.purelock.app.Graph
 import com.purelock.app.R
+import com.purelock.app.data.ProfileRepository
 import com.purelock.app.data.content.ContentWatch
 import com.purelock.app.data.prefs.ContentFilterStore
 import com.purelock.app.location.Fix
@@ -41,6 +42,7 @@ class PureLockAccessibilityService : AccessibilityService() {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     private lateinit var policy: AppBlockPolicy
+    private lateinit var profileRepo: ProfileRepository
 
     @Volatile private var lockActive = false
     @Volatile private var uninstallProtection = false
@@ -64,6 +66,7 @@ class PureLockAccessibilityService : AccessibilityService() {
         super.onServiceConnected()
         connected = true
         policy = AppBlockPolicy(this, Graph.usage)
+        profileRepo = ProfileRepository(this)
         // The blocklist is also used by the URL watch, so load it here too.
         scope.launch { runCatching { Graph.blocklist.reload() } }
         scope.launch {
@@ -93,6 +96,29 @@ class PureLockAccessibilityService : AccessibilityService() {
                 }
             }.collect { }
         }
+        // Profile enforcement (Area C): the active profiles' rules are rebuilt into
+        // the policy whenever they change — see ProfileEnforcer for the semantics.
+        scope.launch {
+            Graph.db.profileDao().observeActive().collect { activeProfiles ->
+                val launcherPackages = runCatching {
+                    packageManager.queryIntentActivities(
+                        Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER), 0
+                    ).map { it.activityInfo.packageName }
+                        .filter { it != packageName }
+                        .distinct()
+                }.getOrDefault(emptyList())
+                val enforcement = ProfileEnforcer.build(
+                    activeProfiles,
+                    launcherPackages,
+                    profileRepo::isCombined,
+                    profileRepo::quickBlockUntilEpoch
+                )
+                policy.profileBlocked = enforcement.rules
+                policy.profileMotivations = enforcement.motivations
+                policy.combinedLimit = enforcement.combined
+                policy.profileSiteRules = enforcement.siteRules
+            }
+        }
         recheckHandler.postDelayed(recheckRunnable, RECHECK_INTERVAL_MS)
     }
 
@@ -110,6 +136,17 @@ class PureLockAccessibilityService : AccessibilityService() {
             return
         }
         if (policy.isNeverBlocked(pkg)) return
+
+        // Take a Break (SPEC S02/S03, Area A): while a break is active, only
+        // whitelisted apps may come to the foreground — everything else is blocked,
+        // before the normal app-block policy and content checks run.
+        if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED &&
+            BreakManager.shouldBlockNow(this) && pkg !in BreakManager.whitelist(this)
+        ) {
+            lastForegroundPackage = pkg
+            block(pkg, BlockReason.LOCK)
+            return
+        }
 
         when (event.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
@@ -143,11 +180,19 @@ class PureLockAccessibilityService : AccessibilityService() {
         // never block the foreground app.
         if (root.packageName?.toString() != pkg) return
 
-        // (a) URL watch: only while the adult-content filter is on.
-        if (adultFilterOn) {
-            val host = ContentWatch.findAddressBarHost(root)
-            if (host != null && Graph.blocklist.isBlocked(host)) {
+        // (a) URL watch: when the adult-content filter is on, the address bar shown on screen is checked
+        //   against the blocklist (allowlist wins) and a match sends the user home.
+        //   Profile sites are checked the same way, with the profile's condition
+        //   evaluated for the foreground browser (see AppBlockPolicy.evaluateSiteRule).
+        val host = ContentWatch.findAddressBarHost(root)
+        if (host != null) {
+            if (adultFilterOn && Graph.blocklist.isBlocked(host)) {
                 blockContent(pkg, recordWebsiteBlock = true)
+                return
+            }
+            val siteRule = ProfileEnforcer.siteRuleFor(host, policy.profileSiteRules)
+            if (siteRule != null && policy.evaluateSiteRule(siteRule.rule, pkg) != null) {
+                blockContent(pkg, recordWebsiteBlock = true, motivation = siteRule.motivation)
                 return
             }
         }
@@ -180,6 +225,13 @@ class PureLockAccessibilityService : AccessibilityService() {
         refreshLiveFixIfNeeded()
         val pkg = lastForegroundPackage ?: return
         if (pkg == packageName || policy.isNeverBlocked(pkg)) return
+        // Take a Break (SPEC S02/S03, Area A): the periodic re-check also enforces
+        // the break whitelist, so a break that starts while an app is already open
+        // still blocks it.
+        if (BreakManager.shouldBlockNow(this) && pkg !in BreakManager.whitelist(this)) {
+            block(pkg, BlockReason.LOCK)
+            return
+        }
         val reason = policy.reason(pkg) ?: return
         maybeArmWaitTimer(pkg, reason)
         block(pkg, reason)
@@ -188,15 +240,25 @@ class PureLockAccessibilityService : AccessibilityService() {
     /** Arms a due Wait Timer exactly once and persists it; a running wait is never re-armed. */
     private fun maybeArmWaitTimer(pkg: String, reason: BlockReason) {
         if (reason != BlockReason.WAIT_TIMER) return
-        val rule = policy.blocked[pkg] ?: return
-        if (rule.waitUntilEpochMs > System.currentTimeMillis()) return // wait already running
-        val armed = policy.armWaitTimer(pkg) ?: return
-        scope.launch { runCatching { Graph.db.blockedAppDao().upsert(armed) } }
+        val rule = policy.blocked[pkg]
+        if (rule != null) {
+            if (rule.waitUntilEpochMs > System.currentTimeMillis()) return // wait already running
+            val armed = policy.armWaitTimer(pkg) ?: return
+            scope.launch { runCatching { Graph.db.blockedAppDao().upsert(armed) } }
+            return
+        }
+        // Profile-derived rule: arm in memory only (never persisted as an app rule).
+        val profileRule = policy.profileBlocked[pkg] ?: return
+        if (profileRule.waitUntilEpochMs > System.currentTimeMillis()) return
+        policy.armProfileWaitTimer(pkg)
     }
 
     /** Keeps the location gate fresh, but only while a location-based rule exists. */
     private fun refreshLiveFixIfNeeded() {
-        if (policy.blocked.values.none { it.locationZoneId > 0 }) return
+        val hasLocationRule = policy.blocked.values.any { it.locationZoneId > 0 } ||
+            policy.profileBlocked.values.any { it.locationZoneId > 0 } ||
+            policy.profileSiteRules.any { it.rule.locationZoneId > 0 }
+        if (!hasLocationRule) return
         scope.launch {
             runCatching {
                 LocationHelper.currentFix(
@@ -250,7 +312,7 @@ class PureLockAccessibilityService : AccessibilityService() {
     private fun block(pkg: String, reason: BlockReason) {
         if (!tryBlock(pkg)) return
         performGlobalAction(GLOBAL_ACTION_HOME)
-        startBlockActivity(pkg, reason)
+        startBlockActivity(pkg, reason, policy.motivationFor(pkg))
         if (reason != BlockReason.SELF_PROTECT) {
             scope.launch { Graph.stats.recordAppBlock() }
         }
@@ -263,16 +325,16 @@ class PureLockAccessibilityService : AccessibilityService() {
      * [BlockReason] (its enum lives in the read-only [AppBlockPolicy] file), so the block screen
      * shows its generic "blocked" title for these.
      */
-    private fun blockContent(pkg: String, recordWebsiteBlock: Boolean) {
+    private fun blockContent(pkg: String, recordWebsiteBlock: Boolean, motivation: String? = null) {
         if (!tryBlock(pkg)) return
         performGlobalAction(GLOBAL_ACTION_HOME)
-        startBlockActivity(pkg, BlockReason.LOCK)
+        startBlockActivity(pkg, BlockReason.LOCK, motivation)
         if (recordWebsiteBlock) {
             scope.launch { Graph.stats.recordWebsiteBlock() }
         }
     }
 
-    private fun startBlockActivity(pkg: String, reason: BlockReason) {
+    private fun startBlockActivity(pkg: String, reason: BlockReason, motivation: String? = null) {
         val label = runCatching {
             packageManager.getApplicationLabel(packageManager.getApplicationInfo(pkg, 0)).toString()
         }.getOrDefault(pkg)
@@ -281,6 +343,7 @@ class PureLockAccessibilityService : AccessibilityService() {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 .putExtra(BlockActivity.EXTRA_LABEL, label)
                 .putExtra(BlockActivity.EXTRA_REASON, reason.name)
+                .apply { motivation?.let { putExtra(BlockActivity.EXTRA_MOTIVATION, it) } }
         )
     }
 

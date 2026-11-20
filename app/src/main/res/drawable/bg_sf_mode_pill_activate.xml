@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Grey "Activate" pill on inactive mode cards (SPEC S04, #8A8FA8-ish). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/sf_muted" />
+    <corners android:radius="20dp" />
+</shape>

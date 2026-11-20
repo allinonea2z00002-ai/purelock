@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Area D strings (All Apps / All Sites / Keywords / Reels). Prefix sf_apps_. -->
+<resources>
+    <string name="sf_apps_title_all_apps">সব অ্যাপ</string>
+    <string name="sf_apps_search_hint">খুঁজুন</string>
+    <string name="sf_apps_sort_app_name">অ্যাপের নাম</string>
+    <string name="sf_apps_sort_blocked">ব্লক করা</string>
+    <string name="sf_apps_sort_launches">চালু</string>
+    <string name="sf_apps_sort_usage">ব্যবহারের সময়</string>
+    <string name="sf_apps_sort_pinned">পিন করা</string>
+    <string name="sf_apps_app_spent">Spent: %1$s  |  %2$s</string>
+    <string name="sf_apps_no_apps">কোনো অ্যাপ পাওয়া যায়নি</string>
+    <string name="sf_apps_always_available">এই অ্যাপটি কখনো ব্লক করা যাবে না।</string>
+    <string name="sf_apps_pinned">পিন করা হয়েছে</string>
+    <string name="sf_apps_unpinned">পিন সরানো হয়েছে</string>
+    <string name="sf_apps_schedule_unavailable">শিডিউল স্ক্রিন এখনো নেই — নিয়মটি যেমন বেছে নেওয়া হয়েছে তেমনই সংরক্ষণ করা হয়েছে।</string>
+
+    <string name="sf_apps_title_all_sites">সব সাইট</string>
+    <string name="sf_apps_search_add_hint">খুঁজুন / যোগ করুন\nওয়েবসাইট</string>
+    <string name="sf_apps_sort_website">ওয়েবসাইট</string>
+    <string name="sf_apps_sort_site_visit">সাইট ভিজিট</string>
+    <string name="sf_apps_site_spent">Spent: %1$s  |  %2$s</string>
+    <string name="sf_apps_visits_one">1 বার ভিজিট</string>
+    <string name="sf_apps_visits_many">%d বার ভিজিট</string>
+    <string name="sf_apps_no_sites">এখনো কোনো ওয়েবসাইট নেই। উপরে একটি ডোমেইন লিখে যোগ করুন।</string>
+    <string name="sf_apps_site_added">ওয়েবসাইট যোগ করা হয়েছে</string>
+    <string name="sf_apps_site_exists">তালিকায় ইতিমধ্যে আছে</string>
+    <string name="sf_apps_site_blocked">ওয়েবসাইট ব্লক করা হয়েছে</string>
+    <string name="sf_apps_site_unblocked">ওয়েবসাইটের ব্লক সরানো হয়েছে</string>
+
+    <string name="sf_apps_kw_title">কীওয়ার্ড পরিচালনা করুন</string>
+    <string name="sf_apps_kw_hint">কীওয়ার্ড যোগ করুন\n(কমা দিয়ে আলাদা করুন)</string>
+    <string name="sf_apps_kw_add">যোগ করুন</string>
+    <string name="sf_apps_kw_empty_title">কোনো কীওয়ার্ড যোগ করা হয়নি</string>
+    <string name="sf_apps_kw_empty_sub">কীওয়ার্ড যোগ করতে লেখা শুরু করুন</string>
+    <string name="sf_apps_kw_info_title">কীওয়ার্ড ব্লকিং</string>
+    <string name="sf_apps_kw_info_text">PureLock আপনার স্ক্রিনের লেখা দেখে। আপনি যোগ করা কোনো কীওয়ার্ড দেখা গেলে অ্যাপটি হোমে পাঠানো হয়। কীওয়ার্ড ব্লকিংয়ের জন্য Accessibility অনুমতি দরকার এবং এটি ব্রাউজার ও সোশ্যাল অ্যাপে সবচেয়ে ভালো কাজ করে।</string>
+
+    <string name="sf_apps_cd_back">পেছনে</string>
+    <string name="sf_apps_cd_info">কীওয়ার্ড ব্লকিং সম্পর্কে</string>
+    <string name="sf_apps_cd_lock_blocked">ব্লক সরান</string>
+    <string name="sf_apps_cd_lock_unblocked">ব্লক করুন</string>
+</resources>

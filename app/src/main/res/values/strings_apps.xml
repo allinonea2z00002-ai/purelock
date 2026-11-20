@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Area D strings (All Apps / All Sites / Keywords / Reels). Prefix sf_apps_. -->
+<resources>
+    <string name="sf_apps_title_all_apps">All Apps</string>
+    <string name="sf_apps_search_hint">Search</string>
+    <string name="sf_apps_sort_app_name">App Name</string>
+    <string name="sf_apps_sort_blocked">Blocked</string>
+    <string name="sf_apps_sort_launches">Launches</string>
+    <string name="sf_apps_sort_usage">Usage Time</string>
+    <string name="sf_apps_sort_pinned">Pinned</string>
+    <string name="sf_apps_app_spent">Spent: %1$s  |  %2$s</string>
+    <string name="sf_apps_no_apps">No apps found</string>
+    <string name="sf_apps_always_available">This app can never be blocked.</string>
+    <string name="sf_apps_pinned">Pinned</string>
+    <string name="sf_apps_unpinned">Unpinned</string>
+    <string name="sf_apps_schedule_unavailable">Schedule screen is not available yet — the rule was saved as chosen.</string>
+
+    <string name="sf_apps_title_all_sites">All Sites</string>
+    <string name="sf_apps_search_add_hint">Search / Add\nWebsite</string>
+    <string name="sf_apps_sort_website">Website</string>
+    <string name="sf_apps_sort_site_visit">Site Visit</string>
+    <string name="sf_apps_site_spent">Spent: %1$s  |  %2$s</string>
+    <string name="sf_apps_visits_one">1 visit</string>
+    <string name="sf_apps_visits_many">%d visits</string>
+    <string name="sf_apps_no_sites">No websites yet. Type a domain above to add one.</string>
+    <string name="sf_apps_site_added">Website added</string>
+    <string name="sf_apps_site_exists">Already in the list</string>
+    <string name="sf_apps_site_blocked">Website blocked</string>
+    <string name="sf_apps_site_unblocked">Website unblocked</string>
+
+    <string name="sf_apps_kw_title">Manage Keywords</string>
+    <string name="sf_apps_kw_hint">Add keywords\n(comma-separated)</string>
+    <string name="sf_apps_kw_add">ADD</string>
+    <string name="sf_apps_kw_empty_title">NO KEYWORDS ADDED</string>
+    <string name="sf_apps_kw_empty_sub">Start Typing to add a Keyword</string>
+    <string name="sf_apps_kw_info_title">Keyword blocking</string>
+    <string name="sf_apps_kw_info_text">PureLock watches the text on your screen. When a keyword you add appears, the app is sent home. Keyword blocking needs Accessibility permission and works best in browsers and social apps.</string>
+
+    <string name="sf_apps_cd_back">Back</string>
+    <string name="sf_apps_cd_info">About keyword blocking</string>
+    <string name="sf_apps_cd_lock_blocked">Unblock</string>
+    <string name="sf_apps_cd_lock_unblocked">Block</string>
+</resources>

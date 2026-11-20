@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Modes — Select Mode (SPEC S04). Gradient header, three mode cards with
+     Active/Activate pills and 1/2/3 strictness padlocks. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Gradient header: hamburger (opens drawer) + bell (notifications). -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:background="@drawable/bg_sf_header">
+
+            <ImageButton
+                android:id="@+id/btnMenu"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="start|center_vertical"
+                android:layout_marginStart="24dp"
+                android:background="@drawable/bg_sf_circle_white20"
+                android:contentDescription="@string/sf_modes_open_menu"
+                android:src="@drawable/ic_sf_menu" />
+
+            <ImageButton
+                android:id="@+id/btnBell"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/bg_sf_circle_white20"
+                android:contentDescription="@string/sf_modes_open_notifications"
+                android:src="@drawable/ic_sf_bell" />
+        </FrameLayout>
+
+        <!-- Section heading -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="24dp">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_sf_bolt" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="@string/sf_modes_select_mode"
+                android:textColor="@color/sf_text"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Normal Mode card -->
+        <LinearLayout
+            android:id="@+id/cardNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_sf_mode_selected"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_sf_phone_exit" />
+
+                <TextView
+                    android:id="@+id/pillNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/bg_sf_mode_pill_active"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="8dp"
+                    android:text="@string/sf_modes_active"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_margin="2dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_sf_lock"
+                    android:tint="@color/sf_red" />
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_margin="2dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_sf_lock"
+                    android:tint="@color/sf_muted2" />
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_margin="2dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_sf_lock"
+                    android:tint="@color/sf_muted2" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/sf_modes_normal"
+                android:textColor="@color/sf_text"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/sf_modes_normal_desc"
+                android:textColor="@color/sf_text"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <!-- Lock Mode card -->
+        <LinearLayout
+            android:id="@+id/cardLock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_sf_card"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_sf_phone_lock" />
+
+                <TextView
+                    android:id="@+id/pillLock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/bg_sf_mode_pill_activate"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="8dp"
+                    android:text="@string/sf_modes_activate"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_margin="2dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_sf_lock"
+                    android:tint="@color/sf_red" />
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_margin="2dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_sf_lock"
+                    android:tint="@color/sf_red" />
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_margin="2dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_sf_lock"
+                    android:tint="@color/sf_muted2" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/sf_modes_lock"
+                android:textColor="@color/sf_text"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/sf_modes_lock_desc"
+                android:textColor="@color/sf_text"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <!-- Strict Mode card -->
+        <LinearLayout
+            android:id="@+id/cardStrict"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/bg_sf_card"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_sf_phone_bolt" />
+
+                <TextView
+                    android:id="@+id/pillStrict"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/bg_sf_mode_pill_activate"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="8dp"
+                    android:text="@string/sf_modes_activate"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_margin="2dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_sf_lock"
+                    android:tint="@color/sf_red" />
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_margin="2dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_sf_lock"
+                    android:tint="@color/sf_red" />
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_margin="2dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_sf_lock"
+                    android:tint="@color/sf_red" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/sf_modes_strict"
+                android:textColor="@color/sf_text"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/sf_modes_strict_desc"
+                android:textColor="@color/sf_text"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tvStrictAdminStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/sf_modes_admin_inactive"
+                android:textColor="@color/sf_muted"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

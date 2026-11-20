@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Wheel picker highlight band: light lavender-grey rounded band (SPEC §1.4). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/sf_divider" />
+    <corners android:radius="12dp" />
+</shape>

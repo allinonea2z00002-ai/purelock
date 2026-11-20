@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- One row of the "Choose Blocking Condition" list (Stay Focused screenshot 5):
-     icon in a tinted circle, title, one-line example. -->
+<!-- One row of the "Choose Blocking Condition" list (SPEC S08): pastel card,
+     icon in a white circle, title, one-line example. The card colour is set
+     in code per condition (see ConditionActivity). -->
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardCondition"
@@ -9,7 +10,7 @@
     android:layout_marginBottom="8dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardCornerRadius="16dp"
+    app:cardCornerRadius="24dp"
     app:cardElevation="0dp">
 
     <LinearLayout
@@ -23,7 +24,7 @@
             android:id="@+id/ivCondIcon"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/bg_circle_badge"
+            android:background="@drawable/bg_sf_icon_circle"
             android:contentDescription="@string/cond_title"
             android:padding="10dp"
             android:scaleType="fitCenter" />
@@ -39,7 +40,7 @@
                 android:id="@+id/tvCondTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/colorOnSurface"
+                android:textColor="@color/sf_text"
                 android:textSize="17sp"
                 android:textStyle="bold" />
 

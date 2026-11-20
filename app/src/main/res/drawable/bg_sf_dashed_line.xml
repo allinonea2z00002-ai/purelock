@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dashed line for the Usage Timeline dotted connector (S19). Used rotated 90 degrees
+     so the horizontal dashed line renders as a vertical connector. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="line">
+    <stroke
+        android:width="2dp"
+        android:color="@color/sf_muted2"
+        android:dashWidth="4dp"
+        android:dashGap="5dp" />
+</shape>

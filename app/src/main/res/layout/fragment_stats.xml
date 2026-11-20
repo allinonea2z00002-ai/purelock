@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Analytics (Stay Focused screenshots 3-4): "Today" header, tabs Screen Time / App Launches /
-     Browsing Time / Screen Unlocks / Usage Timeline, total screen time + per-hour bar chart,
-     Usage Overview per-app list, Usage Timeline. Below it, the existing Protection statistics
-     (range, protection time, counters, achievements) are kept unchanged. -->
+<!-- Analytics (Stay Focused S14–S19): gradient header with "< Today >" day pill +
+     sliders/calendar/trash circles, horizontal tab pills, summary + hourly chart card,
+     Usage Overview, session-length breakdown, Usage Timeline. The existing Protection
+     statistics section is kept below the analytics content. -->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -12,767 +12,615 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/screen_padding">
+        android:orientation="vertical">
+
+        <!-- Gradient header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_sf_header"
+            android:minHeight="170dp"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!-- "< Today >" day pill (hidden on the Timeline tab, S19). -->
+                <LinearLayout
+                    android:id="@+id/dayPill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_sf_day_pill"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp">
+
+                    <ImageView
+                        android:id="@+id/ivDayPrev"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:contentDescription="@string/sf_stats_yesterday"
+                        android:padding="2dp"
+                        android:src="@drawable/ic_sf_chevron_left"
+                        android:tint="@android:color/white" />
+
+                    <TextView
+                        android:id="@+id/tvDayLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:text="@string/stats_today"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/ivDayNext"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:contentDescription="@string/stats_today"
+                        android:padding="2dp"
+                        android:src="@drawable/ic_sf_chevron_right"
+                        android:tint="@android:color/white" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <!-- Filter sheet (hidden in the single-app view, S15). -->
+                <ImageButton
+                    android:id="@+id/btnFilter"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_sf_circle_white20"
+                    android:contentDescription="@string/sf_stats_filter_title"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_sf_sliders"
+                    android:tint="@android:color/white" />
+
+                <!-- Day picker (Timeline tab only, S19). -->
+                <ImageButton
+                    android:id="@+id/btnCalendar"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_sf_circle_white20"
+                    android:contentDescription="@string/stats_tab_timeline"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_sf_calendar"
+                    android:tint="@android:color/white"
+                    android:visibility="gone" />
+
+                <ImageButton
+                    android:id="@+id/btnClear"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_sf_circle_white20"
+                    android:contentDescription="@string/sf_stats_clear_title"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_sf_trash"
+                    android:tint="@android:color/white" />
+            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:padding="@dimen/screen_padding">
 
-            <ImageButton
-                android:id="@+id/btnBackStats"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/action_close"
-                android:src="?attr/homeAsUpIndicator"
-                android:tint="?attr/colorOnSurface" />
+            <!-- Horizontal tab pills -->
+            <HorizontalScrollView
+                android:id="@+id/tabScroll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvTabScreenTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_sf_pill_primary"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingStart="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/stats_tab_screen_time"
+                        android:textColor="@android:color/white"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvTabLaunches"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_sf_tab_white"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingStart="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/stats_tab_launches"
+                        android:textColor="@color/sf_text"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvTabBrowsing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_sf_tab_white"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingStart="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/stats_tab_browsing"
+                        android:textColor="@color/sf_text"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvTabUnlocks"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_sf_tab_white"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingStart="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/stats_tab_unlocks"
+                        android:textColor="@color/sf_text"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvTabTimeline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_sf_tab_white"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingStart="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/stats_tab_timeline"
+                        android:textColor="@color/sf_text"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- Shown instead of the tab content when usage access is not granted. -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardUsageGrant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/card_padding">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/stats_permission_needed"
+                        android:textAppearance="@style/TextAppearance.PureLock.Body" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnGrantUsage"
+                        style="@style/Widget.PureLock.GreenButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/stats_grant_usage" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Browsing Time empty state (S17): accessibility permission not granted. -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardBrowsingEmpty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="@dimen/card_padding">
+
+                    <ImageView
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        android:background="@drawable/bg_sf_circle_grey"
+                        android:padding="24dp"
+                        android:src="@drawable/ic_sf_gear"
+                        android:tint="@color/sf_primary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/sf_stats_browse_perm_title"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center"
+                        android:text="@string/sf_stats_browse_perm_text"
+                        android:textAppearance="@style/TextAppearance.PureLock.Body"
+                        android:textSize="14sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnGrantAccessibility"
+                        style="@style/Widget.PureLock.PrimaryButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:paddingStart="32dp"
+                        android:paddingEnd="32dp"
+                        android:text="@string/sf_stats_tap_to_grant" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Summary + hourly chart (one white card, S14/S15/S16/S18). -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardSummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/card_padding">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:background="@drawable/bg_sf_circle_gradient">
+
+                            <ImageView
+                                android:id="@+id/ivSummaryIcon"
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_clock"
+                                android:tint="@android:color/white" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvSummaryValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="?attr/colorOnSurface"
+                                android:textSize="26sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvSummaryLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/stats_total_screen_time"
+                                android:textAppearance="@style/TextAppearance.PureLock.Body" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <com.purelock.app.ui.widget.BarChartView
+                        android:id="@+id/barHourly"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Screen Unlocks: session-length breakdown (S18). -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardSessions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/card_padding">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sf_stats_session_breakdown"
+                        android:textAppearance="@style/TextAppearance.PureLock.Section" />
+
+                    <LinearLayout
+                        android:id="@+id/listSessions"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/tvSectionTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/stats_usage_overview"
+                android:textAppearance="@style/TextAppearance.PureLock.Section" />
+
+            <!-- Usage Overview rows (S14/S16/S17 data view). -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardOverview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listUsage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:padding="4dp" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Usage Timeline (S19): date heading + dotted-connector rows. -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardTimeline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/card_padding">
+
+                    <TextView
+                        android:id="@+id/tvTimelineDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/listTimeline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:nestedScrollingEnabled="false" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/tvUsageEmpty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/stats_no_usage_data"
+                android:textAppearance="@style/TextAppearance.PureLock.Body"
+                android:visibility="gone" />
+
+            <!-- Protection statistics (kept below the Analytics content). -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/stats_title"
-                android:textColor="?attr/colorOnSurface"
-                android:textSize="26sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tvTodayDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textAppearance="@style/TextAppearance.PureLock.Body"
-            android:textSize="16sp" />
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:scrollbars="none">
+                android:layout_marginTop="24dp"
+                android:text="@string/stats_protection_title"
+                android:textAppearance="@style/TextAppearance.PureLock.Section" />
 
             <com.google.android.material.button.MaterialButtonToggleGroup
-                android:id="@+id/toggleUsageTabs"
-                android:layout_width="wrap_content"
+                android:id="@+id/toggleRange"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:checkedButton="@+id/btnTabScreenTime"
+                android:layout_marginTop="12dp"
+                app:checkedButton="@+id/btnRange7"
                 app:selectionRequired="true"
                 app:singleSelection="true">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnTabScreenTime"
+                    android:id="@+id/btnRange7"
                     style="@style/Widget.PureLock.TabButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/stats_tab_screen_time" />
+                    android:layout_weight="1"
+                    android:text="@string/stats_range_7" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnTabLaunches"
+                    android:id="@+id/btnRange30"
                     style="@style/Widget.PureLock.TabButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/stats_tab_launches" />
+                    android:layout_weight="1"
+                    android:text="@string/stats_range_30" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnTabBrowsing"
+                    android:id="@+id/btnRangeCustom"
                     style="@style/Widget.PureLock.TabButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/stats_tab_browsing" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnTabUnlocks"
-                    style="@style/Widget.PureLock.TabButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/stats_tab_unlocks" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnTabTimeline"
-                    style="@style/Widget.PureLock.TabButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/stats_tab_timeline" />
+                    android:layout_weight="1"
+                    android:text="@string/stats_range_custom" />
             </com.google.android.material.button.MaterialButtonToggleGroup>
-        </HorizontalScrollView>
 
-        <!-- Shown instead of the tab content when usage access is not granted: never show zeros as data. -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardUsageGrant"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/gap"
-            android:visibility="gone">
+            <TextView
+                android:id="@+id/tvEmpty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/stats_empty"
+                android:textAppearance="@style/TextAppearance.PureLock.Body"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/card_padding">
+                android:layout_marginTop="@dimen/gap"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/stats_permission_needed"
-                    android:textAppearance="@style/TextAppearance.PureLock.Body" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnGrantUsage"
-                    style="@style/Widget.PureLock.GreenButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="@string/stats_grant_usage" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Screen Time tab: total + per-hour chart -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardScreenTotal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/gap">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="@dimen/card_padding">
-
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/ic_clock"
-                    android:tint="?attr/colorPrimary" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tvScreenTotal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="?attr/colorOnSurface"
-                        android:textSize="26sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/stats_total_screen_time"
-                        android:textAppearance="@style/TextAppearance.PureLock.Body" />
-                </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardHourly"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/gap">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/card_padding">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/stats_hourly"
-                    android:textAppearance="@style/TextAppearance.PureLock.Section" />
-
-                <com.purelock.app.ui.widget.BarChartView
-                    android:id="@+id/barHourly"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Browsing Time tab: total -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardBrowsingTotal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/gap"
-            android:visibility="gone">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="@dimen/card_padding">
-
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/ic_globe"
-                    android:tint="?attr/colorPrimary" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tvBrowsingTotal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="?attr/colorOnSurface"
-                        android:textSize="26sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/stats_browsing_total"
-                        android:textAppearance="@style/TextAppearance.PureLock.Body" />
-                </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Screen Unlocks tab: count -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardUnlocks"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/gap"
-            android:visibility="gone">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="@dimen/card_padding">
-
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/ic_check_circle"
-                    android:tint="?attr/plSuccess" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tvUnlockCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="?attr/colorOnSurface"
-                        android:textSize="26sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/stats_unlocks_total"
-                        android:textAppearance="@style/TextAppearance.PureLock.Body" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/stats_unlocks_note"
-                        android:textAppearance="@style/TextAppearance.PureLock.Body"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <TextView
-            android:id="@+id/tvSectionTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/stats_usage_overview"
-            android:textAppearance="@style/TextAppearance.PureLock.Section" />
-
-        <TextView
-            android:id="@+id/tvTimelineDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textAppearance="@style/TextAppearance.PureLock.Body"
-            android:visibility="gone" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listUsage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:nestedScrollingEnabled="false" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listTimeline"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:nestedScrollingEnabled="false"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/tvUsageEmpty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/stats_no_usage_data"
-            android:textAppearance="@style/TextAppearance.PureLock.Body"
-            android:visibility="gone" />
-
-        <!-- Protection statistics (unchanged) -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/stats_protection_title"
-            android:textAppearance="@style/TextAppearance.PureLock.Section" />
-
-        <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/toggleRange"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:checkedButton="@+id/btnRange7"
-            app:selectionRequired="true"
-            app:singleSelection="true">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnRange7"
-                style="@style/Widget.PureLock.TabButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/stats_range_7" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnRange30"
-                style="@style/Widget.PureLock.TabButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/stats_range_30" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnRangeCustom"
-                style="@style/Widget.PureLock.TabButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/stats_range_custom" />
-        </com.google.android.material.button.MaterialButtonToggleGroup>
-
-        <TextView
-            android:id="@+id/tvEmpty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/stats_empty"
-            android:textAppearance="@style/TextAppearance.PureLock.Body"
-            android:visibility="gone" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/gap"
-            android:orientation="horizontal">
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardTotals"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="6dp"
-                android:layout_weight="1">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/card_padding">
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardTotals"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="vertical"
+                        android:padding="@dimen/card_padding">
 
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/ic_check_circle"
-                            android:tint="?attr/plSuccess" />
-
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:text="@string/stats_protection_time"
-                            android:textAppearance="@style/TextAppearance.PureLock.Body" />
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_check_circle"
+                                android:tint="?attr/plSuccess" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:text="@string/stats_protection_time"
+                                android:textAppearance="@style/TextAppearance.PureLock.Body" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tvTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="28sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                    <TextView
-                        android:id="@+id/tvTotal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="28sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="6dp"
-                android:layout_weight="1">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/card_padding">
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="vertical"
+                        android:padding="@dimen/card_padding">
 
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/ic_trophy"
-                            android:tint="?attr/plSuccess" />
-
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:text="@string/stats_focus_streak"
-                            android:textAppearance="@style/TextAppearance.PureLock.Body" />
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_trophy"
+                                android:tint="?attr/plSuccess" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:text="@string/stats_focus_streak"
+                                android:textAppearance="@style/TextAppearance.PureLock.Body" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tvStreak"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="28sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/tvStreak"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="28sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvToday"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="?attr/colorOnSurface"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/stats_today"
-                    android:textAppearance="@style/TextAppearance.PureLock.Body"
-                    android:textSize="12sp" />
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvWeek"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="?attr/colorOnSurface"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/stats_week"
-                    android:textAppearance="@style/TextAppearance.PureLock.Body"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvMonth"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="?attr/colorOnSurface"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/stats_month"
-                    android:textAppearance="@style/TextAppearance.PureLock.Body"
-                    android:textSize="12sp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardChart"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/gap">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/card_padding">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/stats_last7"
-                    android:textAppearance="@style/TextAppearance.PureLock.Section" />
-
-                <com.purelock.app.ui.widget.LineChartView
-                    android:id="@+id/chart"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- 4 counters -->
-        <LinearLayout
-            android:id="@+id/rowCounts"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/gap"
-            android:orientation="horizontal">
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="3dp"
-                android:layout_weight="1">
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/ic_globe"
-                        android:tint="?attr/plDanger" />
-
-                    <TextView
-                        android:id="@+id/tvWebBlocks"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:textColor="?attr/colorOnSurface"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/stats_count_web"
-                        android:textAppearance="@style/TextAppearance.PureLock.Body"
-                        android:textSize="11sp" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="3dp"
-                android:layout_marginEnd="3dp"
-                android:layout_weight="1">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/ic_grid"
-                        android:tint="?attr/plSuccess" />
-
-                    <TextView
-                        android:id="@+id/tvAppBlocks"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:textColor="?attr/colorOnSurface"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/stats_count_app"
-                        android:textAppearance="@style/TextAppearance.PureLock.Body"
-                        android:textSize="11sp" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="3dp"
-                android:layout_marginEnd="3dp"
-                android:layout_weight="1">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/ic_clock"
-                        android:tint="?attr/plWarning" />
-
-                    <TextView
-                        android:id="@+id/tvInterruptions"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:textColor="?attr/colorOnSurface"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/stats_count_interrupt"
-                        android:textAppearance="@style/TextAppearance.PureLock.Body"
-                        android:textSize="11sp" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="3dp"
-                android:layout_weight="1">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/ic_trophy"
-                        android:tint="?attr/plSuccess" />
-
-                    <TextView
-                        android:id="@+id/tvAchCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:textColor="?attr/colorOnSurface"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/stats_count_ach"
-                        android:textAppearance="@style/TextAppearance.PureLock.Body"
-                        android:textSize="11sp" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-        </LinearLayout>
-
-        <!-- Keep going -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardKeepGoing"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/gap">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="@dimen/card_padding">
-
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@drawable/ic_trophy"
-                    android:tint="?attr/plWarning" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tvToday"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/stats_keep_going"
                         android:textColor="?attr/colorOnSurface"
                         android:textSize="17sp"
                         android:textStyle="bold" />
@@ -780,60 +628,339 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/stats_keep_going_sub"
-                        android:textAppearance="@style/TextAppearance.PureLock.Body" />
+                        android:text="@string/stats_today"
+                        android:textAppearance="@style/TextAppearance.PureLock.Body"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvWeek"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/stats_week"
+                        android:textAppearance="@style/TextAppearance.PureLock.Body"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvMonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/stats_month"
+                        android:textAppearance="@style/TextAppearance.PureLock.Body"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardAchievements"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/gap">
-
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardChart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/card_padding">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/stats_achievements"
-                    android:textAppearance="@style/TextAppearance.PureLock.Section" />
+                android:layout_marginTop="@dimen/gap">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:padding="@dimen/card_padding">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/stats_sessions"
-                        android:textAppearance="@style/TextAppearance.PureLock.Body" />
+                        android:text="@string/stats_last7"
+                        android:textAppearance="@style/TextAppearance.PureLock.Section" />
 
-                    <TextView
-                        android:id="@+id/tvSessions"
-                        android:layout_width="wrap_content"
+                    <com.purelock.app.ui.widget.LineChartView
+                        android:id="@+id/chart"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:textColor="?attr/colorOnSurface"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:layout_marginTop="12dp" />
                 </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 4 counters -->
+            <LinearLayout
+                android:id="@+id/rowCounts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap"
+                android:orientation="horizontal">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="3dp"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/ic_globe"
+                            android:tint="?attr/plDanger" />
+
+                        <TextView
+                            android:id="@+id/tvWebBlocks"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/stats_count_web"
+                            android:textAppearance="@style/TextAppearance.PureLock.Body"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/ic_grid"
+                            android:tint="?attr/plSuccess" />
+
+                        <TextView
+                            android:id="@+id/tvAppBlocks"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/stats_count_app"
+                            android:textAppearance="@style/TextAppearance.PureLock.Body"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/ic_clock"
+                            android:tint="?attr/plWarning" />
+
+                        <TextView
+                            android:id="@+id/tvInterruptions"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/stats_count_interrupt"
+                            android:textAppearance="@style/TextAppearance.PureLock.Body"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="3dp"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/ic_trophy"
+                            android:tint="?attr/plSuccess" />
+
+                        <TextView
+                            android:id="@+id/tvAchCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/stats_count_ach"
+                            android:textAppearance="@style/TextAppearance.PureLock.Body"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Keep going -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardKeepGoing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap">
 
                 <LinearLayout
-                    android:id="@+id/listAchievements"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="vertical" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/card_padding">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_trophy"
+                        android:tint="?attr/plWarning" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/stats_keep_going"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/stats_keep_going_sub"
+                            android:textAppearance="@style/TextAppearance.PureLock.Body" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardAchievements"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/gap">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/card_padding">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/stats_achievements"
+                        android:textAppearance="@style/TextAppearance.PureLock.Section" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/stats_sessions"
+                            android:textAppearance="@style/TextAppearance.PureLock.Body" />
+
+                        <TextView
+                            android:id="@+id/tvSessions"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/listAchievements"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

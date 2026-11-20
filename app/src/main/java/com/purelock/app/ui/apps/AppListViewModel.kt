@@ -13,9 +13,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
+/** Sort orders from the All Apps sort popup (SPEC S07). */
+enum class AppSort { NAME, BLOCKED, LAUNCHES, USAGE, PINNED }
 
 data class AppItem(
     val packageName: String,
@@ -23,6 +25,8 @@ data class AppItem(
     val rule: BlockedApplication?,
     val allowed: Boolean,
     val usageTodayMs: Long,
+    val launchesToday: Int = 0,
+    val pinned: Boolean = false,
     /** Phone/launcher/system apps can never be blocked. */
     val alwaysAvailable: Boolean
 )
@@ -33,18 +37,26 @@ class AppListViewModel(app: Application) : AndroidViewModel(app) {
 
     private val installed = MutableStateFlow<List<Installed>>(emptyList())
     private val usage = MutableStateFlow<Map<String, Long>>(emptyMap())
+    private val launches = MutableStateFlow<Map<String, Int>>(emptyMap())
     private val query = MutableStateFlow("")
+    private val sort = MutableStateFlow(AppSort.NAME)
+    private val pins = MutableStateFlow(PinStore.pinned(app, PinStore.KIND_APPS))
     private val policy = AppBlockPolicy(app, Graph.usage)
 
     val loading = MutableStateFlow(true)
+
+    /** Current sort order, for the sort button label. */
+    val sortOrder: StateFlow<AppSort> = sort
 
     private val lists = combine(
         Graph.db.blockedAppDao().observeAll(),
         Graph.db.allowedAppDao().observeAll()
     ) { blocked, allowed -> blocked.associateBy { it.packageName } to allowed.map { it.packageName }.toSet() }
 
-    val items: StateFlow<List<AppItem>> = combine(installed, query, lists, usage) { apps, q, (blocked, allowed), usageMap ->
-        apps.asSequence()
+    val items: StateFlow<List<AppItem>> = combine(
+        installed, query, lists, usage, launches, sort, pins
+    ) { apps, q, (blocked, allowed), usageMap, launchesMap, sortOrder, pinned ->
+        val filtered = apps.asSequence()
             .filter { q.isBlank() || it.label.contains(q, ignoreCase = true) || it.packageName.contains(q, ignoreCase = true) }
             .map {
                 AppItem(
@@ -53,12 +65,26 @@ class AppListViewModel(app: Application) : AndroidViewModel(app) {
                     rule = blocked[it.packageName],
                     allowed = it.packageName in allowed,
                     usageTodayMs = usageMap[it.packageName] ?: 0L,
+                    launchesToday = launchesMap[it.packageName] ?: 0,
+                    pinned = it.packageName in pinned,
                     alwaysAvailable = policy.isNeverBlocked(it.packageName)
                 )
             }
-            // blocked apps first, then alphabetical
-            .sortedWith(compareByDescending<AppItem> { it.rule != null }.thenBy { it.label.lowercase() })
-            .toList()
+        when (sortOrder) {
+            AppSort.NAME -> filtered.sortedBy { it.label.lowercase() }
+            AppSort.BLOCKED -> filtered.sortedWith(
+                compareByDescending<AppItem> { it.rule != null }.thenBy { it.label.lowercase() }
+            )
+            AppSort.LAUNCHES -> filtered.sortedWith(
+                compareByDescending<AppItem> { it.launchesToday }.thenBy { it.label.lowercase() }
+            )
+            AppSort.USAGE -> filtered.sortedWith(
+                compareByDescending<AppItem> { it.usageTodayMs }.thenBy { it.label.lowercase() }
+            )
+            AppSort.PINNED -> filtered.sortedWith(
+                compareByDescending<AppItem> { it.pinned }.thenBy { it.label.lowercase() }
+            )
+        }.toList()
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     init {
@@ -74,11 +100,24 @@ class AppListViewModel(app: Application) : AndroidViewModel(app) {
             }
             installed.value = launchable
             usage.value = withContext(Dispatchers.IO) { Graph.usage.allToday() }
+            launches.value = withContext(Dispatchers.IO) {
+                Graph.usage.allLaunchesToday().associate { it.packageName to it.launches }
+            }
             loading.value = false
         }
     }
 
     fun setQuery(text: String) { query.value = text }
+
+    fun setSort(order: AppSort) { sort.value = order }
+
+    /** Long-press a row to pin/unpin it. Returns the new pinned state. */
+    fun togglePin(packageName: String): Boolean {
+        val nowPinned = packageName !in pins.value
+        PinStore.setPinned(getApplication(), PinStore.KIND_APPS, packageName, nowPinned)
+        pins.value = PinStore.pinned(getApplication(), PinStore.KIND_APPS)
+        return nowPinned
+    }
 
     /**
      * Saves the rule for one app. While a lock is active rules may only get stricter: blocks cannot be
@@ -101,6 +140,9 @@ class AppListViewModel(app: Application) : AndroidViewModel(app) {
      * Saves a complete rule (blocking conditions included). The [block] flag decides whether a
      * blocked_application row exists at all; [allowed] decides the allowlist row. While a lock is
      * active the new rule must not be weaker than the old one (see [weakensWhileLocked]).
+     *
+     * Per the rebuild brief, per-app "Always Allow" is removed: callers pass allowed = false
+     * (the profiles' Whitelist covers that use case), so this only ever clears the allowlist row.
      */
     suspend fun saveRule(
         item: AppItem,

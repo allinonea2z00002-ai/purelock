@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Simple vector approximation of the YouTube Shorts mark (red rounded square + white play). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FF0000"
+        android:pathData="M7,3 h10 a4,4 0 0 1 4,4 v10 a4,4 0 0 1 -4,4 H7 a4,4 0 0 1 -4,-4 V7 a4,4 0 0 1 4,-4 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M10,8.5 L16.5,12 L10,15.5 Z" />
+</vector>

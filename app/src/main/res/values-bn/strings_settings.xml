@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Area F (Drawer + Settings + Account + misc screens) strings — Bengali.
+     Same keys as res/values/strings_settings.xml (sf_set_ / sf_acct_). -->
+<resources>
+    <!-- Drawer (S22) -->
+    <string name="sf_set_drawer_title">PURELOCK</string>
+    <string name="sf_set_drawer_premium">প্রিমিয়াম সংস্করণ</string>
+    <string name="sf_set_drawer_dashboard">ড্যাশবোর্ড</string>
+    <string name="sf_set_drawer_take_break">বিরতি নিন</string>
+    <string name="sf_set_drawer_all_apps">সব অ্যাপ</string>
+    <string name="sf_set_drawer_all_sites">সব সাইট</string>
+    <string name="sf_set_drawer_keywords">কীওয়ার্ড</string>
+    <string name="sf_set_drawer_reels">রিলস/শর্টস ব্লক করুন</string>
+    <string name="sf_set_drawer_alarm">কঠোর অ্যালার্ম</string>
+    <string name="sf_set_drawer_settings">সেটিংস</string>
+    <string name="sf_set_drawer_organise">ড্যাশবোর্ড সাজান</string>
+    <string name="sf_set_drawer_block_screen">ব্লক স্ক্রিন</string>
+    <string name="sf_set_drawer_rate">অ্যাপটি রেট করুন</string>
+    <string name="sf_set_drawer_share">শেয়ার করুন</string>
+    <string name="sf_set_drawer_backup">ব্যাকআপ ও রিস্টোর</string>
+    <string name="sf_set_drawer_help">সাহায্য</string>
+    <string name="sf_set_drawer_feedback">মতামত পাঠান</string>
+    <string name="sf_set_drawer_about">সম্পর্কে</string>
+    <string name="sf_set_drawer_dark_mode">ডার্ক মোড</string>
+    <string name="sf_set_not_available">এই স্ক্রিনটি এখনো উপলব্ধ নয়</string>
+
+    <!-- Settings (S23) -->
+    <string name="sf_set_title">সেটিংস</string>
+    <string name="sf_set_group_app">অ্যাপ ব্যবস্থাপনা</string>
+    <string name="sf_set_group_custom">কাস্টমাইজেশন</string>
+    <string name="sf_set_group_blocking">ব্লকিং অপশন</string>
+    <string name="sf_set_group_time">সময় ও সতর্কতা</string>
+    <string name="sf_set_group_notif">বিজ্ঞপ্তি</string>
+
+    <string name="sf_set_uninstall">PureLock আনইনস্টল করুন</string>
+    <string name="sf_set_uninstall_desc">আপনার ডিভাইস থেকে PureLock সম্পূর্ণভাবে সরান।</string>
+    <string name="sf_set_pause">PureLock বিরতি দিন</string>
+    <string name="sf_set_pause_desc">অ্যাপ ব্লকিং ও পর্যবেক্ষণ সাময়িকভাবে বিরতি দিন বা আবার চালু করুন।</string>
+    <string name="sf_set_sync_hidden">লুকানো অ্যাপ সিঙ্ক করুন</string>
+    <string name="sf_set_sync_hidden_desc">ট্র্যাকিং বা ব্লক করার জন্য অ্যাপ তালিকায় দেখা যায় না এমন অ্যাপ যোগ করুন।</string>
+
+    <string name="sf_set_launcher">ডিফল্ট লঞ্চার হিসেবে সেট করুন</string>
+    <string name="sf_set_launcher_desc">PureLock কে হোম অ্যাপ হিসেবে সেট করুন</string>
+    <string name="sf_set_launcher_hint">Home চাপুন &gt; PureLock নির্বাচন করুন &gt; Back চাপুন</string>
+    <string name="sf_set_rotation">হোম স্ক্রিন ঘূর্ণন অনুমোদন করুন</string>
+    <string name="sf_set_rotation_desc">আপনার স্ক্রিনের অভিমুখ অনুযায়ী হোম স্ক্রিন ঘূর্ণন চালু বা বন্ধ করুন।</string>
+    <string name="sf_set_language">ভাষা পরিবর্তন করুন</string>
+    <string name="sf_set_language_desc">আপনার পছন্দের অ্যাপের ভাষা নির্বাচন করুন।</string>
+    <string name="sf_set_quote">অনুপ্রেরণামূলক উক্তি</string>
+    <string name="sf_set_quote_desc">ব্লক স্ক্রিনে একটি অনুপ্রেরণামূলক উক্তি দেখান।</string>
+    <string name="sf_set_redirect">রিডাইরেক্ট URL সেট করুন</string>
+    <string name="sf_set_redirect_desc">ব্লক স্ক্রিনে একটি অনুপ্রেরণামূলক উক্তি দেখান।</string>
+    <string name="sf_set_start_day">দিনের শুরু সেট করুন</string>
+    <string name="sf_set_start_day_desc">আপনার দিন কখন শুরু হয় তা নির্বাচন করুন (যেমন, মধ্যরাত বা ঘুম থেকে ওঠার সময়)।</string>
+    <string name="sf_set_pause_duration">বিরতির সময়কাল চালু করুন</string>
+    <string name="sf_set_pause_duration_desc">প্রোফাইল বিরতি দেওয়ার আগে বিরতির সময়কাল নির্বাচন করা এড়িয়ে যান। প্রোফাইলটি ম্যানুয়ালি আবার চালু না করা পর্যন্ত অনির্দিষ্টকালের জন্য বিরত থাকবে।</string>
+
+    <string name="sf_set_block_browsers">অসমর্থিত ব্রাউজার ব্লক করুন</string>
+    <string name="sf_set_block_browsers_desc">অবাঞ্ছিত কনটেন্ট ব্লক করতে PureLock সমর্থন করে না এমন ব্রাউজার ব্যবহার বন্ধ করুন।</string>
+    <string name="sf_set_block_split">স্প্লিট স্ক্রিন ব্লক করুন</string>
+    <string name="sf_set_block_split_desc">মাল্টিটাস্কিংয়ের বিভ্রান্তি এড়াতে স্প্লিট স্ক্রিন ব্যবহার বন্ধ করুন। (অ্যাক্সেসিবিলিটি অনুমতি প্রয়োজন)</string>
+    <string name="sf_set_block_power">পাওয়ার অফ ব্লক করুন</string>
+    <string name="sf_set_block_power_desc">নিরবচ্ছিন্ন মনোযোগ নিশ্চিত করতে ডিভাইস বন্ধ করা বন্ধ করুন। এটি সব ডিভাইসে কাজ নাও করতে পারে। (অ্যাক্সেসিবিলিটি অনুমতি প্রয়োজন)</string>
+    <string name="sf_set_block_recent">সাম্প্রতিক অ্যাপ ব্লক করুন</string>
+    <string name="sf_set_block_recent_desc">বিভ্রান্তি কমাতে ও মনোযোগ বাড়াতে সাম্প্রতিক অ্যাপের স্ক্রিনে প্রবেশ বন্ধ করুন। (অ্যাক্সেসিবিলিটি অনুমতি প্রয়োজন)</string>
+
+    <string name="sf_set_timer_type">অবশিষ্ট টাইমারের ধরন</string>
+    <string name="sf_set_timer_type_desc">অবশিষ্ট সময় কীভাবে দেখানো হবে তা নির্বাচন করুন: অন-স্ক্রিন টাইমার, বিজ্ঞপ্তি, অথবা লুকান।</string>
+    <string name="sf_set_low_time">কম সময়ের সতর্কতা</string>
+    <string name="sf_set_low_time_desc">সময় শেষ হয়ে আসলে সতর্কতা পান (যেমন, ১০, ৫ বা ১ মিনিট বাকি থাকলে)।</string>
+
+    <string name="sf_set_pomodoro">পোমোডোরো বিরতি</string>
+    <string name="sf_set_pomodoro_desc">বিরতি নেওয়ার সময় হলে বিজ্ঞপ্তি পান।</string>
+
+    <!-- Settings dialogs -->
+    <string name="sf_set_uninstall_confirm">PureLock আনইনস্টল করবেন?</string>
+    <string name="sf_set_uninstall_confirm_msg">এটি আপনার ডিভাইস থেকে PureLock ও এর সব ব্লকিং নিয়ম সরিয়ে দেবে।</string>
+    <string name="sf_set_pause_msg_on">ব্লকিং ও পর্যবেক্ষণ বর্তমানে চালু আছে। এখন বিরতি দেবেন?</string>
+    <string name="sf_set_pause_msg_off">ব্লকিং ও পর্যবেক্ষণ বিরত আছে। এখন আবার চালু করবেন?</string>
+    <string name="sf_set_pause_action">বিরতি দিন</string>
+    <string name="sf_set_resume_action">আবার চালু করুন</string>
+    <string name="sf_set_paused_toast">PureLock বিরত আছে</string>
+    <string name="sf_set_resumed_toast">PureLock আবার চালু হয়েছে</string>
+    <string name="sf_set_language_title">ভাষা নির্বাচন করুন</string>
+    <string name="sf_set_quote_hint">একটি অনুপ্রেরণামূলক উক্তি লিখুন</string>
+    <string name="sf_set_redirect_hint">https://example.com</string>
+    <string name="sf_set_redirect_invalid">http:// বা https:// দিয়ে শুরু হয় এমন একটি সঠিক URL লিখুন</string>
+    <string name="sf_set_timer_onscreen">অন-স্ক্রিন টাইমার</string>
+    <string name="sf_set_timer_notification">বিজ্ঞপ্তি</string>
+    <string name="sf_set_timer_hidden">লুকান</string>
+    <string name="sf_set_saved">সংরক্ষিত হয়েছে</string>
+    <string name="sf_set_home_settings_unavailable">হোম সেটিংস খোলা যায়নি</string>
+
+    <!-- Strict Alarm -->
+    <string name="sf_set_alarm_title">কঠোর অ্যালার্ম</string>
+    <string name="sf_set_alarm_add">অ্যালার্ম যোগ করুন</string>
+    <string name="sf_set_alarm_empty">এখনো কোনো কঠোর অ্যালার্ম নেই। সময়মতো জাগতে একটি যোগ করুন — এটি শুধু বন্ধ করা যায়, স্নুজ করা যায় না।</string>
+    <string name="sf_set_alarm_label_title">অ্যালার্মের লেবেল</string>
+    <string name="sf_set_alarm_label_default">অ্যালার্ম</string>
+    <string name="sf_set_alarm_stop">বন্ধ করুন</string>
+
+    <!-- Adult Content -->
+    <string name="sf_set_adult_title">প্রাপ্তবয়স্ক কনটেন্ট ব্লক করুন</string>
+    <string name="sf_set_adult_master">প্রাপ্তবয়স্ক কনটেন্ট ব্লক করুন</string>
+    <string name="sf_set_adult_master_desc">এটি চালু থাকলে প্রাপ্তবয়স্ক ওয়েবসাইট ও কনটেন্ট ব্লক হয়।</string>
+    <string name="sf_set_adult_safesearch">SafeSearch চালু আছে</string>
+    <string name="sf_set_adult_safesearch_note">SafeSearch গুগল ও বিং অনুসন্ধানে স্পষ্ট ফলাফল ফিল্টার করে। এটি নিচের Private DNS-এর সঙ্গে একসাথে কাজ করে।</string>
+    <string name="sf_set_adult_dns_title">Private DNS</string>
+    <string name="sf_set_adult_dns_desc">Private DNS আপনার পুরো ফোনে প্রাপ্তবয়স্ক, জুয়া ও ডেটিং সাইট ব্লক করে, এমনকি ব্রাউজারের বাইরেও। আপনার Private DNS প্রদানকারীর হোস্টনেম হিসেবে নিচের একটি সেট করুন:</string>
+    <string name="sf_set_adult_dns_kahf">Kahf Guard (Moderate)</string>
+    <string name="sf_set_adult_dns_cf">Cloudflare Family</string>
+    <string name="sf_set_adult_dns_check">আপনার DNS সুরক্ষা পরীক্ষা করুন</string>
+    <string name="sf_set_adult_dns_open">সিস্টেম সেটিংস খুলুন</string>
+    <string name="sf_set_adult_keywords">কীওয়ার্ড পরিচালনা করুন</string>
+    <string name="sf_set_adult_keywords_desc">স্ক্রিনে কোনো কীওয়ার্ড দেখা গেলে অ্যাপ ও সাইট ব্লক করুন।</string>
+
+    <!-- Notifications (bell) -->
+    <string name="sf_set_notif_title">বিজ্ঞপ্তি</string>
+    <string name="sf_set_notif_empty">এখনো কোনো বিজ্ঞপ্তি নেই</string>
+
+    <!-- Organise Dashboard -->
+    <string name="sf_set_organise_title">ড্যাশবোর্ড সাজান</string>
+    <string name="sf_set_organise_desc">ড্যাশবোর্ডে কোন বিভাগগুলো দেখাবে তা নির্বাচন করুন। লুকানো বিভাগ আবার চালু না করা পর্যন্ত দেখা যাবে না।</string>
+    <string name="sf_set_organise_analytics">অ্যানালিটিক্স</string>
+    <string name="sf_set_organise_take_break">বিরতি নিন</string>
+    <string name="sf_set_organise_mode">মোড</string>
+    <string name="sf_set_organise_quick">দ্রুত কাজ</string>
+    <string name="sf_set_organise_profiles">প্রোফাইল</string>
+    <string name="sf_set_organise_templates">প্রোফাইল টেমপ্লেট</string>
+    <string name="sf_set_organise_show_all">সব বিভাগ দেখান</string>
+
+    <!-- Backup & Restore -->
+    <string name="sf_set_backup_title">ব্যাকআপ ও পুনরুদ্ধার</string>
+    <string name="sf_set_backup_desc">আপনার ব্লকিং নিয়ম ও পরিসংখ্যান JSON ফাইল হিসেবে ব্যাকআপ করুন, অথবা আগে সংরক্ষিত একটি পুনরুদ্ধার করুন। ব্যাকআপে কখনো অবস্থানের ইতিহাস, নিরাপত্তা ইভেন্ট বা সক্রিয় লক থাকে না।</string>
+    <string name="sf_set_backup_export">ব্যাকআপ এক্সপোর্ট করুন</string>
+    <string name="sf_set_backup_import">ব্যাকআপ ইমপোর্ট করুন</string>
+
+    <!-- Help -->
+    <string name="sf_set_help_title">সহায়তা</string>
+    <string name="sf_set_help_q1">PureLock কী?</string>
+    <string name="sf_set_help_a1">PureLock আপনাকে মনোযোগী থাকতে সাহায্য করে বিভ্রান্তিকর অ্যাপ, ওয়েবসাইট, ফিড ও কীওয়ার্ড ব্লক করে — টাইমার, সময়সূচি বা আপনার নির্বাচিত জায়গায়।</string>
+    <string name="sf_set_help_q2">আমি কীভাবে একটি অ্যাপ ব্লক করব?</string>
+    <string name="sf_set_help_a2">ড্রয়ার থেকে সব অ্যাপ খুলুন, অ্যাপটিতে ট্যাপ করুন, তারপর দৈনিক ব্যবহারের সীমা বা সময়ের ব্যবধানের মতো একটি ব্লকিং শর্ত নির্বাচন করুন।</string>
+    <string name="sf_set_help_q3">Strict Mode কী?</string>
+    <string name="sf_set_help_a3">Strict Mode সবচেয়ে শক্তিশালী লক। এটি ফোনের সেটিংস ও অ্যাপ আনইনস্টল করা ব্লক করে, PureLock নিজেও, যতক্ষণ না আপনার নির্বাচিত নিষ্ক্রিয়করণ পদ্ধতি ব্যবহার করা হয়।</string>
+    <string name="sf_set_help_q4">ব্লকিং কীভাবে বিরতি দেব?</string>
+    <string name="sf_set_help_a4">সেটিংস খুলুন, তারপর PureLock বিরতি দিন। একই জায়গা থেকে আবার চালু না করা পর্যন্ত ব্লকিং ও পর্যবেক্ষণ বিরত থাকবে।</string>
+    <string name="sf_set_help_q5">সব জায়গায় প্রাপ্তবয়স্ক সাইট কীভাবে ব্লক করব?</string>
+    <string name="sf_set_help_a5">Block Adult Content চালু করুন, তারপর আপনার ফোনে Private DNS হিসেবে medium.kahfguard.com সেট করুন। Private DNS শুধু ব্রাউজারে নয়, সব অ্যাপে প্রাপ্তবয়স্ক সাইট ব্লক করে।</string>
+    <string name="sf_set_help_q6">আমার সেটিংসের ব্যাকআপ কীভাবে নেব?</string>
+    <string name="sf_set_help_a6">ব্যাকআপ ও পুনরুদ্ধার খুলুন এবং ব্যাকআপ এক্সপোর্ট করুন-এ ট্যাপ করুন। JSON ফাইলটি নিরাপদ জায়গায় সংরক্ষণ করুন; পরে এই বা অন্য ফোনে এটি ইমপোর্ট করতে পারবেন।</string>
+
+    <!-- About -->
+    <string name="sf_set_about_title">সম্পর্কে</string>
+    <string name="sf_set_about_text">PureLock আপনাকে মনোযোগী থাকতে সাহায্য করে বিভ্রান্তিকর অ্যাপ, ওয়েবসাইট ও ফিড ব্লক করে — টাইমার, আপনার নির্বাচিত জায়গায়, অথবা আপনি থামতে না চাওয়া পর্যন্ত।</string>
+    <string name="sf_set_about_version">সংস্করণ %1$s</string>
+    <string name="sf_set_about_package">প্যাকেজ: %1$s</string>
+
+    <!-- Account tab -->
+    <string name="sf_acct_user">PureLock ব্যবহারকারী</string>
+    <string name="sf_acct_streak">দিনের ধারাবাহিকতা</string>
+    <string name="sf_acct_blocks">মোট ব্লক</string>
+    <string name="sf_acct_rate">অ্যাপটি রেট করুন</string>
+    <string name="sf_acct_share">শেয়ার করুন</string>
+    <string name="sf_acct_feedback">মতামত পাঠান</string>
+    <string name="sf_acct_feedback_subject">PureLock feedback</string>
+    <string name="sf_acct_no_email">কোনো ইমেইল অ্যাপ পাওয়া যায়নি</string>
+    <string name="sf_acct_no_store">Play Store উপলব্ধ নয়</string>
+    <string name="sf_acct_share_text">PureLock ব্যবহার করুন — বিভ্রান্তিকর অ্যাপ, সাইট ও ফিড ব্লক করে মনোযোগী থাকুন: https://play.google.com/store/apps/details?id=com.purelock.app</string>
+</resources>

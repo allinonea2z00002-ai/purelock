@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Profiles system + create flow (SPEC S12, S13, S08, S20, S21). Prefix sf_profile_. -->
+
+    <!-- Create New Profile (S12) -->
+    <string name="sf_profile_create_title">নতুন প্রোফাইল তৈরি করুন</string>
+    <string name="sf_profile_create_subtitle">আপনার প্রোফাইলের একটি অনন্য নাম দিয়ে আপনার ফোকাস ব্যক্তিগত করুন।</string>
+    <string name="sf_profile_name_hint">যেমন: ঘুম, কাজ, বা ব্যক্তিগত</string>
+    <string name="sf_profile_next">পরবর্তী</string>
+    <string name="sf_profile_need_name">প্রথমে আপনার প্রোফাইলের একটি নাম লিখুন।</string>
+    <string name="sf_profile_not_found">প্রোফাইল পাওয়া যায়নি</string>
+
+    <!-- Choose Blocking Type (S13) -->
+    <string name="sf_profile_type_title">ব্লক করার ধরন বেছে নিন</string>
+    <string name="sf_profile_type_subtitle">আপনি কীভাবে আপনার ফোনের ব্যবহার সীমিত করতে চান তা ঠিক করুন।</string>
+    <string name="sf_profile_blocklist_title">ব্লকলিস্ট</string>
+    <string name="sf_profile_blocklist_desc">নির্দিষ্ট বিভ্রান্তি নিয়ন্ত্রণ করতে নির্বাচিত অ্যাপ, ওয়েবসাইট বা কীওয়ার্ডের উপর সীমা নির্ধারণ করুন।</string>
+    <string name="sf_profile_whitelist_title">হোয়াইটলিস্ট</string>
+    <string name="sf_profile_whitelist_desc">নির্বাচিত অ্যাপগুলিতে অবাধ প্রবেশাধিকার রেখে সামগ্রিক ফোন ব্যবহারের উপর সীমা নির্ধারণ করুন।</string>
+
+    <!-- Set Blocking Schedule (S20/S21 + variants by analogy) -->
+    <string name="sf_profile_schedule_title">ব্লক করার সময়সূচি নির্ধারণ করুন</string>
+    <string name="sf_profile_schedule_subtitle">শর্তটি কখন এবং কীভাবে সক্রিয় হবে তা নির্ধারণ করুন।</string>
+    <string name="sf_profile_block_what">আমি যা ব্লক করতে চাই</string>
+    <string name="sf_profile_block_launch">অ্যাপ চালু</string>
+    <string name="sf_profile_block_notification">নোটিফিকেশন</string>
+    <string name="sf_profile_notification_note">নোটিফিকেশন ব্লক করা প্রোফাইলের সাথে সংরক্ষিত হয়। PureLock-এর এখনও নোটিফিকেশন লিসেনার নেই, তাই নোটিফিকেশন ব্লক করা হয় না।</string>
+    <string name="sf_profile_in_intervals">সময়সীমার মধ্যে</string>
+    <string name="sf_profile_once_spent">এতটুকু ব্যবহারের পর</string>
+    <string name="sf_profile_per_app">প্রতি অ্যাপ</string>
+    <string name="sf_profile_combined">একত্রে</string>
+    <string name="sf_profile_motivation_heading">এবং অনুপ্রেরণামূলক বার্তা দেখান</string>
+    <string name="sf_profile_quick_heading">এতক্ষণ ব্লক করুন</string>
+    <string name="sf_profile_launches_day">প্রতিদিন</string>
+    <string name="sf_profile_launches_hour">প্রতি ঘণ্টা</string>
+    <string name="sf_profile_wait_after">ব্যবহার করুন</string>
+    <string name="sf_profile_wait_for">অপেক্ষা করুন</string>
+    <string name="sf_profile_goal_app_label">লক্ষ্য অ্যাপ</string>
+    <string name="sf_profile_goal_minutes">কত মিনিট ব্যয় করবেন</string>
+    <string name="sf_profile_interval_start_title">শুরু</string>
+    <string name="sf_profile_interval_end_title">শেষ</string>
+    <string name="sf_profile_need_interval">অন্তত একটি সময়সীমা যোগ করুন, অথবা Full Day চালু করুন।</string>
+    <string name="sf_profile_interval_kept_one">এই প্রোফাইলের জন্য শুধুমাত্র প্রথম সময়সীমাটি সংরক্ষিত হবে।</string>
+
+    <!-- Pick Apps & Sites (after the schedule step) -->
+    <string name="sf_profile_pick_title">অ্যাপ ও সাইট বেছে নিন</string>
+    <string name="sf_profile_pick_subtitle_blocklist">এই প্রোফাইলটি যে অ্যাপ ও সাইটগুলো সীমিত করবে তা বেছে নিন।</string>
+    <string name="sf_profile_pick_subtitle_whitelist">যে অ্যাপগুলো অনুমোদিত থাকবে তা বেছে নিন। বাকি সবকিছু সীমিত হবে।</string>
+    <string name="sf_profile_tab_apps">অ্যাপ</string>
+    <string name="sf_profile_tab_sites">সাইট</string>
+    <string name="sf_profile_search_apps">অ্যাপ খুঁজুন</string>
+    <string name="sf_profile_add_site_hint">একটি ওয়েবসাইট যোগ করুন, যেমন facebook.com</string>
+    <string name="sf_profile_no_sites">এখনও কোনো সাইট যোগ করা হয়নি। উপরে একটি ডোমেইন লিখে Add চাপুন।</string>
+    <string name="sf_profile_invalid_domain">একটি সঠিক ডোমেইন লিখুন, যেমন facebook.com</string>
+    <string name="sf_profile_saved">প্রোফাইল সংরক্ষিত হয়েছে</string>
+
+    <!-- Dashboard profile-card schedule summaries (Area A reads these via ProfileDisplay) -->
+    <string name="sf_profile_summary_interval">%1$s - %2$s</string>
+    <string name="sf_profile_summary_all_day">সারাদিন</string>
+    <string name="sf_profile_summary_mins_hourly">প্রতি ঘণ্টায় %02d মিনিট</string>
+    <string name="sf_profile_summary_launches_hourly">প্রতি ঘণ্টায় %d বার চালু</string>
+    <string name="sf_profile_summary_wait">%2$d মিনিট ব্যবহারের পর %1$d মিনিট অপেক্ষা</string>
+    <string name="sf_profile_summary_goal">%2$s-এ %1$d মিনিট না হওয়া পর্যন্ত</string>
+    <string name="sf_profile_summary_at_place">%1$s-এ থাকলে</string>
+    <string name="sf_profile_summary_away_place">%1$s থেকে দূরে থাকলে</string>
+    <string name="sf_profile_summary_none">এখনও কোনো সময়সূচি নেই</string>
+</resources>

@@ -32,4 +32,36 @@ object DurationFormat {
 
     fun distance(meters: Float): String =
         if (meters >= 1000f) "%.2f km".format(meters / 1000f) else "%d m".format(meters.toInt())
+
+    // ------------------------------------------------------------------
+    // Stay Focused formats (SPEC §1.2) — exact wording, do NOT use compact() for these.
+    // ------------------------------------------------------------------
+
+    /** Total screen time, always "03 hrs 05 mins" (zero-padded hours). */
+    fun formatHrsMins(ms: Long): String {
+        val totalMinutes = ms.coerceAtLeast(0) / 60_000
+        return "%02d hrs %02d mins".format(totalMinutes / 60, totalMinutes % 60)
+    }
+
+    /**
+     * Per-app / timeline duration: "41 mins 11 sec" under an hour, "03 sec" under a minute,
+     * "01 hrs 05 mins" at an hour or more.
+     */
+    fun formatMinsSecs(ms: Long): String {
+        val totalSeconds = ms.coerceAtLeast(0) / 1000
+        return when {
+            totalSeconds < 60 -> "%02d sec".format(totalSeconds)
+            totalSeconds < 3600 -> "%02d mins %02d sec".format(totalSeconds / 60, totalSeconds % 60)
+            else -> formatHrsMins(ms)
+        }
+    }
+
+    /** Dashboard delta vs yesterday, always with a "+" prefix: "+535 percent". */
+    fun formatDeltaPercent(percent: Int): String = "+$percent percent"
+
+    /** Launches delta vs yesterday: "+654 launches". */
+    fun formatDeltaLaunches(count: Int): String = "+$count launches"
+
+    /** Launch count label: "304 launches" (singular "1 launch"). */
+    fun formatLaunches(count: Int): String = if (count == 1) "1 launch" else "$count launches"
 }

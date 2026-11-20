@@ -34,7 +34,11 @@ data class UsageAnalytics(
     val browsingMs: Long,
     val browsingPerApp: List<UsageAppRow>,
     val unlocks: Int,
-    val timeline: List<TimelineRow>
+    val timeline: List<TimelineRow>,
+    /** Foreground opens per hour (index 0 = 00:00-01:00), for the App Launches chart. */
+    val hourlyLaunches: IntArray,
+    /** Screen wake-ups per hour (index 0 = 00:00-01:00), for the Screen Unlocks chart. */
+    val hourlyUnlocks: IntArray
 )
 
 class StatsViewModel(app: Application) : AndroidViewModel(app) {
@@ -87,7 +91,9 @@ class StatsViewModel(app: Application) : AndroidViewModel(app) {
                 browsingMs = day.browsingMs,
                 browsingPerApp = browsing,
                 unlocks = day.unlocks,
-                timeline = timeline
+                timeline = timeline,
+                hourlyLaunches = day.hourlyLaunches,
+                hourlyUnlocks = day.hourlyUnlocks
             )
         }
     }

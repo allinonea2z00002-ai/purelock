@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pick Apps & Sites (profile create flow, after the schedule step):
+     Apps | Sites segmented tabs, checkable lists, domain add field, Save. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
+    android:orientation="vertical"
+    android:padding="@dimen/screen_padding">
+
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@drawable/bg_sf_circle_grey"
+        android:contentDescription="@string/sf_apps_cd_back"
+        android:src="@drawable/ic_sf_arrow_back" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/sf_profile_pick_title"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvPickSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/sf_profile_pick_subtitle_blocklist"
+        android:textAppearance="@style/TextAppearance.PureLock.Body"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_sf_segmented"
+        android:orientation="horizontal"
+        android:padding="4dp">
+
+        <TextView
+            android:id="@+id/tvTabApps"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_sf_segment_selected"
+            android:gravity="center"
+            android:padding="12dp"
+            android:text="@string/sf_profile_tab_apps"
+            android:textColor="@color/sf_primary"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvTabSites"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="12dp"
+            android:text="@string/sf_profile_tab_sites"
+            android:textColor="@color/sf_text"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_sf_search"
+        android:drawableStart="@drawable/ic_sf_search"
+        android:drawablePadding="8dp"
+        android:hint="@string/sf_profile_search_apps"
+        android:inputType="text"
+        android:maxLines="1"
+        android:padding="16dp"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:id="@+id/rowAddSite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etSiteDomain"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_sf_search"
+            android:hint="@string/sf_profile_add_site_hint"
+            android:inputType="textUri"
+            android:maxLines="1"
+            android:padding="16dp"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="16sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddSite"
+            style="@style/Widget.PureLock.PrimaryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/action_add" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listPick"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/tvEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="@string/sf_apps_no_apps"
+        android:textAppearance="@style/TextAppearance.PureLock.Body"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSave"
+        style="@style/Widget.PureLock.PrimaryButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/action_save" />
+</LinearLayout>

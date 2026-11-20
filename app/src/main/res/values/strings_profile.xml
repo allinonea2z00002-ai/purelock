@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Profiles system + create flow (SPEC S12, S13, S08, S20, S21). Prefix sf_profile_. -->
+
+    <!-- Create New Profile (S12) -->
+    <string name="sf_profile_create_title">Create New Profile</string>
+    <string name="sf_profile_create_subtitle">Personalize your focus by giving your profile a unique name.</string>
+    <string name="sf_profile_name_hint">e.g. Sleep, Work, or Personal</string>
+    <string name="sf_profile_next">Next</string>
+    <string name="sf_profile_need_name">Type a name for your profile first.</string>
+    <string name="sf_profile_not_found">Profile not found</string>
+
+    <!-- Choose Blocking Type (S13) -->
+    <string name="sf_profile_type_title">Choose Blocking Type</string>
+    <string name="sf_profile_type_subtitle">Customize how you want to limit your phone usage.</string>
+    <string name="sf_profile_blocklist_title">Blocklist</string>
+    <string name="sf_profile_blocklist_desc">Set limits on selected apps, websites, or keywords to manage specific distractions.</string>
+    <string name="sf_profile_whitelist_title">Whitelist</string>
+    <string name="sf_profile_whitelist_desc">Set limits on overall phone usage while allowing unrestricted access to selected apps.</string>
+
+    <!-- Set Blocking Schedule (S20/S21 + variants by analogy) -->
+    <string name="sf_profile_schedule_title">Set Blocking Schedule</string>
+    <string name="sf_profile_schedule_subtitle">Define when and how the condition should become active.</string>
+    <string name="sf_profile_block_what">I Want to Block</string>
+    <string name="sf_profile_block_launch">App Launch</string>
+    <string name="sf_profile_block_notification">Notification</string>
+    <string name="sf_profile_notification_note">Notification blocking is saved with the profile. PureLock has no notification listener yet, so notifications are not blocked.</string>
+    <string name="sf_profile_in_intervals">In Intervals</string>
+    <string name="sf_profile_once_spent">Once I Have Spent</string>
+    <string name="sf_profile_per_app">Per App</string>
+    <string name="sf_profile_combined">Combined</string>
+    <string name="sf_profile_motivation_heading">and Show Motivational Text</string>
+    <string name="sf_profile_quick_heading">Block for</string>
+    <string name="sf_profile_launches_day">Per day</string>
+    <string name="sf_profile_launches_hour">Per hour</string>
+    <string name="sf_profile_wait_after">Use for</string>
+    <string name="sf_profile_wait_for">Wait for</string>
+    <string name="sf_profile_goal_app_label">Goal App</string>
+    <string name="sf_profile_goal_minutes">Minutes to spend</string>
+    <string name="sf_profile_interval_start_title">Interval starts at</string>
+    <string name="sf_profile_interval_end_title">Interval ends at</string>
+    <string name="sf_profile_need_interval">Add at least one time interval, or turn on Full Day.</string>
+    <string name="sf_profile_interval_kept_one">Only the first time interval is saved for this profile.</string>
+
+    <!-- Pick Apps & Sites (after the schedule step) -->
+    <string name="sf_profile_pick_title">Choose Apps and Sites</string>
+    <string name="sf_profile_pick_subtitle_blocklist">Choose the apps and sites this profile limits.</string>
+    <string name="sf_profile_pick_subtitle_whitelist">Choose the apps that stay allowed. Everything else is limited.</string>
+    <string name="sf_profile_tab_apps">Apps</string>
+    <string name="sf_profile_tab_sites">Sites</string>
+    <string name="sf_profile_search_apps">Search apps</string>
+    <string name="sf_profile_add_site_hint">Add a website, e.g. facebook.com</string>
+    <string name="sf_profile_no_sites">No sites added yet. Type a domain above and tap Add.</string>
+    <string name="sf_profile_invalid_domain">Type a valid domain, e.g. facebook.com</string>
+    <string name="sf_profile_saved">Profile saved</string>
+
+    <!-- Dashboard profile-card schedule summaries (Area A reads these via ProfileDisplay) -->
+    <string name="sf_profile_summary_interval">%1$s - %2$s</string>
+    <string name="sf_profile_summary_all_day">All day</string>
+    <string name="sf_profile_summary_mins_hourly">%02d mins hourly</string>
+    <string name="sf_profile_summary_launches_hourly">%d launches hourly</string>
+    <string name="sf_profile_summary_wait">Wait %1$d min after %2$d min</string>
+    <string name="sf_profile_summary_goal">Until %1$d min on %2$s</string>
+    <string name="sf_profile_summary_at_place">At %1$s</string>
+    <string name="sf_profile_summary_away_place">Away from %1$s</string>
+    <string name="sf_profile_summary_none">No schedule yet</string>
+</resources>

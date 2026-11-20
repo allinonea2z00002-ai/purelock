@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Reusable settings/account row (SPEC S23): tinted icon circle + bold title + grey
+     description (+ optional blue extra line) + chevron OR a green switch on the right.
+     Texts, icon, tints and the trailing control are set in code; the description,
+     extra line, chevron and switch are hidden when unused. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp">
+
+    <FrameLayout
+        android:id="@+id/rowIconBg"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_sf_circle_tint"
+        android:backgroundTint="@color/sf_blue_tint">
+
+        <ImageView
+            android:id="@+id/rowIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:contentDescription="@null" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/rowTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/sf_text"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/rowDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/sf_muted"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/rowExtra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/sf_primary"
+            android:textSize="14sp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/rowChevron"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_sf_chevron_right"
+        android:tint="@color/sf_muted2" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/rowSwitch"
+        style="@style/Widget.PureLock.GreenSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:visibility="gone" />
+</LinearLayout>

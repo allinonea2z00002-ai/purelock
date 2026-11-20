@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Settings (SPEC S23): short gradient header with back arrow + centred title,
+     one big white card with the App Management / Customization / Blocking Options /
+     Time &amp; Alerts / Notifications groups. Exactly the rows shown in S23. -->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
+    android:clipToPadding="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:background="@drawable/bg_sf_header">
+
+            <ImageButton
+                android:id="@+id/btnBackSettings"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="start|center_vertical"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/bg_sf_circle_white20"
+                android:contentDescription="@string/action_close"
+                android:src="@drawable/ic_sf_back"
+                android:tint="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/sf_set_title"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="-28dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sf_set_group_app"
+                    android:textColor="@color/sf_text"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <include
+                    android:id="@+id/rowSetUninstall"
+                    layout="@layout/item_sf_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/rowSetPause"
+                    layout="@layout/item_sf_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/rowSetSyncHidden"
+                    layout="@layout/item_sf_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/sf_set_group_custom"
+                    android:textColor="@color/sf_text"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <include
+                    android:id="@+id/rowSetLauncher"
+                    layout="@layout/item_sf_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/rowSetRotation"
+                    layout="@layout/item_sf_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/rowSetLanguage"
+                    layout="@layout/item_sf_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/rowSetQuote"
+                    layout="@layout/item_sf_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/rowSetRedirect"
+                    layout="@layout/item_sf_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/rowSetStartDay"
+                    layout="@layout/item_sf_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/rowSetPauseDuration"
+                    layout="@layout/item_sf_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/sf_set_group_blocking"
+                    android:textColor="@color/sf_text"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <include
+                    android:id="@+id/rowSetBlockBrowsers"
+                    layout="@layout/item_sf_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/rowSetBlockSplit"
+                    layout="@layout/item_sf_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/rowSetBlockPower"
+                    layout="@layout/item_sf_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/rowSetBlockRecent"
+                    layout="@layout/item_sf_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/sf_set_group_time"
+                    android:textColor="@color/sf_text"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <include
+                    android:id="@+id/rowSetTimerType"
+                    layout="@layout/item_sf_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/rowSetLowTime"
+                    layout="@layout/item_sf_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/sf_set_group_notif"
+                    android:textColor="@color/sf_text"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <include
+                    android:id="@+id/rowSetPomodoro"
+                    layout="@layout/item_sf_setting_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

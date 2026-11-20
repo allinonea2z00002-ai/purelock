@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Gradient circle for Analytics summary icons (SPEC §1.1: purple -> blue -> cyan). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <gradient
+        android:angle="0"
+        android:endColor="@color/sf_gradient_end"
+        android:centerColor="@color/sf_gradient_mid"
+        android:startColor="@color/sf_gradient_start"
+        android:type="linear" />
+</shape>

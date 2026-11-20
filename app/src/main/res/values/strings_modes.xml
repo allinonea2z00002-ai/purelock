@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Modes area (SPEC S04–S06). "Stay Focused" in the reference becomes "PureLock". -->
+<resources>
+    <string name="sf_modes_title">Modes</string>
+    <string name="sf_modes_select_mode">Select Mode</string>
+    <string name="sf_modes_active">Active</string>
+    <string name="sf_modes_activate">Activate</string>
+    <string name="sf_modes_next">Next</string>
+    <string name="sf_modes_close">Close</string>
+    <string name="sf_modes_open_menu">Open menu</string>
+    <string name="sf_modes_open_notifications">Open notifications</string>
+
+    <string name="sf_modes_normal">Normal Mode</string>
+    <string name="sf_modes_normal_desc">Make any changes and uninstall the app freely.</string>
+    <string name="sf_modes_lock">Lock Mode</string>
+    <string name="sf_modes_lock_desc">Set a password to block phone settings, and control PureLock access or profile changes.</string>
+    <string name="sf_modes_strict">Strict Mode</string>
+    <string name="sf_modes_strict_desc">Set deactivation method to block phone settings, app uninstallations including PureLock, and profile changes.</string>
+    <string name="sf_modes_admin_active">Device Admin active</string>
+    <string name="sf_modes_admin_inactive">Device Admin not active</string>
+
+    <!-- Lock wizard (S05) -->
+    <string name="sf_modes_lock_title">Activate Lock Mode</string>
+    <string name="sf_modes_step1_lock_title">Blocking Level</string>
+    <string name="sf_modes_step1_lock_sub">Select what will be blocked.</string>
+    <string name="sf_modes_lock_app">PureLock</string>
+    <string name="sf_modes_lock_app_desc">Password will be required to access PureLock.</string>
+    <string name="sf_modes_lock_restrict">Restriction Editing</string>
+    <string name="sf_modes_lock_restrict_desc">Password will be required to edit, delete, or loosen the restrictions.</string>
+    <string name="sf_modes_lock_phone">Phone Settings</string>
+    <string name="sf_modes_lock_phone_desc">Password will be required to access phone settings, preventing you from bypassing PureLock.</string>
+    <string name="sf_modes_step2_lock_title">Set Password</string>
+    <string name="sf_modes_step2_lock_sub">Required for switching to Normal Mode</string>
+    <string name="sf_modes_pin_hint">Enter 4-digit PIN</string>
+    <string name="sf_modes_pin_confirm_hint">Confirm 4-digit PIN</string>
+    <string name="sf_modes_pin_mismatch">PINs do not match. Try again.</string>
+    <string name="sf_modes_pin_short">Enter a 4-digit PIN.</string>
+    <string name="sf_modes_pin_saved">PIN saved</string>
+    <string name="sf_modes_pin_save">Save PIN</string>
+    <string name="sf_modes_step3_title">Activate Device Admin</string>
+    <string name="sf_modes_step3_sub">Grant PureLock the required permission to enforce restrictions.</string>
+    <string name="sf_modes_step3_desc">Device Admin lets PureLock enforce restrictions and prevents the app from being uninstalled while a mode is active.</string>
+    <string name="sf_modes_step3_button">Activate Device Admin</string>
+    <string name="sf_modes_step3_done">Device Admin is active.</string>
+    <string name="sf_modes_step4_title">Draw over other apps Permission</string>
+    <string name="sf_modes_step4_sub">Required to show the lock screen.</string>
+    <string name="sf_modes_step4_desc">PureLock needs permission to draw over other apps so it can show the lock screen.</string>
+    <string name="sf_modes_step4_button">Open Settings</string>
+    <string name="sf_modes_step4_done">Draw-over-apps permission granted.</string>
+
+    <!-- Strict wizard (S06) -->
+    <string name="sf_modes_strict_title">Activate Strict Mode</string>
+    <string name="sf_modes_step1_strict_title">Restriction Editing</string>
+    <string name="sf_modes_step1_strict_sub">Prevent changes to your restrictions.</string>
+    <string name="sf_modes_restrict_all">Restrict All</string>
+    <string name="sf_modes_restrict_all_desc">Editing, deleting, or loosening any restriction won\'t be allowed.</string>
+    <string name="sf_modes_restrict_specific">Restrict Specific</string>
+    <string name="sf_modes_restrict_specific_desc">Choose which restrictions can\'t be edited, deleted, or loosened.</string>
+    <string name="sf_modes_step2_strict_title">Extra Restrictions</string>
+    <string name="sf_modes_step2_strict_sub">Add additional safeguards to stay in control.</string>
+    <string name="sf_modes_extra_power">Block Power Off</string>
+    <string name="sf_modes_extra_power_desc">Prevent device shutdown to ensure uninterrupted focus.</string>
+    <string name="sf_modes_extra_recent">Block Recent Apps</string>
+    <string name="sf_modes_extra_recent_desc">Prevent access to the recent apps screen.</string>
+    <string name="sf_modes_extra_split">Block Split Screen</string>
+    <string name="sf_modes_extra_split_desc">Stop split screen usage to avoid multitasking distractions.</string>
+    <string name="sf_modes_extra_browsers">Block Unsupported Browsers</string>
+    <string name="sf_modes_extra_browsers_desc">Prevent the use of browsers not supported by PureLock.</string>
+    <string name="sf_modes_step3_strict_title">Deactivation Method</string>
+    <string name="sf_modes_step3_strict_sub">Choose how strict mode can be deactivated.</string>
+    <string name="sf_modes_deact_pin">PIN</string>
+    <string name="sf_modes_deact_pin_desc">Enter your PIN to deactivate Strict Mode.</string>
+    <string name="sf_modes_deact_partner">Partner PIN</string>
+    <string name="sf_modes_deact_partner_desc">Only your partner\'s PIN can deactivate Strict Mode.</string>
+    <string name="sf_modes_deact_timer">Timer only</string>
+    <string name="sf_modes_deact_timer_desc">Strict Mode cannot be deactivated early. It ends when the timer finishes.</string>
+</resources>

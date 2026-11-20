@@ -46,11 +46,11 @@
         android:label="@string/app_name"
         android:localeConfig="@xml/locales_config"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PureLock.Dark"
+        android:theme="@style/Theme.PureLock.White"
         tools:targetApi="34">
 
         <activity
-            android:name=".ui.WelcomeActivity"
+            android:name=".ui.MainActivity"
             android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>
@@ -60,19 +60,9 @@
         </activity>
 
         <activity
-            android:name=".ui.MainActivity"
-            android:exported="false"
-            android:launchMode="singleTask" />
-
-        <activity
-            android:name=".ui.apps.AppRuleActivity"
-            android:exported="false"
-            android:parentActivityName=".ui.MainActivity" />
-
-        <activity
             android:name=".ui.apps.ConditionActivity"
             android:exported="false"
-            android:parentActivityName=".ui.apps.AppRuleActivity" />
+            android:parentActivityName=".ui.apps.AppListActivity" />
 
         <activity
             android:name=".ui.content.KeywordActivity"
@@ -91,6 +81,87 @@
 
         <activity
             android:name=".ui.location.MapActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <!-- Stay Focused rebuild screens (SPEC §2/§3). -->
+        <activity
+            android:name=".ui.breaks.TakeBreakActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <activity
+            android:name=".ui.modes.LockModeWizardActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <activity
+            android:name=".ui.modes.StrictModeWizardActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <activity
+            android:name=".ui.profiles.CreateProfileActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <activity
+            android:name=".ui.profiles.ChooseBlockingTypeActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <activity
+            android:name=".ui.profiles.ScheduleActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <activity
+            android:name=".ui.profiles.PickAppsSitesActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <activity
+            android:name=".ui.apps.AllSitesActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <activity
+            android:name=".ui.account.NotificationsActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <activity
+            android:name=".ui.alarm.StrictAlarmActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <activity
+            android:name=".ui.content.AdultContentActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <activity
+            android:name=".ui.drawer.OrganiseDashboardActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <activity
+            android:name=".ui.drawer.BackupRestoreActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <activity
+            android:name=".ui.drawer.HelpActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <activity
+            android:name=".ui.drawer.AboutActivity"
             android:exported="false"
             android:parentActivityName=".ui.MainActivity" />
 

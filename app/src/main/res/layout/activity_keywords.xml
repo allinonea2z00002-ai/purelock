@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Manage Keywords (SPEC S10): grey input bar + ADD, illustration empty state,
+     removable chips when keywords exist, sticky Save button. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
@@ -7,101 +9,153 @@
     android:background="?android:attr/colorBackground"
     android:orientation="vertical">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        app:title="@string/kw_title" />
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="4dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@drawable/bg_sf_circle_grey"
+            android:contentDescription="@string/sf_apps_cd_back"
+            android:src="@drawable/ic_sf_arrow_back" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/sf_apps_kw_title"
+            android:textColor="@color/sf_text"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/btnInfo"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/bg_sf_circle_grey"
+            android:contentDescription="@string/sf_apps_cd_info"
+            android:src="@drawable/ic_sf_info" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_sf_search"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="8dp">
+
+        <EditText
+            android:id="@+id/etKeyword"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="@string/sf_apps_kw_hint"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="2"
+            android:textColor="@color/sf_text"
+            android:textColorHint="@color/sf_muted"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/btnAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="12dp"
+            android:text="@string/sf_apps_kw_add"
+            android:textColor="@color/sf_text"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:clipToPadding="false"
         android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/screen_padding">
+            android:orientation="vertical">
 
-            <LinearLayout
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupKeywords"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                app:chipSpacingHorizontal="8dp"
+                app:chipSpacingVertical="8dp" />
+
+            <LinearLayout
+                android:id="@+id/layoutEmpty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingTop="48dp">
+
+                <ImageView
+                    android:id="@+id/ivEmptyArt"
+                    android:layout_width="240dp"
+                    android:layout_height="200dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_sf_keywords_empty" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/tvEmptyTitle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/kw_switch_label"
-                    android:textColor="?attr/colorOnSurface"
-                    android:textSize="16sp"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/sf_apps_kw_empty_title"
+                    android:textColor="@color/sf_text"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/switchKeywords"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/gap"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="@string/kw_hint">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etKeyword"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:imeOptions="actionDone"
-                        android:inputType="text"
-                        android:maxLines="1" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnAdd"
+                <TextView
+                    android:id="@+id/tvEmptySub"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="@string/action_add" />
+                    android:layout_marginTop="8dp"
+                    android:text="@string/sf_apps_kw_empty_sub"
+                    android:textColor="@color/sf_muted"
+                    android:textSize="16sp" />
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/tvEmpty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/gap"
-                android:text="@string/kw_empty"
-                android:textAppearance="@style/TextAppearance.PureLock.Body" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvKeywords"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:clipToPadding="false"
-                android:nestedScrollingEnabled="false" />
-
-            <TextView
-                android:id="@+id/tvNote"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/gap"
-                android:text="@string/kw_note"
-                android:textAppearance="@style/TextAppearance.PureLock.Body"
-                android:textSize="12sp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/plCard"
+        android:padding="16dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSave"
+            style="@style/Widget.PureLock.PrimaryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/action_save" />
+    </LinearLayout>
 </LinearLayout>

@@ -28,7 +28,11 @@ data class UsageDay(
     val browsingMs: Long,
     val browsingPerApp: List<AppUsage>,
     val unlocks: Int,
-    val timeline: List<TimelineEvent>
+    val timeline: List<TimelineEvent>,
+    /** Foreground opens per hour (index 0 = 00:00-01:00), for the App Launches chart. */
+    val hourlyLaunches: IntArray = IntArray(24),
+    /** Screen wake-ups per hour (index 0 = 00:00-01:00), for the Screen Unlocks chart. */
+    val hourlyUnlocks: IntArray = IntArray(24)
 )
 
 /** App usage for daily limits, read from Android's UsageStats (needs the user's "Usage access" grant). */
@@ -231,6 +235,34 @@ class UsageRepository(private val context: Context) {
         return todayEvents(now).count { it.type == UsageEvents.Event.SCREEN_INTERACTIVE }
     }
 
+    /** Foreground opens per hour of today (index 0 = 00:00-01:00), for the App Launches chart. */
+    fun hourlyLaunchesToday(): IntArray {
+        val out = IntArray(24)
+        if (!hasAccess()) return out
+        val now = System.currentTimeMillis()
+        val start = startOfTodayMs(now)
+        for (e in todayEvents(now)) {
+            if (e.type == UsageEvents.Event.MOVE_TO_FOREGROUND && e.timeMs in start..now) {
+                out[((e.timeMs - start) / 3_600_000L).toInt().coerceIn(0, 23)]++
+            }
+        }
+        return out
+    }
+
+    /** Screen wake-ups per hour of today (index 0 = 00:00-01:00), for the Screen Unlocks chart. */
+    fun hourlyUnlocksToday(): IntArray {
+        val out = IntArray(24)
+        if (!hasAccess()) return out
+        val now = System.currentTimeMillis()
+        val start = startOfTodayMs(now)
+        for (e in todayEvents(now)) {
+            if (e.type == UsageEvents.Event.SCREEN_INTERACTIVE && e.timeMs in start..now) {
+                out[((e.timeMs - start) / 3_600_000L).toInt().coerceIn(0, 23)]++
+            }
+        }
+        return out
+    }
+
     // ------------------------------------------------------------------ browsing
 
     companion object {
@@ -281,7 +313,9 @@ class UsageRepository(private val context: Context) {
             browsingMs = browsing.sumOf { it.usageMs },
             browsingPerApp = browsing,
             unlocks = screenUnlocksToday(),
-            timeline = timelineToday()
+            timeline = timelineToday(),
+            hourlyLaunches = hourlyLaunchesToday(),
+            hourlyUnlocks = hourlyUnlocksToday()
         )
     }
 }

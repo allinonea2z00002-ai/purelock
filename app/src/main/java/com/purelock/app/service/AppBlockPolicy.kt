@@ -34,20 +34,63 @@ class AppBlockPolicy(private val context: Context, private val usage: UsageRepos
     @Volatile var zones: Map<Long, SafeZone> = emptyMap()
     @Volatile var lastFix: Fix? = null
 
+    /**
+     * Rules derived from the active focus profiles (see [ProfileEnforcer]): per-package
+     * rules for the profile's apps (Blocklist) or for every other launcher app
+     * (Whitelist), plus the motivational text per package and the Combined usage
+     * limit. Refreshed by the accessibility service from `profileDao().observeActive()`.
+     * Profile rules never set `blockDuringLock` (see ProfileEnforcer).
+     */
+    @Volatile var profileBlocked: Map<String, BlockedApplication> = emptyMap()
+    @Volatile var profileMotivations: Map<String, String> = emptyMap()
+    @Volatile var combinedLimit: ProfileEnforcer.CombinedLimit? = null
+    @Volatile var profileSiteRules: List<ProfileEnforcer.SiteRule> = emptyList()
+
     /** Usage minutes recorded when each app's current wait was armed (Wait Timer state, this process). */
     private val waitArmedUsageMin = ConcurrentHashMap<String, Int>()
 
     /** Phone, emergency, system UI and launcher stay reachable at all times, whatever the user selects. */
     private val neverBlock: Set<String> by lazy { buildNeverBlock() }
 
+    /**
+     * Decides whether opening an app should be blocked. An explicit per-app rule is
+     * checked first (its "App Launch" off still wins over a profile); then the
+     * active profile's rule for this app; then the Combined usage limit.
+     */
     fun reason(packageName: String): BlockReason? {
         if (packageName in neverBlock || packageName in allowed) return null
-        val rule = blocked[packageName] ?: return null
-        // "I Want to Block: App Launch" off means launches are never blocked, lock or not.
-        if (!rule.blockLaunch) return null
-        if (lockBlocksApps && rule.blockDuringLock) return BlockReason.LOCK
         val now = System.currentTimeMillis()
-        return ConditionEvaluator.evaluate(rule, gatherFacts(rule, now))
+        val rule = blocked[packageName]
+        if (rule != null) {
+            // "I Want to Block: App Launch" off means launches are never blocked, lock or not.
+            if (!rule.blockLaunch) return null
+            if (lockBlocksApps && rule.blockDuringLock) return BlockReason.LOCK
+            ConditionEvaluator.evaluate(rule, gatherFacts(rule, now))?.let { return it }
+        }
+        val profileRule = profileBlocked[packageName]
+        if (profileRule != null && profileRule.blockLaunch) {
+            ConditionEvaluator.evaluate(profileRule, gatherFacts(profileRule, now))?.let { return it }
+        }
+        combinedLimit?.let { limit ->
+            if (packageName in limit.packages && limit.limitMs > 0) {
+                val totalMs = limit.packages.sumOf { usage.todayUsageMs(it) }
+                if (totalMs >= limit.limitMs) return BlockReason.DAILY_LIMIT
+            }
+        }
+        return null
+    }
+
+    /** The motivational text of the profile blocking this app, if any. */
+    fun motivationFor(packageName: String): String? = profileMotivations[packageName]
+
+    /**
+     * Evaluates a profile's site rule for a host opened in the foreground browser:
+     * usage facts are gathered for the browser package (the meter for a Usage Limit
+     * profile's sites), location/time facts as usual.
+     */
+    fun evaluateSiteRule(rule: BlockedApplication, foregroundPkg: String): BlockReason? {
+        val factsRule = rule.copy(packageName = foregroundPkg)
+        return ConditionEvaluator.evaluate(rule, gatherFacts(factsRule, System.currentTimeMillis()))
     }
 
     /**
@@ -62,6 +105,23 @@ class AppBlockPolicy(private val context: Context, private val usage: UsageRepos
         val armed = ConditionEvaluator.armWaitTimer(rule, usedMin, nowMs)
         waitArmedUsageMin[packageName] = usedMin
         blocked = blocked + (packageName to armed)
+        return armed
+    }
+
+    /**
+     * Starts the Wait Timer for a profile-derived rule. In-memory only — unlike a
+     * per-app rule it is never written to `blocked_application` (a profile rule
+     * must not become a standalone app rule that outlives the profile). If the
+     * service restarts the wait re-arms on next use (fail-closed, as documented
+     * for wait timers).
+     */
+    fun armProfileWaitTimer(packageName: String, nowMs: Long = System.currentTimeMillis()): BlockedApplication? {
+        val rule = profileBlocked[packageName] ?: return null
+        if (rule.waitAfterMinutes <= 0 || rule.waitForMinutes <= 0) return null
+        val usedMin = (usage.todayUsageMs(packageName) / 60_000L).toInt()
+        val armed = ConditionEvaluator.armWaitTimer(rule, usedMin, nowMs)
+        waitArmedUsageMin[packageName] = usedMin
+        profileBlocked = profileBlocked + (packageName to armed)
         return armed
     }
 

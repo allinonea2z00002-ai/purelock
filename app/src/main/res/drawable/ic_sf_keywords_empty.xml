@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Keywords empty state (SPEC S10): yellow circle, blue tile with a white T, lightbulb.
+     Simplified flat illustration; the reference also shows a person holding the bulb. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="240dp"
+    android:height="200dp"
+    android:viewportWidth="240"
+    android:viewportHeight="200">
+    <path
+        android:fillColor="#FDE68A"
+        android:pathData="M150,110 m-62,0 a62,62 0 1 0 124,0 a62,62 0 1 0 -124,0" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#14142E"
+        android:strokeWidth="4"
+        android:strokeLineCap="round"
+        android:pathData="M62,48 a24,24 0 1 0 0.1,0 M54,30 L48,24 M70,30 L76,24 M44,44 L36,42 M80,44 L88,42" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#14142E"
+        android:strokeWidth="4"
+        android:strokeLineCap="round"
+        android:pathData="M52,72 h20 M55,80 h14" />
+    <path
+        android:fillColor="#8AB4FF"
+        android:pathData="M96,118 h72 a16,16 0 0 1 16,16 v40 a16,16 0 0 1 -16,16 H96 a16,16 0 0 1 -16,-16 v-40 a16,16 0 0 1 16,-16 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M108,140 h48 v10 h-19 v34 h-10 v-34 h-19 Z" />
+</vector>

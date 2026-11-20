@@ -14,7 +14,7 @@ object UiPrefs {
 
     fun theme(context: Context): String =
         context.getSharedPreferences(FILE, Context.MODE_PRIVATE)
-            .getString(KEY_THEME, THEME_DARK) ?: THEME_DARK
+            .getString(KEY_THEME, THEME_WHITE) ?: THEME_WHITE
 
     fun setTheme(context: Context, theme: String) {
         context.getSharedPreferences(FILE, Context.MODE_PRIVATE)

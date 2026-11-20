@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Area F (Drawer + Settings + Account + misc screens) strings. Prefix sf_set_ / sf_acct_.
+     Titles/descriptions are copied verbatim from SPEC_STAYFOCUSED §2 S22/S23, with
+     "Stay Focused" replaced by "PureLock" where the string names the app. -->
+<resources>
+    <!-- Drawer (S22) -->
+    <string name="sf_set_drawer_title">PURELOCK</string>
+    <string name="sf_set_drawer_premium">Premium version</string>
+    <string name="sf_set_drawer_dashboard">Dashboard</string>
+    <string name="sf_set_drawer_take_break">Take a Break</string>
+    <string name="sf_set_drawer_all_apps">All Apps</string>
+    <string name="sf_set_drawer_all_sites">All Sites</string>
+    <string name="sf_set_drawer_keywords">Keywords</string>
+    <string name="sf_set_drawer_reels">Block Reels/Shorts</string>
+    <string name="sf_set_drawer_alarm">Strict Alarm</string>
+    <string name="sf_set_drawer_settings">Settings</string>
+    <string name="sf_set_drawer_organise">Organise Dashboard</string>
+    <string name="sf_set_drawer_block_screen">Block Screen</string>
+    <string name="sf_set_drawer_rate">Rate the App</string>
+    <string name="sf_set_drawer_share">Share</string>
+    <string name="sf_set_drawer_backup">Backup &amp; Restore</string>
+    <string name="sf_set_drawer_help">Help</string>
+    <string name="sf_set_drawer_feedback">Send feedback</string>
+    <string name="sf_set_drawer_about">About</string>
+    <string name="sf_set_drawer_dark_mode">Dark Mode</string>
+    <string name="sf_set_not_available">That screen is not available yet</string>
+
+    <!-- Settings (S23) -->
+    <string name="sf_set_title">Settings</string>
+    <string name="sf_set_group_app">App Management</string>
+    <string name="sf_set_group_custom">Customization</string>
+    <string name="sf_set_group_blocking">Blocking Options</string>
+    <string name="sf_set_group_time">Time &amp; Alerts</string>
+    <string name="sf_set_group_notif">Notifications</string>
+
+    <string name="sf_set_uninstall">Uninstall PureLock</string>
+    <string name="sf_set_uninstall_desc">Completely remove PureLock from your device.</string>
+    <string name="sf_set_pause">Pause PureLock</string>
+    <string name="sf_set_pause_desc">Temporarily pause or reactivate app blocking and monitoring.</string>
+    <string name="sf_set_sync_hidden">Sync Hidden Apps</string>
+    <string name="sf_set_sync_hidden_desc">Add apps that aren\'t visible in the app list for tracking or blocking.</string>
+
+    <string name="sf_set_launcher">Set as Default Launcher</string>
+    <string name="sf_set_launcher_desc">Set PureLock as home app</string>
+    <string name="sf_set_launcher_hint">Click Home &gt; Select PureLock &gt; Press back</string>
+    <string name="sf_set_rotation">Allow Home Screen Rotation</string>
+    <string name="sf_set_rotation_desc">Enable or disable home screen rotation to match your screen orientation.</string>
+    <string name="sf_set_language">Change Language</string>
+    <string name="sf_set_language_desc">Select your preferred app language.</string>
+    <string name="sf_set_quote">Motivational Quote</string>
+    <string name="sf_set_quote_desc">Show an inspiring quote on the block screen.</string>
+    <string name="sf_set_redirect">Set Redirect URL</string>
+    <!-- NOTE: the reference app itself shows the quote description under Set Redirect URL;
+         copied verbatim for exact fidelity (SPEC §2 S23). -->
+    <string name="sf_set_redirect_desc">Show an inspiring quote on the block screen.</string>
+    <string name="sf_set_start_day">Set Start of Day</string>
+    <string name="sf_set_start_day_desc">Select when your day starts (e.g., midnight or your wake-up time).</string>
+    <string name="sf_set_pause_duration">Enable Pause Duration</string>
+    <string name="sf_set_pause_duration_desc">Skip selecting a pause duration before pausing the profile. The profile will remain paused indefinitely until manually resumed.</string>
+
+    <string name="sf_set_block_browsers">Block Unsupported Browsers</string>
+    <string name="sf_set_block_browsers_desc">Prevent the use of browsers not supported by PureLock to block unwanted content.</string>
+    <string name="sf_set_block_split">Block Split Screen</string>
+    <string name="sf_set_block_split_desc">Stop split screen usage to avoid multitasking distractions. (Requires Accessibility permission)</string>
+    <string name="sf_set_block_power">Block Power Off</string>
+    <string name="sf_set_block_power_desc">Prevent device shutdown to ensure uninterrupted focus. This may not work on all devices. (Requires Accessibility permission)</string>
+    <string name="sf_set_block_recent">Block Recent Apps</string>
+    <string name="sf_set_block_recent_desc">Prevent access to the recent apps screen to reduce distractions and improve focus. (Requires Accessibility permission)</string>
+
+    <string name="sf_set_timer_type">Remaining Timer Type</string>
+    <string name="sf_set_timer_type_desc">Choose how remaining time is displayed: on-screen timer, notification, or hide it.</string>
+    <string name="sf_set_low_time">Low Time Alert</string>
+    <string name="sf_set_low_time_desc">Receive alerts when time is running low (e.g., at 10, 5, or 1 minute left).</string>
+
+    <string name="sf_set_pomodoro">Pomodoro Break</string>
+    <string name="sf_set_pomodoro_desc">Get notified when it\'s time to take a break.</string>
+
+    <!-- Settings dialogs -->
+    <string name="sf_set_uninstall_confirm">Uninstall PureLock?</string>
+    <string name="sf_set_uninstall_confirm_msg">This removes PureLock and all its blocking rules from your device.</string>
+    <string name="sf_set_pause_msg_on">Blocking and monitoring are currently active. Pause them now?</string>
+    <string name="sf_set_pause_msg_off">Blocking and monitoring are paused. Resume them now?</string>
+    <string name="sf_set_pause_action">Pause</string>
+    <string name="sf_set_resume_action">Resume</string>
+    <string name="sf_set_paused_toast">PureLock is paused</string>
+    <string name="sf_set_resumed_toast">PureLock is active again</string>
+    <string name="sf_set_language_title">Choose language</string>
+    <string name="sf_set_quote_hint">Type an inspiring quote</string>
+    <string name="sf_set_redirect_hint">https://example.com</string>
+    <string name="sf_set_redirect_invalid">Enter a valid URL starting with http:// or https://</string>
+    <string name="sf_set_timer_onscreen">On-screen timer</string>
+    <string name="sf_set_timer_notification">Notification</string>
+    <string name="sf_set_timer_hidden">Hide it</string>
+    <string name="sf_set_saved">Saved</string>
+    <string name="sf_set_home_settings_unavailable">Could not open the home settings</string>
+
+    <!-- Strict Alarm -->
+    <string name="sf_set_alarm_title">Strict Alarm</string>
+    <string name="sf_set_alarm_add">Add alarm</string>
+    <string name="sf_set_alarm_empty">No strict alarms yet. Add one to wake up on time — it can only be stopped, never snoozed.</string>
+    <string name="sf_set_alarm_label_title">Alarm label</string>
+    <string name="sf_set_alarm_label_default">Alarm</string>
+    <string name="sf_set_alarm_stop">Stop</string>
+
+    <!-- Adult Content -->
+    <string name="sf_set_adult_title">Block Adult Content</string>
+    <string name="sf_set_adult_master">Block adult content</string>
+    <string name="sf_set_adult_master_desc">Blocks adult websites and content while this is on.</string>
+    <string name="sf_set_adult_safesearch">SafeSearch is on</string>
+    <string name="sf_set_adult_safesearch_note">SafeSearch filters explicit results in Google and Bing searches. It works together with Private DNS below.</string>
+    <string name="sf_set_adult_dns_title">Private DNS</string>
+    <string name="sf_set_adult_dns_desc">Private DNS blocks adult, gambling and dating sites on your whole phone, even outside browsers. Set your Private DNS provider hostname to one of these:</string>
+    <string name="sf_set_adult_dns_kahf">Kahf Guard (Moderate)</string>
+    <string name="sf_set_adult_dns_cf">Cloudflare Family</string>
+    <string name="sf_set_adult_dns_check">Check your DNS protection</string>
+    <string name="sf_set_adult_dns_open">Open system Settings</string>
+    <string name="sf_set_adult_keywords">Manage Keywords</string>
+    <string name="sf_set_adult_keywords_desc">Block apps and sites when a keyword appears on screen.</string>
+
+    <!-- Notifications (bell) -->
+    <string name="sf_set_notif_title">Notifications</string>
+    <string name="sf_set_notif_empty">No notifications yet</string>
+
+    <!-- Organise Dashboard -->
+    <string name="sf_set_organise_title">Organise Dashboard</string>
+    <string name="sf_set_organise_desc">Choose which sections appear on the Dashboard. Hidden sections are not shown until you turn them back on.</string>
+    <string name="sf_set_organise_analytics">Analytics</string>
+    <string name="sf_set_organise_take_break">Take a Break</string>
+    <string name="sf_set_organise_mode">Mode</string>
+    <string name="sf_set_organise_quick">Quick Actions</string>
+    <string name="sf_set_organise_profiles">Profiles</string>
+    <string name="sf_set_organise_templates">Profile Templates</string>
+    <string name="sf_set_organise_show_all">Show all sections</string>
+
+    <!-- Backup & Restore -->
+    <string name="sf_set_backup_title">Backup &amp; Restore</string>
+    <string name="sf_set_backup_desc">Back up your blocking rules and statistics as a JSON file, or restore one you saved before. Backups never include location history, security events or the active lock.</string>
+    <string name="sf_set_backup_export">Export backup</string>
+    <string name="sf_set_backup_import">Import backup</string>
+
+    <!-- Help -->
+    <string name="sf_set_help_title">Help</string>
+    <string name="sf_set_help_q1">What is PureLock?</string>
+    <string name="sf_set_help_a1">PureLock helps you stay focused by blocking distracting apps, websites, feeds and keywords — on a timer, on a schedule, or at places you choose.</string>
+    <string name="sf_set_help_q2">How do I block an app?</string>
+    <string name="sf_set_help_a2">Open All Apps from the drawer, tap the app, then choose a blocking condition such as a daily usage limit or a time interval.</string>
+    <string name="sf_set_help_q3">What is Strict Mode?</string>
+    <string name="sf_set_help_a3">Strict Mode is the strongest lock. It blocks phone settings and uninstalling apps, including PureLock itself, until the deactivation method you chose is used.</string>
+    <string name="sf_set_help_q4">How do I pause blocking?</string>
+    <string name="sf_set_help_a4">Open Settings, then Pause PureLock. Blocking and monitoring stay paused until you resume them from the same place.</string>
+    <string name="sf_set_help_q5">How do I block adult sites everywhere?</string>
+    <string name="sf_set_help_a5">Turn on Block Adult Content, then set Private DNS on your phone to medium.kahfguard.com. Private DNS blocks adult sites in every app, not just browsers.</string>
+    <string name="sf_set_help_q6">How do I back up my settings?</string>
+    <string name="sf_set_help_a6">Open Backup &amp; Restore and tap Export backup. Save the JSON file somewhere safe; you can import it later on this or another phone.</string>
+
+    <!-- About -->
+    <string name="sf_set_about_title">About</string>
+    <string name="sf_set_about_text">PureLock helps you stay focused by blocking distracting apps, websites and feeds — on a timer, at places you choose, or until you decide to stop.</string>
+    <string name="sf_set_about_version">Version %1$s</string>
+    <string name="sf_set_about_package">Package: %1$s</string>
+
+    <!-- Account tab -->
+    <string name="sf_acct_user">PureLock User</string>
+    <string name="sf_acct_streak">Day streak</string>
+    <string name="sf_acct_blocks">Total blocks</string>
+    <string name="sf_acct_rate">Rate the App</string>
+    <string name="sf_acct_share">Share</string>
+    <string name="sf_acct_feedback">Send feedback</string>
+    <string name="sf_acct_feedback_subject">PureLock feedback</string>
+    <string name="sf_acct_no_email">No email app found</string>
+    <string name="sf_acct_no_store">Play Store is not available</string>
+    <string name="sf_acct_share_text">Try PureLock — block distracting apps, sites and feeds and stay focused: https://play.google.com/store/apps/details?id=com.purelock.app</string>
+</resources>

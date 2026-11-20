@@ -8,6 +8,17 @@
     <string name="nav_statistics">পরিসংখ্যান</string>
     <string name="nav_location">লোকেশন</string>
     <string name="nav_settings">সেটিংস</string>
+    <!-- Stay Focused 4-tab navigation (SPEC §1.3) -->
+    <string name="nav_dashboard">ড্যাশবোর্ড</string>
+    <string name="nav_modes">মোড</string>
+    <string name="nav_analytics">অ্যানালিটিক্স</string>
+    <string name="nav_account">অ্যাকাউন্ট</string>
+
+    <!-- Stay Focused shared strings (SPEC §2) -->
+    <string name="sf_welcome">স্বাগতম</string>
+    <string name="sf_good_morning">শুভ সকাল</string>
+    <string name="sf_good_afternoon">শুভ বিকাল</string>
+    <string name="sf_good_evening">শুভ সন্ধ্যা</string>
 
     <!-- Common actions -->
     <string name="action_add">যোগ করুন</string>
