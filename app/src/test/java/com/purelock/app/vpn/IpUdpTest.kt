@@ -8,8 +8,8 @@ import org.junit.Test
 
 class IpUdpTest {
 
-    private val src = byteArrayOf(10, 111, 222, 1)
-    private val dst = byteArrayOf(10, 111, 222, 2)
+    private val src = byteArrayOf(10, 111, 222.toByte(), 1)
+    private val dst = byteArrayOf(10, 111, 222.toByte(), 2)
     private val payload = byteArrayOf(1, 2, 3, 4, 5)
 
     @Test
