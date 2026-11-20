@@ -354,6 +354,34 @@
         <item quantity="other">%d টি সংরক্ষিত লোকেশন পয়েন্ট</item>
     </plurals>
 
+    <!-- অ্যাপ নিয়ম ডায়ালগ -->
+    <string name="rule_section_blocking">ব্লকিং</string>
+    <string name="rule_section_limit">দৈনিক সীমা</string>
+
+    <!-- ম্যাপ -->
+    <string name="map_title">লোকেশন ম্যাপ</string>
+    <string name="map_view_button">ম্যাপ দেখুন</string>
+    <string name="map_my_location">আমার অবস্থান</string>
+    <string name="map_satellite">স্যাটেলাইট</string>
+    <string name="map_map">ম্যাপ</string>
+    <string name="map_tap_hint">ম্যাপে চাপ দিয়ে জোন যোগ করুন, বা মার্কারে চাপ দিন।</string>
+    <string name="map_lock_active">লক সক্রিয়</string>
+    <string name="map_lock_open">খোলা — কোনো লক সক্রিয় নেই</string>
+    <string name="map_no_zones">এখনও কোনো সেফ জোন নেই।</string>
+    <string name="map_zones_saved">%dটি জোন সেভ করা আছে</string>
+    <string name="map_add_here">এখানে জোন যোগ করুন</string>
+    <string name="map_new_zone">এখানে নতুন জোন</string>
+    <string name="map_radius">ব্যাসার্ধ</string>
+    <string name="map_m_away">%1$d মি দূরে</string>
+    <string name="map_inside_locking">ভেতরে আছো — লক চলছে</string>
+    <string name="map_outside_open">বাইরে আছো — খোলা</string>
+    <string name="map_location_unavailable">অবস্থান পাওয়া যাচ্ছে না — GPS চালু করুন।</string>
+    <string name="map_finding_location">আপনার অবস্থান খোঁজা হচ্ছে…</string>
+    <string name="map_location_failed">অবস্থান পাওয়া যায়নি। GPS চালু করে বাইরে আবার চেষ্টা করুন।</string>
+    <string name="map_internet_note">ম্যাপ দেখতে ইন্টারনেট লাগবে, লক GPS-এ অফলাইনে কাজ করে।</string>
+    <string name="map_zone_saved">জোন সংরক্ষণ হয়েছে</string>
+    <string name="map_webgl_missing">এই ফোনের WebView-এ WebGL চালু নেই — ম্যাপ দেখা যাবে না।</string>
+
     <string-array name="motivation_messages">
         <item>প্রতিটি মিনিট দৃঢ় থাকা মানে নিজের কাছে করা একটি প্রতিজ্ঞা রক্ষা।</item>
         <item>আপনার মনকে রক্ষা করুন, জীবন তার পেছনে পেছনে আসবে।</item>

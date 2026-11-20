@@ -355,6 +355,34 @@
         <item quantity="other">%d saved location points</item>
     </plurals>
 
+    <!-- App rule dialog -->
+    <string name="rule_section_blocking">Blocking</string>
+    <string name="rule_section_limit">Daily limit</string>
+
+    <!-- Map -->
+    <string name="map_title">Location map</string>
+    <string name="map_view_button">View map</string>
+    <string name="map_my_location">My location</string>
+    <string name="map_satellite">Satellite</string>
+    <string name="map_map">Map</string>
+    <string name="map_tap_hint">Tap the map to add a zone, or tap a marker.</string>
+    <string name="map_lock_active">Lock active</string>
+    <string name="map_lock_open">Open — no lock active</string>
+    <string name="map_no_zones">No safe zones yet.</string>
+    <string name="map_zones_saved">%d zones saved</string>
+    <string name="map_add_here">Add a zone here</string>
+    <string name="map_new_zone">New zone here</string>
+    <string name="map_radius">Radius</string>
+    <string name="map_m_away">%1$d m away</string>
+    <string name="map_inside_locking">you are inside — locking</string>
+    <string name="map_outside_open">you are outside — open</string>
+    <string name="map_location_unavailable">Location unavailable — turn on GPS.</string>
+    <string name="map_finding_location">Finding your location…</string>
+    <string name="map_location_failed">Could not get the location. Turn on GPS and try again outside.</string>
+    <string name="map_internet_note">Map tiles need internet. Locking works offline on GPS.</string>
+    <string name="map_zone_saved">Zone saved</string>
+    <string name="map_webgl_missing">This phone\'s WebView does not support WebGL — the map cannot be shown.</string>
+
     <string-array name="motivation_messages">
         <item>Every minute you stay strong is a promise kept to yourself.</item>
         <item>Protect your mind, and your life follows.</item>

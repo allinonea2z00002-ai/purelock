@@ -75,6 +75,7 @@ class LocationFragment : Fragment(R.layout.fragment_location) {
         }
         b.btnGps.setOnClickListener { startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
         b.btnAddZone.setOnClickListener { showAddZoneDialog() }
+        b.btnViewMap.setOnClickListener { startActivity(Intent(requireContext(), MapActivity::class.java)) }
         b.btnDeleteHistory.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.loc_delete_history)

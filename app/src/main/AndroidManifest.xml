@@ -66,6 +66,11 @@
             android:parentActivityName=".ui.MainActivity" />
 
         <activity
+            android:name=".ui.location.MapActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <activity
             android:name=".ui.block.BlockActivity"
             android:excludeFromRecents="true"
             android:exported="false"

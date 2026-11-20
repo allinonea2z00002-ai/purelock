@@ -17,8 +17,9 @@ import kotlinx.coroutines.launch
  * App blocker. It only runs after the user turns it on in Android's Accessibility settings, having been
  * shown what it does (see the disclosure dialog in the Protection screen). It reads only the package
  * name of the app that came to the foreground, plus - while a lock is active and "Uninstall
- * protection" is on - whether a Settings/installer screen shows this app's name. Nothing it sees is
- * stored or sent anywhere.
+ * protection" is on - whether a Settings/installer screen shows this app's name, and whether a Vivo /
+ * MIUI system screen (security centre, permission manager) is open, which can disable or uninstall
+ * PureLock. Nothing it sees is stored or sent anywhere.
  */
 class PureLockAccessibilityService : AccessibilityService() {
 
@@ -30,6 +31,7 @@ class PureLockAccessibilityService : AccessibilityService() {
     private var lastBlockedPackage = ""
     private var lastBlockedAt = 0L
     private var lastSettingsScan = 0L
+    private var lastGuardAt = 0L
 
     override fun onServiceConnected() {
         super.onServiceConnected()
@@ -60,6 +62,10 @@ class PureLockAccessibilityService : AccessibilityService() {
             if (lockActive && uninstallProtection) guardSettingsScreen()
             return
         }
+        if (isGuardedSystemApp(pkg)) {
+            if (lockActive && uninstallProtection) guardSystemApp(pkg)
+            return
+        }
         if (event.eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) return
 
         val reason = policy.reason(pkg) ?: return
@@ -82,6 +88,22 @@ class PureLockAccessibilityService : AccessibilityService() {
         val root = rootInActiveWindow ?: return
         val found = root.findAccessibilityNodeInfosByText(getString(R.string.app_name))
         if (!found.isNullOrEmpty()) block(root.packageName?.toString() ?: "", BlockReason.SELF_PROTECT)
+    }
+
+    /**
+     * Vivo / MIUI system screens that can disable or uninstall PureLock (security centre,
+     * permission manager). Unlike Settings screens, the package match alone is enough here — the
+     * same rule PowerLock uses for these packages — because these screens never show PureLock's
+     * name. Fires only while a lock is active and "Uninstall protection" is on.
+     */
+    private fun isGuardedSystemApp(pkg: String): Boolean =
+        pkg.contains("securitycenter") || pkg.contains("permissioncontroller")
+
+    private fun guardSystemApp(pkg: String) {
+        val now = System.currentTimeMillis()
+        if (now - lastGuardAt < 1_500) return
+        lastGuardAt = now
+        block(pkg, BlockReason.SELF_PROTECT)
     }
 
     private fun block(pkg: String, reason: BlockReason) {

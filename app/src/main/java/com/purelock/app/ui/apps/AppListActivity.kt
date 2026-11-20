@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.activity.viewModels
+import androidx.core.graphics.ColorUtils
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.purelock.app.Graph
@@ -68,6 +69,34 @@ class AppListActivity : AppCompatActivity() {
     private fun showRuleDialog(item: AppItem) {
         val d = DialogAppRuleBinding.inflate(LayoutInflater.from(this))
         val rule = item.rule
+
+        // Graphical header: app icon, label and package name.
+        d.ivRuleIcon.setImageDrawable(
+            runCatching { packageManager.getApplicationIcon(item.packageName) }.getOrNull()
+                ?: getDrawable(R.drawable.ic_nav_shield)
+        )
+        d.tvRuleLabel.text = item.label
+        d.tvRulePackage.text = item.packageName
+
+        // Status banner: blocked / allowed / always-available (hidden when no rule applies).
+        val (bannerText, bannerAttr) = when {
+            item.alwaysAvailable -> R.string.app_state_always to R.attr.plTextSecondary
+            item.rule != null -> R.string.app_state_blocked to R.attr.plDanger
+            item.allowed -> R.string.app_state_allowed to R.attr.plSuccess
+            else -> 0 to 0
+        }
+        if (bannerText != 0) {
+            val color = MaterialColors.getColor(d.root, bannerAttr, 0)
+            d.cardRuleBanner.isVisible = true
+            d.cardRuleBanner.setCardBackgroundColor(ColorUtils.setAlphaComponent(color, 0x2E))
+            d.ivRuleBannerIcon.setColorFilter(color)
+            d.tvRuleBanner.setText(bannerText)
+            d.tvRuleBanner.setTextColor(color)
+        }
+        if (item.usageTodayMs > 0) {
+            d.tvRuleUsage.isVisible = true
+            d.tvRuleUsage.text = getString(R.string.app_usage_today, DurationFormat.compact(item.usageTodayMs))
+        }
 
         if (item.alwaysAvailable) {
             d.tvRuleNote.isVisible = true
