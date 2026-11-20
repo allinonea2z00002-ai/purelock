@@ -13,8 +13,10 @@ data class ProtectionSession(
     val distanceLimitM: Int,
     val combineRule: String,
     val endEpoch: Long? = null,
-    /** COMPLETED or EMERGENCY_OVERRIDE */
-    val endReason: String? = null
+    /** COMPLETED, EMERGENCY_OVERRIDE or TEST_ENDED */
+    val endReason: String? = null,
+    /** True for a 60-second test-mode trial lock (never counted in real statistics). */
+    val isTest: Boolean = false
 )
 
 /**
@@ -28,6 +30,8 @@ data class ProtectionSession(
 data class LockConfiguration(
     @PrimaryKey val id: Int = 1,
     val active: Boolean = false,
+    /** True while a 60-second test-mode trial lock is running (never a real lock). */
+    val isTest: Boolean = false,
     val mode: String = "TIME",
     val combineRule: String = "ANY",
     val durationMs: Long = 0,
@@ -139,4 +143,6 @@ object SecurityEventType {
     const val GEOFENCE_ERROR = "GEOFENCE_ERROR"
     const val ZONE_LOCK = "ZONE_LOCK"
     const val DATA_CLEARED = "DATA_CLEARED"
+    /** A test-mode trial lock was ended early from the Home test banner. */
+    const val TEST_ENDED = "TEST_ENDED"
 }

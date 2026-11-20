@@ -95,7 +95,8 @@ object LockEvaluator {
             distanceM = cfg.lastDistanceM,
             lastLocationEpoch = cfg.lastLocationEpoch,
             blockAdult = cfg.blockAdult,
-            blockApps = cfg.blockApps
+            blockApps = cfg.blockApps,
+            isTest = cfg.isTest
         )
     }
 

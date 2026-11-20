@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
     entities = [
@@ -20,7 +21,7 @@ import androidx.room.migration.Migration
         UserPreferences::class,
         SafeZone::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -59,5 +60,14 @@ abstract class AppDatabase : RoomDatabase() {
  * fallbackToDestructiveMigration: it would wipe an active lock), and commit the new schema JSON.
  */
 object Migrations {
-    val ALL: Array<Migration> = arrayOf()
+    val ALL: Array<Migration> = arrayOf(
+        /** Version 2 adds the test-mode marker: a 60-second trial lock is a real lock row, but must
+         * never be counted as a real lock in statistics. Existing rows default to "not a test". */
+        object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE lock_configuration ADD COLUMN isTest INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE protection_session ADD COLUMN isTest INTEGER NOT NULL DEFAULT 0")
+            }
+        }
+    )
 }
