@@ -26,9 +26,9 @@ Requirements: Android Studio (Ladybug or newer) or JDK 17 + Android SDK 36.
 
 Install the APK on a device, or open the folder in Android Studio and press Run.
 
-A ready-made GitHub Actions workflow that builds the APK and runs the tests is in
-`docs/build-apk.yml`. Copy it to `.github/workflows/build-apk.yml` (GitHub needs the *workflows*
-permission for that path) and the APK appears as a downloadable artifact on every push.
+A GitHub Actions workflow (`.github/workflows/build-apk.yml`) runs the unit tests and builds the
+debug APK on every push. Open the repository's **Actions** tab, pick the latest run and download the
+`purelock-debug-apk` artifact. If the run fails, the log shows the compile errors to fix first.
 
 No Google Maps API key is needed: distances are calculated with `Location.distanceBetween`, and no
 map is shown, so the Maps SDK is deliberately not included.
