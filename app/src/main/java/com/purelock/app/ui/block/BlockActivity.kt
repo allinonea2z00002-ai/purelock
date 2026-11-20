@@ -67,7 +67,9 @@ class BlockActivity : AppCompatActivity() {
         b.tvReason.setText(
             when (reason) {
                 BlockReason.LOCK -> R.string.block_reason_lock
-                BlockReason.DAILY_LIMIT -> R.string.block_reason_limit
+                BlockReason.DAILY_LIMIT, BlockReason.HOURLY_LIMIT -> R.string.block_reason_limit
+                BlockReason.TIME_INTERVAL, BlockReason.QUICK_BLOCK, BlockReason.LAUNCH_LIMIT,
+                BlockReason.WAIT_TIMER, BlockReason.GOAL, BlockReason.LOCATION -> R.string.block_reason_condition
                 BlockReason.SELF_PROTECT -> R.string.block_reason_protect
             }
         )

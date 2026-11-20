@@ -184,6 +184,7 @@
     <string name="block_title_protected">PureLock দ্বারা সুরক্ষিত</string>
     <string name="block_reason_lock">একটি লক সক্রিয় আছে।</string>
     <string name="block_reason_limit">এই অ্যাপের জন্য আজকের সীমায় পৌঁছে গেছেন।</string>
+    <string name="block_reason_condition">এই অ্যাপের জন্য আপনার নিয়ম অনুযায়ী বন্ধ আছে।</string>
     <string name="block_reason_protect">লক সক্রিয় থাকলে PureLock-এর সেটিংস সুরক্ষিত থাকে।</string>
     <string name="block_go_home">হোমে যান</string>
     <string name="block_emergency_call">জরুরি কল</string>

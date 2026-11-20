@@ -185,6 +185,7 @@
     <string name="block_title_protected">Protected by PureLock</string>
     <string name="block_reason_lock">A lock is active.</string>
     <string name="block_reason_limit">You reached today\'s limit for this app.</string>
+    <string name="block_reason_condition">Blocked by your rule for this app.</string>
     <string name="block_reason_protect">PureLock settings are protected while a lock is active.</string>
     <string name="block_go_home">Go home</string>
     <string name="block_emergency_call">Emergency call</string>

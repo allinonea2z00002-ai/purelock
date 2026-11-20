@@ -155,11 +155,11 @@ class ConditionActivity : AppCompatActivity() {
     private fun conditions() = listOf(
         ConditionItem("NONE", R.string.cond_none, R.string.cond_none_sub, R.drawable.ic_check_circle, R.attr.plTextSecondary),
         ConditionItem("USAGE_LIMIT", R.string.cond_usage_limit, R.string.cond_usage_limit_sub, R.drawable.ic_clock, R.attr.plDanger),
-        ConditionItem("TIME_INTERVAL", R.string.cond_time_interval, R.string.cond_time_interval_sub, R.drawable.ic_menu, R.attr.colorPrimary),
+        ConditionItem("TIME_INTERVAL", R.string.cond_time_interval, R.string.cond_time_interval_sub, R.drawable.ic_menu, com.google.android.material.R.attr.colorPrimary),
         ConditionItem("QUICK_BLOCK", R.string.cond_quick_block, R.string.cond_quick_block_sub, R.drawable.ic_shield_lock, R.attr.plWarning),
         ConditionItem("LAUNCH_LIMIT", R.string.cond_launch_limit, R.string.cond_launch_limit_sub, R.drawable.ic_grid, R.attr.plSuccess),
         ConditionItem("WAIT_TIMER", R.string.cond_wait_timer, R.string.cond_wait_timer_sub, R.drawable.ic_clock, R.attr.plDanger),
-        ConditionItem("GOAL", R.string.cond_goal, R.string.cond_goal_sub, R.drawable.ic_trophy, R.attr.colorPrimary),
+        ConditionItem("GOAL", R.string.cond_goal, R.string.cond_goal_sub, R.drawable.ic_trophy, com.google.android.material.R.attr.colorPrimary),
         ConditionItem("LOCATION", R.string.cond_location, R.string.cond_location_sub, R.drawable.ic_pin, R.attr.plSuccess)
     )
 

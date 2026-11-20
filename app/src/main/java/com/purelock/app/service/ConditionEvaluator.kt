@@ -162,7 +162,7 @@ object ConditionEvaluator {
         if (rule.locationZoneId <= 0) return false
         val distance = facts.distanceToZoneM
             ?: return rule.blockIfLocationUnavailable
-        val inside = distance <= rule.zoneRadiusM
+        val inside = distance <= facts.zoneRadiusM
         return if (rule.locationMode == "AWAY") !inside else inside
     }
 }

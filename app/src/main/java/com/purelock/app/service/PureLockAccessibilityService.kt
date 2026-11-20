@@ -71,16 +71,21 @@ class PureLockAccessibilityService : AccessibilityService() {
                 Graph.db.lockDao().observe(),
                 Graph.db.blockedAppDao().observeAll(),
                 Graph.db.allowedAppDao().observeAll(),
-                Graph.settings.flow,
-                Graph.db.safeZoneDao().observeAll(),
-                Graph.db.locationDao().observeLatest()
-            ) { lock, blockedApps, allowedApps, settings, zones, latestLocation ->
+                Graph.settings.flow
+            ) { lock, blockedApps, allowedApps, settings ->
                 lockActive = lock?.active == true
                 uninstallProtection = settings.uninstallProtection
                 adultFilterOn = settings.filterEnabled
                 policy.lockBlocksApps = lock?.active == true && lock.blockApps
                 policy.blocked = blockedApps.associateBy { it.packageName }
                 policy.allowed = allowedApps.map { it.packageName }.toHashSet()
+            }.collect { }
+        }
+        scope.launch {
+            combine(
+                Graph.db.safeZoneDao().observeAll(),
+                Graph.db.locationDao().observeLatest()
+            ) { zones, latestLocation ->
                 // Location-gate inputs for AppBlockPolicy (zones + latest recorded fix).
                 policy.zones = zones.associateBy { it.id }
                 policy.lastFix = latestLocation?.let {
