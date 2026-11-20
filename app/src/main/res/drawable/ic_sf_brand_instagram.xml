@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Simple vector approximation of the Instagram mark (gradient rounded square, lens, dot). -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="24dp"
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
     <path
         android:pathData="M7,3 h10 a4,4 0 0 1 4,4 v10 a4,4 0 0 1 -4,4 H7 a4,4 0 0 1 -4,-4 V7 a4,4 0 0 1 4,-4 Z">
-        <gradient
-            android:startColor="#833AB4"
-            android:endColor="#FD1D1D"
-            android:startX="3"
-            android:startY="3"
-            android:endX="21"
-            android:endY="21"
-            android:type="linear" />
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startColor="#833AB4"
+                android:endColor="#FD1D1D"
+                android:startX="3"
+                android:startY="3"
+                android:endX="21"
+                android:endY="21"
+                android:type="linear" />
+        </aapt:attr>
     </path>
     <path
         android:fillColor="#00000000"

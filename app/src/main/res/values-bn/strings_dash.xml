@@ -30,7 +30,7 @@
     <string name="sf_dash_strict_alarm">কঠোর অ্যালার্ম</string>
     <string name="sf_dash_on">চালু</string>
     <string name="sf_dash_off">বন্ধ</string>
-    <string name="sf_dash_configure">কনফিগার</string>
+    <string name="sf_dash_configure">কনফিগার →</string>
     <string name="sf_dash_profiles">প্রোফাইল</string>
     <string name="sf_dash_add_profile">নতুন প্রোফাইল যোগ করুন</string>
     <string name="sf_dash_templates">প্রোফাইল টেমপ্লেট</string>
