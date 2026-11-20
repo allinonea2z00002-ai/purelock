@@ -535,7 +535,7 @@
                 <FrameLayout
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:background="@drawable/bg_sf_circle_grey"
+                    android:background="@drawable/bg_sf_qa_circle"
                     android:backgroundTint="@color/sf_primary_dark">
 
                     <ImageView
@@ -588,7 +588,7 @@
                 <FrameLayout
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:background="@drawable/bg_sf_circle_grey"
+                    android:background="@drawable/bg_sf_qa_circle"
                     android:backgroundTint="@color/sf_primary_dark">
 
                     <ImageView
@@ -641,7 +641,7 @@
                 <FrameLayout
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:background="@drawable/bg_sf_circle_grey"
+                    android:background="@drawable/bg_sf_qa_circle"
                     android:backgroundTint="@color/sf_primary_dark">
 
                     <TextView
@@ -711,7 +711,7 @@
                 <FrameLayout
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:background="@drawable/bg_sf_circle_grey"
+                    android:background="@drawable/bg_sf_qa_circle"
                     android:backgroundTint="@color/sf_primary_dark">
 
                     <TextView
@@ -781,7 +781,7 @@
                 <FrameLayout
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:background="@drawable/bg_sf_circle_grey"
+                    android:background="@drawable/bg_sf_qa_circle"
                     android:backgroundTint="@color/sf_primary_dark">
 
                     <ImageView
@@ -1072,7 +1072,7 @@
                     android:layout_width="260dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:background="@drawable/bg_sf_pink_card"
+                    android:background="@drawable/bg_sf_rose_card"
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"

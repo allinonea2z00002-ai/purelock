@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Social Limit template card fill (SPEC S01, sampled #EFDFE2 — a dusty rose,
+     distinct from the permission banner pink #FFE4DD). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/sf_rose" />
+    <corners android:radius="24dp" />
+</shape>

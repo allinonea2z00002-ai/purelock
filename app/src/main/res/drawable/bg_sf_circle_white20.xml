@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Translucent white circle for header buttons on the gradient (SPEC §1.1). -->
+<!-- Translucent dark circle for header buttons on the gradient (sampled S01: hamburger circle #455CBC on gradient #5770DE, i.e. black ~15%). -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
-    <solid android:color="#33FFFFFF" />
+    <solid android:color="#26000000" />
 </shape>

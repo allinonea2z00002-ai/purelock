@@ -58,7 +58,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="@string/sf_set_drawer_premium"
-                        android:textColor="@color/sf_warning"
+                        android:textColor="@color/sf_gold"
                         android:textSize="16sp" />
                 </LinearLayout>
             </LinearLayout>

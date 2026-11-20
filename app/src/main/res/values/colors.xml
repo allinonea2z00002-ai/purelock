@@ -28,42 +28,44 @@
     <color name="white_warning">#B45309</color>
     <color name="white_danger">#C62828</color>
 
-    <color name="launcher_bg">#05080A</color>
+    <color name="launcher_bg">#0A5CA8</color>
 
     <!-- Stay Focused look (SPEC_STAYFOCUSED §1) — shared by both themes -->
-    <color name="sf_bg">#F1F2F7</color>
-    <color name="sf_gradient_start">#6A5AE0</color>
-    <color name="sf_gradient_mid">#4A8DFF</color>
-    <color name="sf_gradient_end">#5BC8E8</color>
-    <color name="sf_primary">#3B82F6</color>
-    <color name="sf_primary_dark">#2F7CF6</color>
-    <color name="sf_text">#14142E</color>
+    <color name="sf_bg">#EEEFF3</color>
+    <color name="sf_gradient_start">#545CDB</color>
+    <color name="sf_gradient_mid">#5B95E9</color>
+    <color name="sf_gradient_end">#5FCCF7</color>
+    <color name="sf_primary">#3888E8</color>
+    <color name="sf_primary_dark">#2F7DE1</color>
+    <color name="sf_text">#0B0B1E</color>
     <color name="sf_muted">#8A8FA8</color>
-    <color name="sf_muted2">#9AA0B4</color>
-    <color name="sf_red">#E5484D</color>
-    <color name="sf_green">#22C55E</color>
+    <color name="sf_muted2">#9DA3B1</color>
+    <color name="sf_red">#E40204</color>
+    <color name="sf_green">#1FA06B</color>
     <color name="sf_warning">#F59E0B</color>
     <color name="sf_divider">#E8EAF2</color>
     <color name="sf_disabled_bg">#E3E6EE</color>
-    <color name="sf_pill_active">#E4D9FB</color>
-    <color name="sf_pink">#FDE8E8</color>
+    <color name="sf_pill_active">#E2DEF9</color>
+    <color name="sf_pink">#FFE4DD</color>
+    <color name="sf_rose">#EFDFE2</color>
+    <color name="sf_gold">#F5C012</color>
     <color name="sf_blue_tint">#E3ECFD</color>
     <color name="sf_peach">#FDF1E3</color>
     <color name="sf_green_tint">#E6F7EC</color>
-    <color name="sf_lavender">#D8B4FE</color>
-    <color name="sf_yellow">#FDE9B8</color>
-    <color name="sf_pale_blue">#E8F0FE</color>
+    <color name="sf_lavender">#D3B8E1</color>
+    <color name="sf_yellow">#F3D3A0</color>
+    <color name="sf_pale_blue">#DCE6F2</color>
     <color name="sf_pale_yellow">#FDE68A</color>
     <color name="sf_cyan_bar">#7DD3FC</color>
-    <color name="sf_bar_top">#5AA9FF</color>
-    <color name="sf_bar_bottom">#5B5BD6</color>
+    <color name="sf_bar_top">#5BA1F7</color>
+    <color name="sf_bar_bottom">#3F89E8</color>
     <color name="sf_chip_bg">#E9E4FB</color>
     <!-- Quick Actions stack, dark -> light top to bottom -->
-    <color name="sf_qa1">#2E7CF6</color>
-    <color name="sf_qa2">#4A90F7</color>
-    <color name="sf_qa3">#6AA6F8</color>
-    <color name="sf_qa4">#8FBDF9</color>
-    <color name="sf_qa5">#B9D6FB</color>
+    <color name="sf_qa1">#3F89E8</color>
+    <color name="sf_qa2">#5BA1F7</color>
+    <color name="sf_qa3">#7DB7FF</color>
+    <color name="sf_qa4">#A3CDFF</color>
+    <color name="sf_qa5">#C4DEFF</color>
     <!-- Dark theme surfaces -->
     <color name="sf_dark_bg">#12121F</color>
     <color name="sf_dark_card">#1C1C2E</color>
