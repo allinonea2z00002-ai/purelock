@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Premium Dark -->
+    <color name="dark_bg">#05080A</color>
+    <color name="dark_surface">#0B1114</color>
+    <color name="dark_card">#141C20</color>
+    <color name="dark_card_high">#1B262B</color>
+    <color name="dark_outline">#26343A</color>
+    <color name="dark_text">#EAF2EE</color>
+    <color name="dark_text_secondary">#8FA3A0</color>
+    <color name="neon_green">#39FF88</color>
+    <color name="neon_green_dim">#0F3D26</color>
+    <color name="neon_cyan">#22D3EE</color>
+    <color name="dark_warning">#FFB020</color>
+    <color name="dark_danger">#FF5A5F</color>
+
+    <!-- Premium White -->
+    <color name="white_bg">#FFFFFF</color>
+    <color name="white_surface">#F2F4F3</color>
+    <color name="white_card">#F7F9F8</color>
+    <color name="white_card_high">#EAEEEC</color>
+    <color name="white_outline">#DCE3DF</color>
+    <color name="white_text">#0B1F18</color>
+    <color name="white_text_secondary">#51615B</color>
+    <color name="emerald">#059669</color>
+    <color name="emerald_dim">#D1F2E3</color>
+    <color name="white_cyan">#0891B2</color>
+    <color name="white_warning">#B45309</color>
+    <color name="white_danger">#C62828</color>
+
+    <color name="launcher_bg">#05080A</color>
+</resources>

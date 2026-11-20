@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Theme-dependent colours shared by both themes -->
+    <attr name="plCard" format="color" />
+    <attr name="plCardHigh" format="color" />
+    <attr name="plGlow" format="color" />
+    <attr name="plSuccess" format="color" />
+    <attr name="plWarning" format="color" />
+    <attr name="plDanger" format="color" />
+    <attr name="plTextSecondary" format="color" />
+    <attr name="plAccentSoft" format="color" />
+</resources>

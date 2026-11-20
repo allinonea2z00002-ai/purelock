@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">PureLock</string>
+    <string name="app_tagline">Protect Your Mind &amp; Life</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_protection">Protection</string>
+    <string name="nav_statistics">Statistics</string>
+    <string name="nav_location">Location</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Common actions -->
+    <string name="action_add">Add</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_close">Close</string>
+    <string name="action_continue">Continue</string>
+    <string name="action_continue_anyway">Continue anyway</string>
+    <string name="action_copy_command">Copy command</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_not_now">Not now</string>
+    <string name="action_remove">Remove</string>
+    <string name="action_save">Save</string>
+    <string name="state_off">Off</string>
+    <string name="status_active">ACTIVE</string>
+    <string name="status_inactive">INACTIVE</string>
+
+    <!-- Notification channels / notifications -->
+    <string name="channel_protection">Protection running</string>
+    <string name="channel_alerts">Protection alerts</string>
+    <string name="channel_events">Activity</string>
+    <string name="notif_filter_title">Website protection is on</string>
+    <string name="notif_filter_text">Adult websites are being blocked on this device.</string>
+    <string name="notif_filter_stopped_title">Website protection stopped</string>
+    <string name="notif_filter_stopped_text">The website filter is not running. Open PureLock and turn it on again.</string>
+    <string name="notif_integrity_title">Your protection needs attention</string>
+    <string name="notif_integrity_text">Something your lock depends on was turned off or is missing. Open PureLock to see what.</string>
+    <string name="notif_blocked_site_title">Site blocked</string>
+    <string name="notif_completed_title">Lock completed</string>
+    <string name="notif_completed_text">Well done. Your lock has finished and your progress was saved.</string>
+    <string name="notif_geofence_title">Distance tracking may be limited</string>
+    <string name="notif_geofence_text">Location alerts could not be restored. Check location permission in PureLock.</string>
+    <string name="notif_zone_lock_title">Safe zone lock started</string>
+    <string name="notif_zone_lock_text">You entered %1$s. A %2$d minute lock was started.</string>
+
+    <!-- Home -->
+    <string name="home_row_distance">Distance lock</string>
+    <string name="home_row_web">Website protection</string>
+    <string name="home_row_apps">App blocking</string>
+    <string name="home_row_bypass">Anti-bypass</string>
+    <string name="home_motivation_title">Today\'s reminder</string>
+    <string name="home_distance_value">%1$s of %2$s</string>
+    <string name="home_distance_interrupted">Tracking limited (%1$s of %2$s)</string>
+    <string name="home_web_active">Running</string>
+    <string name="home_web_not_running">NOT running</string>
+    <string name="home_apps_active">Blocking %d apps</string>
+    <string name="home_apps_needs_accessibility">Accessibility is off</string>
+    <string name="home_bypass_inactive">No active lock</string>
+    <string name="home_bypass_intact">All checks passed</string>
+    <string name="home_bypass_attention">%d problem(s) found</string>
+    <string name="home_honesty_note">PureLock reports only what it can verify. An ordinary app cannot stop you from turning off its permissions or uninstalling it; it can only detect that and tell you.</string>
+    <string name="quick_start">Start a lock</string>
+    <string name="quick_filter">Website filter</string>
+    <string name="quick_apps">Block apps</string>
+    <string name="quick_location">Location</string>
+    <string name="ring_idle_time">Ready</string>
+    <string name="ring_idle_sub">No lock is active</string>
+    <string name="ring_remaining">remaining</string>
+    <string name="ring_distance_of">of %s</string>
+    <string name="ring_combined_any">any condition</string>
+    <string name="ring_combined_all">all conditions</string>
+
+    <!-- Protection screen -->
+    <string name="prot_active_title">Lock active</string>
+    <string name="prot_active_info">%1$s lock, started %2$s</string>
+    <string name="prot_active_hint">Settings that would weaken your protection are locked until the lock ends.</string>
+    <string name="prot_emergency_button">Emergency override</string>
+    <string name="prot_lock_title">Start a new lock</string>
+    <string name="mode_time">Time</string>
+    <string name="mode_distance">Distance</string>
+    <string name="mode_combined">Combined</string>
+    <string name="mode_time_help">Protection stays on until the chosen time has passed. The timer is saved and keeps running after you close the app or restart the phone.</string>
+    <string name="mode_distance_help">Protection stays on until you travel the chosen distance away from where you start. Needs location permission and GPS.</string>
+    <string name="mode_combined_help">Use both a time and a distance, and choose how they unlock the lock.</string>
+    <string name="prot_duration">Duration</string>
+    <string name="prot_distance">Distance</string>
+    <string name="prot_custom_hours">Hours</string>
+    <string name="prot_custom_minutes">Minutes</string>
+    <string name="prot_custom_km">Distance in km</string>
+    <string name="prot_rule_title">Unlock rule</string>
+    <string name="rule_any">ANY condition</string>
+    <string name="rule_all">ALL conditions</string>
+    <string name="rule_any_help">ANY CONDITION: the lock opens when either the time has passed or the distance is reached.</string>
+    <string name="rule_all_help">ALL CONDITIONS: the lock opens only when the time has passed and the distance is reached.</string>
+    <string name="prot_enforce_title">During this lock</string>
+    <string name="prot_enforce_adult">Block adult websites</string>
+    <string name="prot_enforce_apps">Block selected apps</string>
+    <string name="prot_enforce_uninstall">Uninstall protection</string>
+    <string name="prot_uninstall_hint">While a lock is active, PureLock sends you back to the home screen if you open its App info, uninstall or accessibility screens. This is a deterrent, not a guarantee.</string>
+    <string name="prot_start_button">Start lock</string>
+    <string name="prot_getting_location">Getting your location…</string>
+    <string name="chip_custom">Custom</string>
+    <string name="chip_km">%d km</string>
+    <string name="chip_minutes">%d min</string>
+    <string name="chip_hours">%d h</string>
+    <string name="chip_days">%d days</string>
+    <string name="duration_h_m">%1$d h %2$d min</string>
+
+    <!-- Confirmation / emergency -->
+    <string name="confirm_title">Start this lock?</string>
+    <string name="confirm_time">Time: %s</string>
+    <string name="confirm_distance">Distance: %1$.1f km from your current position</string>
+    <string name="confirm_adult">Adult websites will be blocked.</string>
+    <string name="confirm_apps">Your selected apps will be blocked.</string>
+    <string name="confirm_irreversible">You will not be able to weaken or stop the lock yourself, except with the emergency override, which is always available and is recorded.</string>
+    <string name="confirm_start">Start</string>
+    <string name="emergency_title">Emergency override</string>
+    <string name="emergency_message">Use this only in a genuine emergency. It ends the lock immediately and is recorded in your history. Type %1$s to confirm.</string>
+    <string name="emergency_confirm_word">UNLOCK</string>
+    <string name="emergency_confirm_button">End lock</string>
+    <string name="emergency_wrong_word">The word did not match. The lock is still active.</string>
+    <string name="contact_offer_title">Tell your trusted contact?</string>
+    <string name="contact_offer_message">You ended a lock early. Do you want to send a message to %1$s? Nothing is sent unless you press send in your messaging app.</string>
+    <string name="contact_offer_send">Write message</string>
+    <string name="contact_sms_body">I ended my PureLock early. Could you check in with me?</string>
+
+    <!-- Adult content -->
+    <string name="adult_title">Adult content protection</string>
+    <string name="adult_switch">Block adult websites</string>
+    <string name="adult_vpn_why">This uses Android\'s VPN feature only to see DNS lookups on this device, so adult domains can be answered as \"not found\". Your other traffic does not pass through PureLock, nothing is sent to a PureLock server, and no certificate is installed.</string>
+    <string name="adult_dns_provider">DNS provider for allowed sites</string>
+    <string name="provider_system">Network default (most private)</string>
+    <string name="provider_cleanbrowsing">CleanBrowsing Adult Filter (family DNS)</string>
+    <string name="provider_cloudflare">Cloudflare for Families</string>
+    <string name="adult_safesearch">SafeSearch</string>
+    <string name="adult_safesearch_hint">Asks Google, Bing, DuckDuckGo and YouTube to use their safe modes.</string>
+    <string name="adult_update_button">Update filter list</string>
+    <string name="adult_blacklist">My blacklist</string>
+    <string name="adult_allowlist">My allowlist</string>
+    <string name="adult_limits">Limits: DNS filtering cannot stop browsers that use their own encrypted DNS (Secure DNS), another VPN or a proxy. Turn those off for full effect. PureLock tells you when the filter stops, but it cannot promise complete protection.</string>
+    <string name="filter_status_running">Status: running</string>
+    <string name="filter_status_stopped">Status: NOT running. Protection is off right now.</string>
+    <string name="filter_status_off">Status: off</string>
+    <string name="filter_counts">Filter list: %1$d domains, your blacklist: %2$d, your allowlist: %3$d</string>
+    <string name="filter_last_update">Last update: %1$s (%2$d domains)</string>
+    <string name="filter_never_updated">Using the small built-in list. Update to get the full list.</string>
+    <string name="filter_updating">Updating…</string>
+    <string name="filter_update_done">Updated: %d domains.</string>
+    <string name="filter_update_failed">Update failed: %s</string>
+    <string name="filter_warning_private_dns">Android Private DNS is set to a fixed server. It can bypass the filter. Set Private DNS to Automatic or Off in system settings.</string>
+    <string name="vpn_explain_title">VPN permission</string>
+    <string name="vpn_explain_message">Android will ask you to allow a VPN connection.\n\nPureLock uses it only to check website name lookups (DNS) on your device and answer adult domains as \"not found\". It does not read your pages, does not touch HTTPS content, installs no certificate and sends nothing to PureLock servers.</string>
+    <string name="sheet_blacklist_title">My blacklist</string>
+    <string name="sheet_blacklist_hint">Extra sites to block. Subdomains are included.</string>
+    <string name="sheet_allowlist_title">My allowlist</string>
+    <string name="sheet_allowlist_hint">Sites that are never blocked by the list. Cannot be added during a lock.</string>
+    <string name="domain_hint">example.com</string>
+    <string name="domain_invalid">That is not a valid domain name.</string>
+    <string name="domain_empty">Nothing here yet.</string>
+
+    <!-- Apps -->
+    <string name="apps_title">App blocker</string>
+    <string name="apps_manage">Choose apps</string>
+    <string name="apps_a11y_on">Accessibility service: ON</string>
+    <string name="apps_a11y_off">Accessibility service: OFF. App blocking cannot work without it.</string>
+    <string name="apps_a11y_button">Turn on accessibility service</string>
+    <string name="apps_usage_on">Usage access: ON (daily limits work)</string>
+    <string name="apps_usage_off">Usage access: OFF. Daily limits need it.</string>
+    <string name="apps_usage_button">Grant usage access</string>
+    <string name="apps_owner_on">Device Owner mode: ON</string>
+    <string name="apps_owner_off">Device Owner mode: off (optional, stronger protection)</string>
+    <string name="apps_owner_button">Device Owner setup guide</string>
+    <string name="apps_limits">An ordinary app cannot guarantee that it will not be force-stopped, uninstalled or have its permissions removed. PureLock detects and reports this. Device Owner is optional and is never turned on silently.</string>
+    <string name="apps_screen_title">Choose apps</string>
+    <string name="apps_search_hint">Search apps</string>
+    <string name="apps_usage_note_on">Today\'s usage comes from Android\'s usage access.</string>
+    <string name="apps_usage_note_off">Turn on usage access in the Protection screen to see usage and use daily limits.</string>
+    <string name="app_state_blocked">BLOCKED</string>
+    <string name="app_state_allowed">ALLOWED</string>
+    <string name="app_state_always">ALWAYS AVAILABLE</string>
+    <string name="app_usage_today">Today: %s</string>
+    <string name="app_limit">Limit: %d min/day</string>
+    <string name="rule_block">Block this app</string>
+    <string name="rule_during_lock">Block while a lock is active</string>
+    <string name="rule_daily_limit">Daily limit in minutes (0 = none)</string>
+    <string name="rule_limit_hint">The app is blocked once today\'s usage reaches the limit.</string>
+    <string name="rule_limit_needs_access">Daily limits need usage access (Protection screen).</string>
+    <string name="rule_allowlist">Always allow (never block)</string>
+    <string name="rule_always_available">Phone, emergency, launcher and system apps can never be blocked.</string>
+    <string name="a11y_service_description">PureLock reads only which app is in front so it can block the apps you chose. Nothing is stored or sent.</string>
+    <string name="a11y_disclosure_title">Accessibility service</string>
+    <string name="a11y_disclosure_message">To block apps, PureLock needs Android\'s Accessibility service.\n\nWhat it does: it sees which app comes to the front, and while a lock is active it checks whether a Settings screen is showing PureLock, to send you home.\n\nWhat it does not do: it does not read what you type or your messages, and nothing it sees is stored or sent anywhere.\n\nYou can turn it off any time in Android settings.</string>
+    <string name="a11y_agree_open">I understand, open settings</string>
+    <string name="a11y_continue_without">Start without app blocking</string>
+    <string name="a11y_after_enable">Turn on PureLock under Accessibility, then start the lock again.</string>
+    <string name="owner_title">Device Owner (optional)</string>
+    <string name="owner_message">Device Owner gives stronger protection: while a lock is active, uninstalling and force-stopping PureLock is blocked.\n\nIt can only be set up by you, on a device with no accounts added (or after a factory reset), from a computer with USB debugging:\n\n%s\n\nPureLock never turns this on by itself. Emergency calls always keep working.</string>
+    <string name="msg_copied">Copied</string>
+
+    <!-- Block screen -->
+    <string name="block_title">%s is blocked</string>
+    <string name="block_title_protected">Protected by PureLock</string>
+    <string name="block_reason_lock">A lock is active.</string>
+    <string name="block_reason_limit">You reached today\'s limit for this app.</string>
+    <string name="block_reason_protect">PureLock settings are protected while a lock is active.</string>
+    <string name="block_go_home">Go home</string>
+    <string name="block_emergency_call">Emergency call</string>
+    <string name="block_call_trusted">Call %s</string>
+
+    <!-- Statistics -->
+    <string name="stats_protection_time">Protection time</string>
+    <string name="stats_total">in total</string>
+    <string name="stats_today">Today</string>
+    <string name="stats_week">7 days</string>
+    <string name="stats_month">30 days</string>
+    <string name="stats_last7">Last 7 days</string>
+    <string name="stats_streak">Focus streak</string>
+    <string name="stats_sessions">Locks completed</string>
+    <string name="stats_blocks_title">Blocked and interrupted</string>
+    <string name="stats_web_blocks">Websites blocked: %d</string>
+    <string name="stats_app_blocks">Apps blocked: %d</string>
+    <string name="stats_interruptions">Protection interruptions: %d</string>
+    <string name="stats_achievements">Achievements</string>
+    <string name="stats_empty">No data yet. Statistics are counted only from real protection time and real blocks.</string>
+    <string name="ach_first">First lock</string>
+    <string name="ach_streak3">3-day streak</string>
+    <string name="ach_streak7">7-day streak</string>
+    <string name="ach_streak30">30-day streak</string>
+    <string name="ach_total24">24 hours of protection</string>
+    <string name="ach_blocks100">100 blocks</string>
+
+    <!-- Location -->
+    <string name="loc_current_title">Current location</string>
+    <string name="loc_accuracy">Accuracy: about %1$d m (%2$s)</string>
+    <string name="acc_high">high</string>
+    <string name="acc_medium">medium</string>
+    <string name="acc_low">low</string>
+    <string name="loc_perm_none">Location permission: not granted</string>
+    <string name="loc_perm_foreground">Location permission: only while the app is open</string>
+    <string name="loc_perm_all">Location permission: granted, including background</string>
+    <string name="loc_grant_button">Grant location permission</string>
+    <string name="loc_grant_background">Allow background location</string>
+    <string name="loc_gps_button">Turn on location (GPS)</string>
+    <string name="loc_unavailable_permission">Location is unavailable: permission not granted.</string>
+    <string name="loc_waiting_fix">Waiting for a location fix…</string>
+    <string name="loc_distance_title">Distance lock</string>
+    <string name="loc_no_distance_lock">No distance lock is active.</string>
+    <string name="loc_distance_info">Start: %1$s\nTravelled: %2$s of %3$s\nLast fix: %4$s</string>
+    <string name="loc_no_fix_yet">none yet</string>
+    <string name="loc_note_ok">Tracking is possible. Android may still pause background checks to save battery.</string>
+    <string name="loc_note_no_permission">Tracking is NOT running: location permission is missing.</string>
+    <string name="loc_note_no_background">Background location is not allowed. The distance only updates while the app is open and about every 15 minutes at best.</string>
+    <string name="loc_note_gps_off">Location (GPS) is turned off, so the distance is not updating.</string>
+    <string name="loc_privacy_title">Privacy</string>
+    <string name="loc_privacy_text">Location data stays on this device and is never uploaded. Only the last 30 days are kept.</string>
+    <string name="loc_delete_history">Delete location history</string>
+    <string name="loc_delete_confirm">All saved location points will be deleted. This cannot be undone.</string>
+    <string name="zones_title">Safe zones</string>
+    <string name="zones_hint">Named places. A zone can start a time lock automatically when you arrive.</string>
+    <string name="zones_empty">No safe zones yet.</string>
+    <string name="zones_add_button">Add zone at my location</string>
+    <string name="zone_dialog_message">The zone is created around where you are now.</string>
+    <string name="zone_name">Name</string>
+    <string name="zone_radius">Radius in meters (100 to 5000)</string>
+    <string name="zone_auto_lock">Auto-lock minutes on arrival (0 = none)</string>
+    <string name="zone_invalid">Enter a name, a radius of 100 to 5000 m and 0 to 10080 minutes.</string>
+    <string name="zone_needs_background">Auto-lock needs background location permission to work.</string>
+    <string name="zone_detail_radius">Radius %d m</string>
+    <string name="zone_detail_auto">auto-lock %d min</string>
+    <string name="zone_delete_confirm">Delete this safe zone?</string>
+
+    <!-- Permissions -->
+    <string name="perm_location_title">Location permission</string>
+    <string name="perm_location_message">A distance lock needs your location to measure how far you travel. It is saved only on this device and is never uploaded.</string>
+    <string name="perm_background_title">Background location</string>
+    <string name="perm_background_message">So the distance can keep updating when the app is closed, Android asks for \"Allow all the time\" location. Without it, tracking works only while the app is open.</string>
+    <string name="perm_background_denied_title">Background location not allowed</string>
+    <string name="perm_background_denied_message">The distance will update only while the app is open. PureLock will show this honestly. Start the lock anyway?</string>
+
+    <!-- Settings -->
+    <string name="set_appearance">Appearance</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_white">White</string>
+    <string name="set_language">Language</string>
+    <string name="set_notifications">Notifications</string>
+    <string name="set_alerts">Alert me when protection is interrupted</string>
+    <string name="set_notif_on">Notifications are allowed.</string>
+    <string name="set_notif_off">Notifications are blocked, so you will not see alerts.</string>
+    <string name="set_notif_open">Open notification settings</string>
+    <string name="set_lock_prefs">Lock preferences</string>
+    <string name="set_keep_filter">Keep the website filter on after a lock ends</string>
+    <string name="set_uninstall_protection">Uninstall protection during a lock</string>
+    <string name="set_battery">Battery optimization</string>
+    <string name="set_battery_ok">PureLock is not restricted by battery optimization.</string>
+    <string name="set_battery_restricted">Battery optimization may delay background checks. Allow PureLock to run unrestricted.</string>
+    <string name="set_battery_button">Open battery settings</string>
+    <string name="set_trusted">Trusted contact</string>
+    <string name="set_trusted_hint">Optional. If you end a lock early, PureLock offers to write this person a message. Nothing is sent automatically. Stored encrypted on this device.</string>
+    <string name="set_trusted_name">Name</string>
+    <string name="set_trusted_phone">Phone number</string>
+    <string name="set_privacy">Privacy</string>
+    <string name="set_privacy_text">No analytics, no ads, no accounts. Everything is stored on this device. The only network request is the optional filter list download, which sends no personal data.</string>
+    <string name="set_store_history">Save location history on this device</string>
+    <string name="set_backup">Backup and restore</string>
+    <string name="set_backup_hint">Saves your rules and statistics to a file you choose. It never includes location history, your trusted contact or an active lock.</string>
+    <string name="set_export">Export</string>
+    <string name="set_import">Import</string>
+    <string name="set_clear_all">Clear all local data</string>
+    <string name="set_clear_confirm">This deletes all settings, rules, statistics and history from this device. It is not possible while a lock is active. This cannot be undone.</string>
+    <string name="set_security_log">Recent security events</string>
+    <string name="set_no_events">Nothing recorded yet.</string>
+    <string name="set_about">About PureLock</string>
+    <string name="set_about_text">PureLock %s\nA voluntary self-control tool. It is honest about its limits: it helps you keep a promise to yourself but cannot overrule Android.</string>
+    <string name="ev_lock_started">Lock started</string>
+    <string name="ev_lock_completed">Lock completed</string>
+    <string name="ev_emergency">Emergency override</string>
+    <string name="ev_time_changed">Device time was changed</string>
+    <string name="ev_reboot">Restored after restart</string>
+    <string name="ev_vpn_revoked">VPN permission was removed</string>
+    <string name="ev_integrity_issue">Protection problem detected</string>
+    <string name="ev_integrity_restored">Protection restored</string>
+    <string name="ev_geofence_error">Location alert error</string>
+    <string name="ev_zone_lock">Safe zone lock started</string>
+    <string name="ev_other">Event</string>
+
+    <!-- Messages and errors -->
+    <string name="msg_lock_started">Lock started. Stay strong.</string>
+    <string name="msg_lock_already_active">A lock is already active.</string>
+    <string name="msg_locked_cannot_change">Not possible while a lock is active.</string>
+    <string name="msg_emergency_done">The lock was ended and recorded.</string>
+    <string name="msg_history_deleted">Location history deleted.</string>
+    <string name="msg_contact_saved">Contact saved.</string>
+    <string name="msg_export_ok">Backup saved.</string>
+    <string name="msg_export_failed">Could not save the backup.</string>
+    <string name="msg_import_ok">Backup restored.</string>
+    <string name="msg_import_failed">Could not restore: the file is not a valid PureLock backup.</string>
+    <string name="msg_data_cleared">All local data was deleted.</string>
+    <string name="err_location_denied">Location permission was denied.</string>
+    <string name="err_gps_disabled">Location (GPS) is turned off. Turn it on and try again.</string>
+    <string name="err_no_fix">Could not get your location. Move to an open area and try again.</string>
+    <string name="err_vpn_denied">VPN permission was denied, so the website filter cannot run.</string>
+    <string name="err_custom_duration">Enter a duration between 5 minutes and 90 days.</string>
+    <string name="err_custom_distance">Enter a distance between 0.5 km and 200 km.</string>
+
+    <plurals name="apps_summary">
+        <item quantity="one">%d app selected for blocking</item>
+        <item quantity="other">%d apps selected for blocking</item>
+    </plurals>
+    <plurals name="days_count">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+    <plurals name="history_count">
+        <item quantity="one">%d saved location point</item>
+        <item quantity="other">%d saved location points</item>
+    </plurals>
+
+    <string-array name="motivation_messages">
+        <item>Every minute you stay strong is a promise kept to yourself.</item>
+        <item>Protect your mind, and your life follows.</item>
+        <item>The urge passes. The respect you earn stays.</item>
+        <item>Small victories today build the person you want to be.</item>
+        <item>Take a breath, take a walk, take back control.</item>
+        <item>You are stronger than a moment of weakness.</item>
+        <item>Choose the future you, not the passing urge.</item>
+    </string-array>
+</resources>
