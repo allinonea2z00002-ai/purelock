@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Stylised map preview: card background with a green zone ring. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="?attr/plCardHigh" />
+            <corners android:radius="20dp" />
+        </shape>
+    </item>
+    <item
+        android:bottom="36dp"
+        android:left="36dp"
+        android:right="36dp"
+        android:top="36dp">
+        <shape android:shape="oval">
+            <solid android:color="#1A39FF88" />
+            <stroke
+                android:width="2dp"
+                android:color="#9939FF88" />
+        </shape>
+    </item>
+</layer-list>

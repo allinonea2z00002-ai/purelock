@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Soft green glow behind the shield (splash / home). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:centerX="0.5"
+        android:centerY="0.45"
+        android:endColor="#0039FF88"
+        android:gradientRadius="280dp"
+        android:startColor="#5939FF88"
+        android:type="radial" />
+</shape>

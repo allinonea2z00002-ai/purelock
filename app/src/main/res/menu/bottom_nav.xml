@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Mockup bottom nav: Home, Analysis, Map, Stats, Settings.
+     Analysis opens the Protection screen (Smart Lock / Website / App Blocker tabs). -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_home"
         android:icon="@drawable/ic_nav_home"
         android:title="@string/nav_home" />
     <item
-        android:id="@+id/nav_protection"
-        android:icon="@drawable/ic_nav_shield"
-        android:title="@string/nav_protection" />
-    <item
-        android:id="@+id/nav_statistics"
+        android:id="@+id/nav_analysis"
         android:icon="@drawable/ic_nav_chart"
-        android:title="@string/nav_statistics" />
+        android:title="@string/nav_analysis" />
     <item
-        android:id="@+id/nav_location"
+        android:id="@+id/nav_map"
         android:icon="@drawable/ic_nav_location"
-        android:title="@string/nav_location" />
+        android:title="@string/nav_map" />
+    <item
+        android:id="@+id/nav_stats"
+        android:icon="@drawable/ic_nav_stats"
+        android:title="@string/nav_stats" />
     <item
         android:id="@+id/nav_settings"
         android:icon="@drawable/ic_nav_settings"

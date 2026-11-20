@@ -20,10 +20,29 @@ import com.purelock.app.ui.location.LocationFragment
 import com.purelock.app.ui.protection.ProtectionFragment
 import com.purelock.app.ui.settings.SettingsFragment
 import com.purelock.app.ui.stats.StatsFragment
+import com.purelock.app.domain.LockMode
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    /** Protection tab to open once ("smart" / "website" / "apps"); cleared when read. */
+    var pendingProtectionTab: String? = null
+
+    /** Lock mode to preselect in Protection; cleared when read. */
+    var pendingLockMode: LockMode? = null
+
+    /** Opens Protection on the given tab ("smart", "website" or "apps"). */
+    fun openProtectionTab(tab: String) {
+        pendingProtectionTab = tab
+        openTab(R.id.nav_analysis)
+    }
+
+    /** Opens Protection with the given lock mode preselected. */
+    fun openLockMode(mode: LockMode) {
+        pendingLockMode = mode
+        openTab(R.id.nav_analysis)
+    }
 
     private val notificationPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { /* the app works either way; the UI reports it */ }
@@ -64,17 +83,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun tabFromIntent(intent: Intent?): Int = when (intent?.getStringExtra(EXTRA_TAB)) {
-        "protection" -> R.id.nav_protection
-        "location" -> R.id.nav_location
+        // Old extras still work: they now map to the renamed tabs.
+        "protection", "analysis" -> R.id.nav_analysis
+        "location", "map" -> R.id.nav_map
+        "stats", "statistics" -> R.id.nav_stats
+        "settings" -> R.id.nav_settings
         else -> R.id.nav_home
     }
 
     private fun show(itemId: Int) {
         val tag = "tab_$itemId"
         val fragment: Fragment = supportFragmentManager.findFragmentByTag(tag) ?: when (itemId) {
-            R.id.nav_protection -> ProtectionFragment()
-            R.id.nav_statistics -> StatsFragment()
-            R.id.nav_location -> LocationFragment()
+            R.id.nav_analysis -> ProtectionFragment()
+            R.id.nav_stats -> StatsFragment()
+            R.id.nav_map -> LocationFragment()
             R.id.nav_settings -> SettingsFragment()
             else -> HomeFragment()
         }

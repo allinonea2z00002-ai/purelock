@@ -35,6 +35,7 @@ import com.purelock.app.domain.LockEvaluator
 import com.purelock.app.domain.LockManager
 import com.purelock.app.domain.LockMode
 import com.purelock.app.location.LocationHelper
+import com.purelock.app.ui.MainActivity
 import com.purelock.app.ui.UiAnim
 import com.purelock.app.ui.apps.AppListActivity
 import com.purelock.app.vpn.VpnState
@@ -121,7 +122,26 @@ class ProtectionFragment : Fragment(R.layout.fragment_protection) {
         setupModeToggles()
         setupFilterCard()
         setupAppsCard()
+        setupTabs()
 
+        // Deep link from Home (quick actions / lock-type cards): tab and/or mode.
+        val main = requireActivity() as? MainActivity
+        val pendingTab = main?.pendingProtectionTab
+        val pendingMode = main?.pendingLockMode
+        main?.pendingProtectionTab = null
+        main?.pendingLockMode = null
+        if (pendingMode != null) {
+            b.toggleMode.check(
+                when (pendingMode) {
+                    LockMode.DISTANCE -> R.id.btnModeDistance
+                    LockMode.COMBINED -> R.id.btnModeCombined
+                    else -> R.id.btnModeTime
+                }
+            )
+        }
+        showTab(pendingTab ?: "smart")
+
+        b.btnBackProt.setOnClickListener { (requireActivity() as MainActivity).openTab(R.id.nav_home) }
         b.btnStart.setOnClickListener { UiAnim.haptic(it); onStartClicked() }
         b.btnEmergency.setOnClickListener { showEmergencyDialog() }
         b.switchUninstall.setOnClickListener {
@@ -155,6 +175,33 @@ class ProtectionFragment : Fragment(R.layout.fragment_protection) {
         }
     }
 
+    private fun setupTabs() {
+        b.toggleTabs.addOnButtonCheckedListener { _, id, checked ->
+            if (!checked) return@addOnButtonCheckedListener
+            showTab(
+                when (id) {
+                    R.id.btnTabWebsite -> "website"
+                    R.id.btnTabApps -> "apps"
+                    else -> "smart"
+                }
+            )
+        }
+    }
+
+    /** Shows one of the three tabs ("smart" / "website" / "apps"). */
+    fun showTab(tab: String) {
+        b.toggleTabs.check(
+            when (tab) {
+                "website" -> R.id.btnTabWebsite
+                "apps" -> R.id.btnTabApps
+                else -> R.id.btnTabSmart
+            }
+        )
+        b.tabSmart.isVisible = tab == "smart"
+        b.tabWebsite.isVisible = tab == "website"
+        b.tabApps.isVisible = tab == "apps"
+    }
+
     private fun buildTimeChips() {
         val labels = LockEvaluator.TIME_PRESETS_MS.map { it to timeLabel(it) }
         for ((ms, label) in labels) {
@@ -185,6 +232,7 @@ class ProtectionFragment : Fragment(R.layout.fragment_protection) {
             customDistance = tag == CUSTOM_TAG
             if (!customDistance) selectedDistanceM = tag.toInt()
             b.tilCustomKm.isVisible = customDistance
+            b.tvCustomDistanceLabel.isVisible = customDistance
         }
     }
 
@@ -358,6 +406,8 @@ class ProtectionFragment : Fragment(R.layout.fragment_protection) {
             )
         } ?: getString(R.string.filter_never_updated)
         b.tvFilterStatus.text = "$status\n$sizes\n$last"
+        b.cardSafe.isVisible = running
+        b.tvBlocklistCount.text = getString(R.string.web_domains_count, Graph.blocklist.listSize())
 
         val privateDns = Settings.Global.getString(requireContext().contentResolver, "private_dns_mode") == "hostname"
         b.tvFilterWarning.isVisible = privateDns && (running || s.filterEnabled)
@@ -547,7 +597,7 @@ class ProtectionFragment : Fragment(R.layout.fragment_protection) {
             val fix = LocationHelper.currentFix(ctx, highAccuracy = true)
             if (_binding == null) return@launch
             b.btnStart.isEnabled = true
-            b.btnStart.setText(R.string.prot_start_button)
+            b.btnStart.setText(R.string.ui_start_lock)
             if (fix == null) {
                 pending = null
                 toast(if (!LocationHelper.isLocationEnabled(ctx)) R.string.err_gps_disabled else R.string.err_no_fix)

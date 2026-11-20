@@ -47,7 +47,13 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _binding = FragmentSettingsBinding.bind(view)
-        UiAnim.cardEntrance(listOf(b.cardAppearance, b.cardPrefs, b.cardContact, b.cardData, b.cardAbout))
+        UiAnim.cardEntrance(listOf(b.cardAppInfo, b.cardAppearance, b.cardPrefs, b.cardContact, b.cardData, b.cardAbout))
+        b.tvAppVersion.text = getString(R.string.set_app_version, BuildConfig.VERSION_NAME)
+        b.btnBackSettings.setOnClickListener { (activity as? MainActivity)?.openTab(R.id.nav_home) }
+        b.cardAppInfo.setOnClickListener { showAboutDialog() }
+        b.rowPrivacy.setOnClickListener { b.scrollSettings.smoothScrollTo(0, b.cardData.top) }
+        b.rowBackup.setOnClickListener { exportFile.launch("purelock-backup.json") }
+        b.rowAbout.setOnClickListener { showAboutDialog() }
 
         setupAppearance()
         setupPrefs()
@@ -76,24 +82,30 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private fun setupAppearance() {
         val white = UiPrefs.theme(requireContext()) == UiPrefs.THEME_WHITE
-        b.toggleTheme.check(if (white) R.id.btnThemeWhite else R.id.btnThemeDark)
-        b.toggleTheme.addOnButtonCheckedListener { _, id, checked ->
-            if (!checked) return@addOnButtonCheckedListener
-            val theme = if (id == R.id.btnThemeWhite) UiPrefs.THEME_WHITE else UiPrefs.THEME_DARK
-            UiAnim.haptic(b.toggleTheme)
+        b.rgTheme.check(if (white) R.id.rbThemeLight else R.id.rbThemeDark)
+        b.rgTheme.setOnCheckedChangeListener { _, id ->
+            val theme = if (id == R.id.rbThemeLight) UiPrefs.THEME_WHITE else UiPrefs.THEME_DARK
+            UiAnim.haptic(b.rgTheme)
             ThemeManager.switchTheme(requireActivity(), theme)
         }
 
         val bn = UiPrefs.language() == "bn"
-        b.toggleLanguage.check(if (bn) R.id.btnLangBn else R.id.btnLangEn)
-        b.toggleLanguage.addOnButtonCheckedListener { _, id, checked ->
-            if (!checked) return@addOnButtonCheckedListener
-            val tag = if (id == R.id.btnLangBn) "bn" else "en"
+        b.rgLanguage.check(if (bn) R.id.rbLangBn else R.id.rbLangEn)
+        b.rgLanguage.setOnCheckedChangeListener { _, id ->
+            val tag = if (id == R.id.rbLangBn) "bn" else "en"
             if (tag != UiPrefs.language()) {
-                UiAnim.haptic(b.toggleLanguage)
+                UiAnim.haptic(b.rgLanguage)
                 UiPrefs.setLanguage(tag) // recreates the activity in the new language
             }
         }
+    }
+
+    private fun showAboutDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.set_about)
+            .setMessage(getString(R.string.set_about_text, BuildConfig.VERSION_NAME))
+            .setPositiveButton(R.string.action_close, null)
+            .show()
     }
 
     private fun setupPrefs() {

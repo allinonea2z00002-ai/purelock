@@ -3,6 +3,7 @@ package com.purelock.app.ui.stats
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,7 +16,8 @@ import com.purelock.app.data.StatsCalculator
 import com.purelock.app.data.StatsSummary
 import com.purelock.app.databinding.FragmentStatsBinding
 import com.purelock.app.ui.UiAnim
-import com.purelock.app.ui.widget.BarChartView
+import com.purelock.app.ui.MainActivity
+import com.purelock.app.ui.widget.LineChartView
 import com.purelock.app.util.DurationFormat
 import kotlinx.coroutines.launch
 import java.time.format.TextStyle
@@ -27,9 +29,25 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
     private val b get() = _binding!!
     private val vm: StatsViewModel by viewModels()
 
+    /** Headline range: 7 days (week total) or 30 days (month total). */
+    private var selectedRangeDays = 7
+    private var lastSummary: StatsSummary? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _binding = FragmentStatsBinding.bind(view)
-        UiAnim.cardEntrance(listOf(b.cardTotals, b.cardChart, b.rowCounts, b.cardBlocks, b.cardAchievements))
+        UiAnim.cardEntrance(listOf(b.cardTotals, b.cardChart, b.rowCounts, b.cardKeepGoing, b.cardAchievements))
+        b.btnBackStats.setOnClickListener { (requireActivity() as MainActivity).openTab(R.id.nav_home) }
+        b.toggleRange.addOnButtonCheckedListener { _, id, checked ->
+            if (!checked) return@addOnButtonCheckedListener
+            if (id == R.id.btnRangeCustom) {
+                // No per-day data exists for a custom range, so it cannot be shown honestly.
+                Toast.makeText(requireContext(), R.string.stats_range_custom_na, Toast.LENGTH_LONG).show()
+                b.toggleRange.check(if (selectedRangeDays == 30) R.id.btnRange30 else R.id.btnRange7)
+                return@addOnButtonCheckedListener
+            }
+            selectedRangeDays = if (id == R.id.btnRange30) 30 else 7
+            lastSummary?.let { render(it) }
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -40,24 +58,28 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
     }
 
     private fun render(s: StatsSummary) {
+        lastSummary = s
         b.tvEmpty.isVisible = s.totalMs == 0L && s.websiteBlocks == 0 && s.appBlocks == 0
-        b.tvTotal.text = DurationFormat.compact(s.totalMs)
+        // Headline follows the selected range (real totals only; no prior-period
+        // data exists, so the mockup's "+12%" delta is deliberately not shown).
+        b.tvTotal.text = DurationFormat.compact(if (selectedRangeDays == 30) s.monthMs else s.weekMs)
         b.tvToday.text = DurationFormat.compact(s.todayMs)
         b.tvWeek.text = DurationFormat.compact(s.weekMs)
         b.tvMonth.text = DurationFormat.compact(s.monthMs)
         b.tvStreak.text = resources.getQuantityString(R.plurals.days_count, s.streakDays, s.streakDays)
-        b.tvWebBlocks.text = getString(R.string.stats_web_blocks, s.websiteBlocks)
-        b.tvAppBlocks.text = getString(R.string.stats_app_blocks, s.appBlocks)
-        b.tvInterruptions.text = getString(R.string.stats_interruptions, s.interruptions)
+        b.tvWebBlocks.text = s.websiteBlocks.toString()
+        b.tvAppBlocks.text = s.appBlocks.toString()
+        b.tvInterruptions.text = s.interruptions.toString()
 
         val locale = Locale.getDefault()
-        b.chart.setBars(
+        b.chart.setPoints(
             s.last7Days.map { (date, ms) ->
-                BarChartView.Bar(date.dayOfWeek.getDisplayName(TextStyle.SHORT, locale), ms)
+                LineChartView.Point(date.dayOfWeek.getDisplayName(TextStyle.SHORT, locale), ms)
             }
         )
 
         val unlocked = StatsCalculator.unlocked(s)
+        b.tvAchCount.text = unlocked.size.toString()
         b.listAchievements.removeAllViews()
         for (achievement in Achievement.values()) {
             val done = achievement in unlocked

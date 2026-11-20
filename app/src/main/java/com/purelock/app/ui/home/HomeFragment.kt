@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.ViewCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -38,14 +39,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         val main = requireActivity() as MainActivity
         mapOf(
-            b.cardQuickStart to { main.openTab(R.id.nav_protection) },
-            b.cardQuickFilter to { main.openTab(R.id.nav_protection) },
-            b.cardQuickApps to { startActivity(Intent(requireContext(), AppListActivity::class.java)) },
-            b.cardQuickLocation to { main.openTab(R.id.nav_location) }
+            b.cardLockTime to { main.openLockMode(LockMode.TIME) },
+            b.cardLockDistance to { main.openLockMode(LockMode.DISTANCE) },
+            b.cardLockCombined to { main.openLockMode(LockMode.COMBINED) },
+            b.cardLockZones to { main.openTab(R.id.nav_map) },
+            b.qaWebsites to { main.openProtectionTab("website") },
+            b.qaApps to { startActivity(Intent(requireContext(), AppListActivity::class.java)) },
+            b.qaStats to { main.openTab(R.id.nav_stats) },
+            b.qaSettings to { main.openTab(R.id.nav_settings) }
         ).forEach { (card, action) ->
             UiAnim.pressEffect(card)
             card.setOnClickListener { UiAnim.haptic(it); action() }
         }
+        b.btnMenu.setOnClickListener { main.openTab(R.id.nav_settings) }
+        b.tvViewAll.setOnClickListener { main.openTab(R.id.nav_analysis) }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -80,7 +87,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             snap.active -> color(R.attr.plSuccess)
             else -> color(R.attr.plTextSecondary)
         }
-        b.tvStatusPill.text = getString(if (snap.active) R.string.status_active else R.string.status_inactive)
+        b.tvStatusPill.text = getString(if (snap.active) R.string.home_status_active else R.string.home_status_inactive)
         b.tvStatusPill.setTextColor(pillColor)
         ViewCompat.setBackgroundTintList(
             b.tvStatusPill,
@@ -108,6 +115,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 } else getString(R.string.ring_remaining)
             }
         }
+        b.tvLockedUntil.isVisible = snap.active
         b.ring.setState(snap.active, broken, snap.progress, timeText, subText)
 
         // --- status rows ---------------------------------------------------------------------

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Mockup screen 6: Location. Current location, map preview (tap opens the
+     real map), distance lock, safe zones, privacy. -->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -11,13 +13,29 @@
         android:orientation="vertical"
         android:padding="@dimen/screen_padding">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/nav_location"
-            android:textColor="?attr/colorOnSurface"
-            android:textSize="26sp"
-            android:textStyle="bold" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnBackLoc"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_close"
+                android:src="?attr/homeAsUpIndicator"
+                android:tint="?attr/colorOnSurface" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nav_location"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="26sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <!-- Current location + permissions -->
         <com.google.android.material.card.MaterialCardView
@@ -32,11 +50,25 @@
                 android:orientation="vertical"
                 android:padding="@dimen/card_padding">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/loc_current_title"
-                    android:textAppearance="@style/TextAppearance.PureLock.Section" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_pin"
+                        android:tint="?attr/plSuccess" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/loc_current_title"
+                        android:textAppearance="@style/TextAppearance.PureLock.Section" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tvCurrent"
@@ -75,6 +107,69 @@
                     android:layout_height="wrap_content"
                     android:text="@string/loc_gps_button"
                     android:visibility="gone" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Map preview: tap opens the real MapActivity -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardMapPreview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap"
+            android:clickable="true"
+            android:focusable="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/card_padding">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:background="@drawable/bg_map_preview">
+
+                    <TextView
+                        android:id="@+id/tvPreviewZone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|center_horizontal"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/bg_pill_active"
+                        android:paddingStart="12dp"
+                        android:paddingTop="6dp"
+                        android:paddingEnd="12dp"
+                        android:paddingBottom="6dp"
+                        android:text="@string/loc_preview_no_zone"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_pin"
+                        android:tint="?attr/plSuccess" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:text="@string/loc_map_preview_hint"
+                        android:textAppearance="@style/TextAppearance.PureLock.Body"
+                        android:textSize="12sp" />
+                </FrameLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnViewMap"
+                    style="@style/Widget.PureLock.GreenButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/map_view_button" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -167,19 +262,11 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnAddZone"
-                    style="@style/Widget.Material3.Button.TonalButton"
+                    style="@style/Widget.PureLock.GreenButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="@string/zones_add_button" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnViewMap"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/map_view_button" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

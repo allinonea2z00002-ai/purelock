@@ -1,9 +1,10 @@
 package com.purelock.app.ui.apps
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -18,14 +19,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.activity.viewModels
-import androidx.core.graphics.ColorUtils
 import com.google.android.material.color.MaterialColors
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.purelock.app.Graph
 import com.purelock.app.R
 import com.purelock.app.databinding.ActivityAppListBinding
-import com.purelock.app.databinding.DialogAppRuleBinding
 import com.purelock.app.databinding.ItemAppBinding
 import com.purelock.app.ui.ThemeManager
 import com.purelock.app.util.DurationFormat
@@ -35,7 +32,7 @@ class AppListActivity : AppCompatActivity() {
 
     private lateinit var b: ActivityAppListBinding
     private val vm: AppListViewModel by viewModels()
-    private val adapter = AppAdapter { showRuleDialog(it) }
+    private val adapter = AppAdapter { openRule(it) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         ThemeManager.apply(this)
@@ -66,71 +63,13 @@ class AppListActivity : AppCompatActivity() {
         }
     }
 
-    private fun showRuleDialog(item: AppItem) {
-        val d = DialogAppRuleBinding.inflate(LayoutInflater.from(this))
-        val rule = item.rule
-
-        // Graphical header: app icon, label and package name.
-        d.ivRuleIcon.setImageDrawable(
-            runCatching { packageManager.getApplicationIcon(item.packageName) }.getOrNull()
-                ?: getDrawable(R.drawable.ic_nav_shield)
+    /** Mockup screen 5: the rule detail is now a full screen (AppRuleActivity)
+     *  with the same data and the same save logic as the old dialog. */
+    private fun openRule(item: AppItem) {
+        startActivity(
+            Intent(this, AppRuleActivity::class.java)
+                .putExtra(AppRuleActivity.EXTRA_PACKAGE, item.packageName)
         )
-        d.tvRuleLabel.text = item.label
-        d.tvRulePackage.text = item.packageName
-
-        // Status banner: blocked / allowed / always-available (hidden when no rule applies).
-        val (bannerText, bannerAttr) = when {
-            item.alwaysAvailable -> R.string.app_state_always to R.attr.plTextSecondary
-            item.rule != null -> R.string.app_state_blocked to R.attr.plDanger
-            item.allowed -> R.string.app_state_allowed to R.attr.plSuccess
-            else -> 0 to 0
-        }
-        if (bannerText != 0) {
-            val color = MaterialColors.getColor(d.root, bannerAttr, 0)
-            d.cardRuleBanner.isVisible = true
-            d.cardRuleBanner.setCardBackgroundColor(ColorUtils.setAlphaComponent(color, 0x2E))
-            d.ivRuleBannerIcon.setColorFilter(color)
-            d.tvRuleBanner.setText(bannerText)
-            d.tvRuleBanner.setTextColor(color)
-        }
-        if (item.usageTodayMs > 0) {
-            d.tvRuleUsage.isVisible = true
-            d.tvRuleUsage.text = getString(R.string.app_usage_today, DurationFormat.compact(item.usageTodayMs))
-        }
-
-        if (item.alwaysAvailable) {
-            d.tvRuleNote.isVisible = true
-            d.tvRuleNote.setText(R.string.rule_always_available)
-            d.switchBlock.isEnabled = false
-            d.switchDuringLock.isEnabled = false
-            d.etLimit.isEnabled = false
-        }
-        d.switchBlock.isChecked = rule != null
-        d.switchDuringLock.isChecked = rule?.blockDuringLock ?: true
-        d.etLimit.setText((rule?.dailyLimitMinutes ?: 0).toString())
-        d.switchAllow.isChecked = item.allowed
-        d.tvLimitHint.setText(
-            if (Graph.usage.hasAccess()) R.string.rule_limit_hint else R.string.rule_limit_needs_access
-        )
-
-        MaterialAlertDialogBuilder(this)
-            .setTitle(item.label)
-            .setView(d.root)
-            .setPositiveButton(R.string.action_save) { _, _ ->
-                val limit = (d.etLimit.text?.toString()?.toIntOrNull() ?: 0).coerceIn(0, 1_440)
-                lifecycleScope.launch {
-                    val ok = vm.saveRule(
-                        item = item,
-                        block = d.switchBlock.isChecked,
-                        blockDuringLock = d.switchDuringLock.isChecked,
-                        limitMinutes = limit,
-                        allowed = d.switchAllow.isChecked
-                    )
-                    if (!ok) Toast.makeText(this@AppListActivity, R.string.msg_locked_cannot_change, Toast.LENGTH_LONG).show()
-                }
-            }
-            .setNegativeButton(R.string.action_cancel, null)
-            .show()
     }
 
     private inner class AppAdapter(private val onClick: (AppItem) -> Unit) :

@@ -25,6 +25,7 @@ import com.purelock.app.databinding.FragmentLocationBinding
 import com.purelock.app.domain.LockMode
 import com.purelock.app.location.Fix
 import com.purelock.app.location.LocationHelper
+import com.purelock.app.ui.MainActivity
 import com.purelock.app.ui.UiAnim
 import com.purelock.app.util.DurationFormat
 import kotlinx.coroutines.launch
@@ -58,6 +59,8 @@ class LocationFragment : Fragment(R.layout.fragment_location) {
         _binding = FragmentLocationBinding.bind(view)
         UiAnim.cardEntrance(listOf(b.cardCurrent, b.cardDistance, b.cardZones, b.cardPrivacy))
 
+        b.btnBackLoc.setOnClickListener { (requireActivity() as MainActivity).openTab(R.id.nav_home) }
+        b.cardMapPreview.setOnClickListener { startActivity(Intent(requireContext(), MapActivity::class.java)) }
         b.btnPermission.setOnClickListener {
             val ctx = requireContext()
             if (!LocationHelper.hasForegroundPermission(ctx)) {
@@ -212,6 +215,13 @@ class LocationFragment : Fragment(R.layout.fragment_location) {
     }
 
     private fun renderZones() {
+        // Map preview shows the first zone (real data) or the empty state.
+        val first = ui.zones.firstOrNull()
+        b.tvPreviewZone.text = if (first != null) {
+            first.name + " · " + getString(R.string.loc_zone_radius, first.radiusM)
+        } else {
+            getString(R.string.loc_preview_no_zone)
+        }
         b.tvZonesEmpty.isVisible = ui.zones.isEmpty()
         b.listZones.removeAllViews()
         for (zone in ui.zones) {
